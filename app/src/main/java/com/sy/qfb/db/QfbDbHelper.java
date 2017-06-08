@@ -1,0 +1,106 @@
+package com.sy.qfb.db;
+
+import android.content.Context;
+import android.database.DatabaseErrorHandler;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+/**
+ * Created by shenyin on 2017/6/9.
+ */
+
+public class QfbDbHelper extends SQLiteOpenHelper {
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "Qfb.db";
+
+    private static final String SQL_CREATE_USER =
+            "CREATE TABLE " + QfbContract.UserEntry.TABLE_NAME + " (" +
+                    QfbContract.UserEntry.COLUMN_NAME_USERID + " INTEGER PRIMARY KEY," +
+                    QfbContract.UserEntry.COLUMN_NAME_USERNAME + " TEXT," +
+                    QfbContract.UserEntry.COLUMN_NAME_PASSWORD + " TEXT)";
+
+    private static final String SQL_DELETE_USER =
+            "DROP TABLE IF EXISTS " + QfbContract.UserEntry.TABLE_NAME;
+
+
+    private static final String SQL_CREATE_PROJ =
+            "CREATE TABLE " + QfbContract.ProjectEntry.TABLE_NAME + " (" +
+                    QfbContract.ProjectEntry.COLUMN_NAME_PROJID + " INTEGER PRIMARY KEY," +
+                    QfbContract.ProjectEntry.COLUMN_NAME_PROJNAME + " TEXT)";
+
+    private static final String SQL_DELETE_PROJ =
+            "DROP TABLE IF EXISTS " + QfbContract.ProjectEntry.TABLE_NAME;
+
+
+    private static final String SQL_CREATE_PRD =
+            "CREATE TABLE " + QfbContract.ProductEntry.TABLE_NAME + " (" +
+                    QfbContract.ProductEntry.COLUMN_NAME_PRDID + " INTEGER PRIMARY KEY," +
+                    QfbContract.ProductEntry.COLUMN_NAME_PROJID + " INTEGER," +
+                    QfbContract.ProductEntry.COLUMN_NAME_PRDNAME + " TEXT)";
+
+    private static final String SQL_DELETE_PRD =
+            "DROP TABLE IF EXISTS " + QfbContract.ProductEntry.TABLE_NAME;
+
+
+    private static final String SQL_CREATE_TARGET =
+            "CREATE TABLE " + QfbContract.TargetEntry.TABLE_NAME + " (" +
+                    QfbContract.TargetEntry.COLUMN_NAME_TID + " INTEGER PRIMARY KEY," +
+                    QfbContract.TargetEntry.COLUMN_NAME_PRDID + " INTEGER," +
+                    QfbContract.TargetEntry.COLUMN_NAME_TVT + " TEXT," +
+                    QfbContract.TargetEntry.COLUMN_NAME_TNAME + " TEXT)";
+
+    private static final String SQL_DELETE_TARGET =
+            "DROP TABLE IF EXISTS " + QfbContract.TargetEntry.TABLE_NAME;
+
+
+    private static final String SQL_CREATE_PAGE =
+            "CREATE TABLE " + QfbContract.PageEntry.TABLE_NAME + " (" +
+                    QfbContract.PageEntry.COLUMN_NAME_PGID + " INTEGER PRIMARY KEY," +
+                    QfbContract.PageEntry.COLUMN_NAME_PGNAME + " TEXT," +
+                    QfbContract.PageEntry.COLUMN_NAME_TID + " INTEGER," +
+                    QfbContract.PageEntry.COLUMN_NAME_MPOINTS + " TEXT)";
+
+    private static final String SQL_DELETE_PAGE =
+            "DROP TABLE IF EXISTS " + QfbContract.PageEntry.TABLE_NAME;
+
+
+    private static final String SQL_CREATE_DATA =
+            "CREATE TABLE " + QfbContract.DataEntry.TABLE_NAME + " (" +
+                    QfbContract.DataEntry.COLUMN_NAME_DATAID + " INTEGER PRIMARY KEY," +
+                    QfbContract.DataEntry.COLUMN_NAME_PROJID + " INTEGER," +
+                    QfbContract.DataEntry.COLUMN_NAME_PRDID + " INTEGER," +
+                    QfbContract.DataEntry.COLUMN_NAME_TID + " INTEGER," +
+                    QfbContract.DataEntry.COLUMN_NAME_PGID + " INTEGER," +
+                    QfbContract.DataEntry.COLUMN_NAME_VALUE + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_USERNAME + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + " TEXT)";
+
+    private static final String SQL_DELETE_DATA =
+            "DROP TABLE IF EXISTS " + QfbContract.DataEntry.TABLE_NAME;
+
+
+    public QfbDbHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(SQL_CREATE_USER);
+        db.execSQL(SQL_CREATE_PROJ);
+        db.execSQL(SQL_CREATE_PRD);
+        db.execSQL(SQL_CREATE_TARGET);
+        db.execSQL(SQL_CREATE_PAGE);
+        db.execSQL(SQL_CREATE_DATA);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(SQL_DELETE_USER);
+        db.execSQL(SQL_DELETE_PROJ);
+        db.execSQL(SQL_DELETE_PRD);
+        db.execSQL(SQL_DELETE_TARGET);
+        db.execSQL(SQL_DELETE_PAGE);
+        db.execSQL(SQL_DELETE_DATA);
+        onCreate(db);
+    }
+}
