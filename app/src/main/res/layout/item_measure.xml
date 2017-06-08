@@ -6,46 +6,28 @@
     <TextView
         android:id="@+id/tv_mp_name"
         android:text="2327SCO"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:textColor="@android:color/black"
-        android:layout_margin="1dp"/>
+        style="@style/table_content"/>
 
     <TextView
         android:id="@+id/tv_mp_direction"
         android:text="C/C"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:textColor="@android:color/black"
-        android:layout_margin="1dp"/>
+        style="@style/table_content"/>
 
     <TextView
         android:id="@+id/tv_data1"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:textColor="@android:color/black"
-        android:layout_margin="1dp"/>
+        style="@style/table_content"/>
 
     <TextView
         android:id="@+id/tv_data2"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:textColor="@android:color/black"
-        android:layout_margin="1dp"/>
+        style="@style/table_content"/>
 
     <TextView
         android:id="@+id/tv_data3"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:textColor="@android:color/black"
-        android:layout_margin="1dp"/>
+        style="@style/table_content"/>
 
     <TextView
         android:id="@+id/tv_data4"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:textColor="@android:color/black"
-        android:layout_margin="1dp"/>
+        style="@style/table_content"/>
 
     <View
         android:layout_width="match_parent"

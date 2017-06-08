@@ -14,8 +14,13 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.sy.qfb.R;
+import com.sy.qfb.controller.DownloadController;
+import com.sy.qfb.model.Project;
+import com.sy.qfb.model.User;
+import com.sy.qfb.util.Logger;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,10 +36,11 @@ public class MeasureActivity extends Activity {
     @BindView(R.id.sc_scroll)
     ScrollView scScroll;
 
-
     ArrayList<String> measurePoints;
 
     ClickLisenter_Okng clickLisenter_okng = new ClickLisenter_Okng();
+
+    DownloadController downloadController;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +72,22 @@ public class MeasureActivity extends Activity {
         ButterKnife.bind(this);
 
         loadTable();
+
+        downloadController = new DownloadController();
+        downloadController.downloadUsers(
+                new DownloadController.NetworkCallback_Users() {
+            @Override
+            public void networkCallback_Users(List<User> users) {
+                Logger.d("users.size() = " + users.size());
+            }
+        });
+        downloadController.downloadProjects(getApplicationContext(),
+            new DownloadController.NetworkCallback_Projects() {
+                @Override
+                public void networkCallback_Projects(List<Project> projects) {
+                    Logger.d("projects.size() = " + projects.size());
+                }
+            });
     }
 
     private void loadTable() {

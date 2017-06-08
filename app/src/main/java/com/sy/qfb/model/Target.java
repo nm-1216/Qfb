@@ -8,5 +8,4 @@ public class Target {
     public String target_name;
     public String value_type;
     public Page[] pages;
-
 }

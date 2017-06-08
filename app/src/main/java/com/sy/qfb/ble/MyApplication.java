@@ -2,9 +2,12 @@ package com.sy.qfb.ble;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.Context;
+
+import com.sy.qfb.net.VolleyHelper;
 
 @SuppressLint("SdCardPath") public class MyApplication extends Application{
-
+	public static Context APP_CONTEXT;
 	public static String filePath = "/sdcard/data/qfb/";
 	
 	public String FILENAME = "";
@@ -14,6 +17,8 @@ import android.app.Application;
 		super.onCreate();
 
 		filePath = "/sdcard/data/qfb/";
+
+		APP_CONTEXT = this.getApplicationContext();
 	}
 	public void setFileName(String filename){
 		this.FILENAME = filename;
@@ -25,5 +30,11 @@ import android.app.Application;
 	public String getFilePath(){
 		
 		return filePath;
+	}
+
+	@Override
+	public void onTerminate() {
+		super.onTerminate();
+		VolleyHelper.getInstance().stopQueue();
 	}
 }

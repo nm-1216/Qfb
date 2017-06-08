@@ -22,38 +22,22 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="测点号"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    style="@style/table_header"
+                    android:text="测点号" />
 
                 <TextView
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="控制方向"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    style="@style/table_header"
+                    android:text="控制方向" />
 
                 <TextView
-                    android:layout_margin="1dp"
+                    style="@style/table_header"
                     android:layout_span="4"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="测量数据"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    android:text="测量数据" />
 
                 <TextView
-                    android:layout_margin="1dp"
+                    style="@style/table_header"
                     android:layout_span="3"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="测点图/截面"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    android:text="测点图/截面" />
             </TableRow>
 
             <TableRow
@@ -61,119 +45,36 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="Point No."
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    style="@style/table_header"
+                    android:text="Point No." />
 
                 <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="Direct."
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    style="@style/table_header"
+                    android:text="Direct." />
 
                 <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="1"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    style="@style/table_header"
+                    android:text="1" />
 
                 <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="2"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    style="@style/table_header"
+                    android:text="2" />
 
                 <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="3"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    style="@style/table_header"
+                    android:text="3" />
 
                 <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="4"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    style="@style/table_header"
+                    android:text="4" />
 
                 <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
+                    style="@style/table_header"
                     android:layout_span="3"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="Measurement Point Drawing/Section"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    android:text="Measurement Point Drawing/Section" />
 
             </TableRow>
 
-            <TableRow>
-
-                <TextView
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="2327SCO"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="C/C"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_margin="1dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:textColor="@android:color/black" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_span="3"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:textColor="@android:color/black" />
-            </TableRow>
         </TableLayout>
 
     </ScrollView>
