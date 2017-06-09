@@ -13,9 +13,12 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sy.qfb.R;
 import com.sy.qfb.controller.DownloadController;
+import com.sy.qfb.controller.SaveController;
+import com.sy.qfb.model.MeasureData;
 import com.sy.qfb.model.Page;
 import com.sy.qfb.model.Project;
 import com.sy.qfb.model.Target;
@@ -23,6 +26,8 @@ import com.sy.qfb.model.User;
 import com.sy.qfb.util.Logger;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,6 +60,10 @@ public class MeasureActivity extends BaseActivity {
 
     private int currentPageIndex = 0;
 
+    private List<View> views = new ArrayList<View>();
+
+    private SaveController saveController = new SaveController();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,24 +74,55 @@ public class MeasureActivity extends BaseActivity {
         currentPageIndex = 0;
         loadTable();
 
-        btnNextPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        btnPreviousPage.setEnabled(false);
+        btnNextPage.setEnabled(false);
+        btnPreviousPage.setVisibility(View.INVISIBLE);
+        btnNextPage.setVisibility(View.INVISIBLE);
 
         btnPreviousPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                currentPageIndex--;
+                if (currentPageIndex < 0) {
+                    currentPageIndex = 0;
+                    Toast.makeText(MeasureActivity.this, "已在第一页！", Toast.LENGTH_SHORT);
+                    return;
+                }
+                loadTable();
+                btnPreviousPage.setEnabled(false);
+                btnNextPage.setEnabled(false);
+                btnPreviousPage.setVisibility(View.INVISIBLE);
+                btnNextPage.setVisibility(View.INVISIBLE);
             }
         });
+
+        btnNextPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentPageIndex++;
+                if (currentPageIndex > MainActivity.CURRENT_TARGET.pages.length) {
+                    currentPageIndex = MainActivity.CURRENT_TARGET.pages.length - 1;
+                    Toast.makeText(MeasureActivity.this, "已在最后一页！", Toast.LENGTH_SHORT);
+                    return;
+                }
+                loadTable();
+                btnPreviousPage.setEnabled(false);
+                btnNextPage.setEnabled(false);
+                btnPreviousPage.setVisibility(View.INVISIBLE);
+                btnNextPage.setVisibility(View.INVISIBLE);
+            }
+        });
+
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveData();
 
+                btnPreviousPage.setEnabled(true);
+                btnNextPage.setEnabled(true);
+                btnPreviousPage.setVisibility(View.VISIBLE);
+                btnNextPage.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -99,6 +139,8 @@ public class MeasureActivity extends BaseActivity {
                     --i;
                 }
             }
+
+            views.clear();
 
 
             Page p = pages[currentPageIndex];
@@ -121,6 +163,8 @@ public class MeasureActivity extends BaseActivity {
                 tvData4.setOnClickListener(clickLisenter_okng);
 
                 tlTableMeasure.addView(view);
+
+                views.add(view);
             }
 
             MainActivity.CURRENT_PAGE = p;
@@ -142,6 +186,41 @@ public class MeasureActivity extends BaseActivity {
             tvText.setTag(strTag);
             tvText.setText(strTag);
         }
+    }
+
+    private void saveData() {
+        List<MeasureData> lstMeasureData = new ArrayList<MeasureData>();
+        for (View view : views) {
+            MeasureData data = new MeasureData();
+
+            TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
+            TextView tvData1 = (TextView) view.findViewById(R.id.tv_data1);
+            TextView tvData2 = (TextView) view.findViewById(R.id.tv_data2);
+            TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
+            TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
+
+            data.measure_point = tvName.getText().toString();
+            data.value1 = tvData1.getText().toString();
+            data.value2 = tvData2.getText().toString();
+            data.value3 = tvData3.getText().toString();
+            data.value4 = tvData4.getText().toString();
+
+            data.username = LoginActivity.CURRENT_USER.username;
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            data.timestamp = calendar.getTimeInMillis();
+
+            data.projectId = MainActivity.CURRENT_PROJECT.project_id;
+            data.productId = MainActivity.CURRENT_PRODUCT.product_id;
+            data.targetId = MainActivity.CURRENT_TARGET.target_id;
+            data.pageId = MainActivity.CURRENT_PAGE.page_id;
+
+            lstMeasureData.add(data);
+        }
+
+        saveController.saveData(lstMeasureData);
+
+        Toast.makeText(this, "保存成功", Toast.LENGTH_LONG);
     }
 
 }

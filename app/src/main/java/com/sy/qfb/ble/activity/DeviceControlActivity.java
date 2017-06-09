@@ -364,7 +364,7 @@ public class DeviceControlActivity extends Activity {
 			uuid = gattService.getUuid().toString();
 			// if (uuid.equals("0000fff0-0000-1000-8000-00805f9b34fb")) {
 			currentServiceData.put(LIST_NAME,
-					SampleGattAttributes.lookup(uuid, "Data CharaString"));
+					SampleGattAttributes.lookup(uuid, "MeasureData CharaString"));
 			currentServiceData.put(LIST_UUID, uuid);
 			gattServiceData.add(currentServiceData);
 
@@ -381,7 +381,7 @@ public class DeviceControlActivity extends Activity {
 
 				charas.add(gattCharacteristic);
 				currentCharaData.put(LIST_NAME,
-						SampleGattAttributes.lookup(uuid, "Data CharaString"));
+						SampleGattAttributes.lookup(uuid, "MeasureData CharaString"));
 				currentCharaData.put(LIST_UUID, uuid);
 				gattCharacteristicGroupData.add(currentCharaData);
 

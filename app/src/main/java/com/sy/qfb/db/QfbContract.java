@@ -52,8 +52,13 @@ public final class QfbContract {
         public static final String COLUMN_NAME_PRDID = "prdid";
         public static final String COLUMN_NAME_TID = "tid";
         public static final String COLUMN_NAME_PGID = "pgid";
-        public static final String COLUMN_NAME_VALUE = "value";
+        public static final String COLUMN_NAME_MPOINT = "mpoint";
+        public static final String COLUMN_NAME_VALUE_1 = "value1";
+        public static final String COLUMN_NAME_VALUE_2 = "value2";
+        public static final String COLUMN_NAME_VALUE_3 = "value3";
+        public static final String COLUMN_NAME_VALUE_4 = "value4";
         public static final String COLUMN_NAME_USERNAME = "username";
         public static final String COLUMN_NAME_TIMESTAMP = "timestamp";
+        public static final String COLUMN_NAME_UPLOADED = "uploaded";
     }
 }

@@ -73,8 +73,13 @@ public class QfbDbHelper extends SQLiteOpenHelper {
                     QfbContract.DataEntry.COLUMN_NAME_PRDID + " INTEGER," +
                     QfbContract.DataEntry.COLUMN_NAME_TID + " INTEGER," +
                     QfbContract.DataEntry.COLUMN_NAME_PGID + " INTEGER," +
-                    QfbContract.DataEntry.COLUMN_NAME_VALUE + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_MPOINT + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_VALUE_1 + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_VALUE_2 + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_VALUE_3 + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_VALUE_4 + " TEXT," +
                     QfbContract.DataEntry.COLUMN_NAME_USERNAME + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_UPLOADED + " INTEGER," +
                     QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + " TEXT)";
 
     private static final String SQL_DELETE_DATA =

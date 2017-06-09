@@ -44,19 +44,27 @@ public class DownloadActivity extends BaseActivity {
 
         downloadController = new DownloadController();
 
-        showProgressDialog(true);
-        finishedDownloadUser = false;
-        isFinishedDownloadProject = false;
 
         btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showProgressDialog(true);
+                finishedDownloadUser = false;
+                isFinishedDownloadProject = false;
 
-                tvStatus.setText(tvStatus.getText() + "/n正在下载  用户....");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvStatus.setText(tvStatus.getText() + "\n下载超时，请检查网络!");
+                        showProgressDialog(false);
+                    }
+                }, 10000);
+
+                tvStatus.setText(tvStatus.getText() + "\n正在下载  user.json....");
                 downloadController.downloadUsers(new DownloadController.NetworkCallback_Users() {
                     @Override
                     public void networkCallback_Users(List<User> users) {
-                        tvStatus.setText(tvStatus.getText() + "/n用户下载成功！");
+                        tvStatus.setText(tvStatus.getText() + "\nuser.json下载成功！");
                         finishedDownloadUser = true;
 
                         if (finishedDownloadUser && isFinishedDownloadProject) {
@@ -66,11 +74,11 @@ public class DownloadActivity extends BaseActivity {
                 });
 
 
-                tvStatus.setText(tvStatus.getText() + "/n正在下载  产品....");
+                tvStatus.setText(tvStatus.getText() + "\n正在下载  product.json....");
                 downloadController.downloadProjects(new DownloadController.NetworkCallback_Projects() {
                     @Override
                     public void networkCallback_Projects(List<Project> projects) {
-                        tvStatus.setText(tvStatus.getText() + "/n产品下载成功！");
+                        tvStatus.setText(tvStatus.getText() + "\nproduct.json下载成功！");
                         MainActivity.PROJECTS = projects;
                         isFinishedDownloadProject = true;
 
@@ -81,14 +89,6 @@ public class DownloadActivity extends BaseActivity {
                 });
             }
         });
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                tvStatus.setText(tvStatus.getText() + "/n下载超时，请检查网络!");
-                showProgressDialog(false);
-            }
-        }, 10000);
 
     }
 

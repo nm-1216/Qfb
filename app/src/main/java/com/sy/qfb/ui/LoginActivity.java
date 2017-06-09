@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends BaseActivity {
     public static List<User> USERS = new ArrayList<User>();
+    public static User CURRENT_USER = null;
 
     @BindView(R.id.btn_login)
     Button btnLogin;
@@ -57,6 +58,7 @@ public class LoginActivity extends BaseActivity {
                 String p = etPassword.getText().toString();
                 for (User user : USERS) {
                     if (user.username.equals(u) && user.password.equals(p)) {
+                        CURRENT_USER = user;
                         authed = true;
                         break;
                     }
