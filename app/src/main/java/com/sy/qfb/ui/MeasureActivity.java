@@ -15,7 +15,9 @@ import android.widget.TextView;
 
 import com.sy.qfb.R;
 import com.sy.qfb.controller.DownloadController;
+import com.sy.qfb.model.Page;
 import com.sy.qfb.model.Project;
+import com.sy.qfb.model.Target;
 import com.sy.qfb.model.User;
 import com.sy.qfb.util.Logger;
 
@@ -36,8 +38,6 @@ public class MeasureActivity extends BaseActivity {
     @BindView(R.id.sc_scroll)
     ScrollView scScroll;
 
-    ArrayList<String> measurePoints;
-
     ClickLisenter_Okng clickLisenter_okng = new ClickLisenter_Okng();
 
     DownloadController downloadController;
@@ -47,68 +47,37 @@ public class MeasureActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measure);
 
-        measurePoints = new ArrayList<String>();
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-        measurePoints.add("sdfs");
-
         ButterKnife.bind(this);
 
         loadTable();
-
-        downloadController = new DownloadController();
-        downloadController.downloadUsers(
-                new DownloadController.NetworkCallback_Users() {
-            @Override
-            public void networkCallback_Users(List<User> users) {
-                Logger.d("users.size() = " + users.size());
-            }
-        });
-        downloadController.downloadProjects(getApplicationContext(),
-            new DownloadController.NetworkCallback_Projects() {
-                @Override
-                public void networkCallback_Projects(List<Project> projects) {
-                    Logger.d("projects.size() = " + projects.size());
-                }
-            });
     }
 
     private void loadTable() {
-        LayoutInflater layoutInflater = getLayoutInflater();
-        for (int i = 0;i < measurePoints.size(); ++i)
-        {
-            View view = layoutInflater.inflate(R.layout.item_measure, null);
-            TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
-            tvName.setText(measurePoints.get(i));
+        Target target = MainActivity.CURRENT_TARGET;
+        Page[] pages = target.pages;
 
-            TextView tvData1 = (TextView) view.findViewById(R.id.tv_data1);
-            TextView tvData2 = (TextView) view.findViewById(R.id.tv_data2);
-            TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
-            TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
+        if (pages.length > 0) {
+            Page p = pages[0];
+            String[] mpoints = p.measure_points;
 
-            tvData1.setOnClickListener(clickLisenter_okng);
-            tvData2.setOnClickListener(clickLisenter_okng);
-            tvData3.setOnClickListener(clickLisenter_okng);
-            tvData4.setOnClickListener(clickLisenter_okng);
+            LayoutInflater layoutInflater = getLayoutInflater();
+            for (int i = 0; i < mpoints.length; ++i) {
+                View view = layoutInflater.inflate(R.layout.item_measure, null);
+                TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
+                tvName.setText(mpoints[i]);
 
-            tlTableMeasure.addView(view);
+                TextView tvData1 = (TextView) view.findViewById(R.id.tv_data1);
+                TextView tvData2 = (TextView) view.findViewById(R.id.tv_data2);
+                TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
+                TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
+
+                tvData1.setOnClickListener(clickLisenter_okng);
+                tvData2.setOnClickListener(clickLisenter_okng);
+                tvData3.setOnClickListener(clickLisenter_okng);
+                tvData4.setOnClickListener(clickLisenter_okng);
+
+                tlTableMeasure.addView(view);
+            }
         }
     }
 

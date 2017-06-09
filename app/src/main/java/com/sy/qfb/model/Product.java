@@ -5,7 +5,7 @@ package com.sy.qfb.model;
  */
 
 public class Product {
-    public String product_name;
     public int product_id;
+    public String product_name;
     public Target[] targets;
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 
+import com.sy.qfb.controller.InitController;
 import com.sy.qfb.net.VolleyHelper;
 
 @SuppressLint("SdCardPath") public class MyApplication extends Application{
@@ -19,6 +20,9 @@ import com.sy.qfb.net.VolleyHelper;
 		filePath = "/sdcard/data/qfb/";
 
 		APP_CONTEXT = this.getApplicationContext();
+
+
+		new InitController().init();
 	}
 	public void setFileName(String filename){
 		this.FILENAME = filename;

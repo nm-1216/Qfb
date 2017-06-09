@@ -5,6 +5,8 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.sy.qfb.ble.MyApplication;
+
 /**
  * Created by shenyin on 2017/6/9.
  */
@@ -78,29 +80,41 @@ public class QfbDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_DATA =
             "DROP TABLE IF EXISTS " + QfbContract.DataEntry.TABLE_NAME;
 
+    private static QfbDbHelper instance;
 
-    public QfbDbHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    public static QfbDbHelper getInstance() {
+        if (instance == null) {
+            instance = new QfbDbHelper();
+        }
+        return instance;
+    }
+
+    private QfbDbHelper() {
+        super(MyApplication.APP_CONTEXT, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.beginTransaction();
         db.execSQL(SQL_CREATE_USER);
         db.execSQL(SQL_CREATE_PROJ);
         db.execSQL(SQL_CREATE_PRD);
         db.execSQL(SQL_CREATE_TARGET);
         db.execSQL(SQL_CREATE_PAGE);
         db.execSQL(SQL_CREATE_DATA);
+        db.endTransaction();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.beginTransaction();
         db.execSQL(SQL_DELETE_USER);
         db.execSQL(SQL_DELETE_PROJ);
         db.execSQL(SQL_DELETE_PRD);
         db.execSQL(SQL_DELETE_TARGET);
         db.execSQL(SQL_DELETE_PAGE);
         db.execSQL(SQL_DELETE_DATA);
+        db.endTransaction();
         onCreate(db);
     }
 }

@@ -5,6 +5,7 @@ package com.sy.qfb.model;
  */
 
 public class Project {
+    public int project_id;
     public String project_name;
     public Product[] products;
 }

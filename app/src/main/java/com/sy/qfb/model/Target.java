@@ -5,6 +5,7 @@ package com.sy.qfb.model;
  */
 
 public class Target {
+    public int target_id;
     public String target_name;
     public String value_type;
     public Page[] pages;

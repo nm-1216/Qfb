@@ -1,6 +1,7 @@
 package com.sy.qfb.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -12,6 +13,7 @@ import android.support.annotation.Nullable;
 
 public class BaseActivity extends Activity {
     ProgressDialog progressDialog = null;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +37,12 @@ public class BaseActivity extends Activity {
         } else {
             progressDialog.dismiss();
         }
+    }
+
+    public void showAlertDialog(String msg) {
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setMessage(msg);
+        b.show();
     }
 
 }

@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 
 import com.sy.qfb.R;
+import com.sy.qfb.model.Target;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +30,6 @@ public class MeasureSubjectActivity extends BaseActivity {
     ListView lvSubject;
 
     private MeasureSubjectAdapter measureSubjectAdapter;
-    private ArrayList<String> subjects;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,26 +37,29 @@ public class MeasureSubjectActivity extends BaseActivity {
 
         setContentView(R.layout.activity_measure_subject);
 
-        subjects = new ArrayList<String>();
-        subjects.add("Door");
-        subjects.add("Base");
-        subjects.add("Window");
-
         ButterKnife.bind(this);
         measureSubjectAdapter = new MeasureSubjectAdapter();
         lvSubject.setAdapter(measureSubjectAdapter);
     }
 
     private class MeasureSubjectAdapter extends BaseAdapter {
+        List<Target> targets;
+
+        public MeasureSubjectAdapter() {
+            targets = new ArrayList<Target>();
+            for (Target t : MainActivity.CURRENT_PRODUCT.targets) {
+                targets.add(t);
+            }
+        }
 
         @Override
         public int getCount() {
-            return subjects == null ? 0 : subjects.size();
+            return targets == null ? 0 : targets.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return subjects == null || position >= subjects.size() ? 0 : subjects.get(position);
+            return targets == null || position >= targets.size() ? 0 : targets.get(position);
         }
 
         @Override
@@ -69,17 +73,28 @@ public class MeasureSubjectActivity extends BaseActivity {
             View view = layoutInflater.inflate(R.layout.measure_subject_item, null);
 
             TextView tvSubject = (TextView) view.findViewById(R.id.tv_subject_name);
-            tvSubject.setText(subjects.get(position));
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MeasureSubjectActivity.this, MeasureActivity.class);
-                    startActivity(intent);
-                }
-            });
+            Target target = targets.get(position);
+            tvSubject.setText(target.target_name);
+
+            view.setOnClickListener(new ClickListener_Target(target));
 
             return view;
+        }
+
+        private class ClickListener_Target implements View.OnClickListener {
+            private Target target;
+
+            public ClickListener_Target(Target t) {
+                this.target = t;
+            }
+
+            @Override
+            public void onClick(View v) {
+                MainActivity.CURRENT_TARGET = target;
+                Intent intent = new Intent(MeasureSubjectActivity.this, MeasureActivity.class);
+                startActivity(intent);
+            }
         }
     }
 }

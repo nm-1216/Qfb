@@ -23,20 +23,17 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".ui.LoginActivity">
-        </activity>
-
-        <activity android:name=".ui.MainActivity"/>
-
-        <activity android:name=".ui.MeasureActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.DownloadActivity"/>
+        <activity android:name=".ui.MainActivity"/>
         <activity android:name=".ui.MeasureSubjectActivity"/>
-        <activity android:name=".ui.ProjectActivity"/>
+        <activity android:name=".ui.MeasureActivity"/>
+
+        <activity android:name=".ui.DownloadActivity"/>
         <activity android:name=".ui.UploadActivity"/>
 
         <activity android:name=".ble.activity.AchartAcitivty"/>

@@ -14,7 +14,7 @@ import com.sy.qfb.db.QfbDbHelper;
 public class UserController {
 
     public boolean login(String username, String password) {
-        QfbDbHelper dbHelper = new QfbDbHelper(MyApplication.APP_CONTEXT);
+        QfbDbHelper dbHelper = QfbDbHelper.getInstance();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor c = db.query(QfbContract.UserEntry.TABLE_NAME, null,
                 null, null, null, null, null);
