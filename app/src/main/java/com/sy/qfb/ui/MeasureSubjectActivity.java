@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.sy.qfb.R;
 import com.sy.qfb.model.Target;
+import com.sy.qfb.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class MeasureSubjectActivity extends BaseActivity {
         setContentView(R.layout.activity_measure_subject);
 
         ButterKnife.bind(this);
+
         measureSubjectAdapter = new MeasureSubjectAdapter();
         lvSubject.setAdapter(measureSubjectAdapter);
     }
@@ -75,6 +77,7 @@ public class MeasureSubjectActivity extends BaseActivity {
             TextView tvSubject = (TextView) view.findViewById(R.id.tv_subject_name);
 
             Target target = targets.get(position);
+            Logger.d("target.target_name = " + target.target_name);
             tvSubject.setText(target.target_name);
 
             view.setOnClickListener(new ClickListener_Target(target));

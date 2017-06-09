@@ -65,6 +65,8 @@ public class QfbController {
         Cursor c_prd = db.query(QfbContract.ProductEntry.TABLE_NAME, null,
                 QfbContract.ProductEntry.COLUMN_NAME_PROJID + "=?", new String[] {"" + prj_id}, null, null, null);
 
+        Logger.d("c_prd.getCount() = " + c_prd.getCount());
+
         if (c_prd.getCount() <= 0) return result;
 
         c_prd.moveToFirst();

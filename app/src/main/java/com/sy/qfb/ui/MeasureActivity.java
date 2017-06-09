@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -38,9 +39,21 @@ public class MeasureActivity extends BaseActivity {
     @BindView(R.id.sc_scroll)
     ScrollView scScroll;
 
+    @BindView(R.id.btn_previous_page)
+    Button btnPreviousPage;
+
+    @BindView(R.id.btn_next_page)
+    Button btnNextPage;
+
+    @BindView(R.id.btn_save)
+    Button btnSave;
+
+    @BindView(R.id.tv_page_indicator)
+    TextView tvPageIndicator;
+
     ClickLisenter_Okng clickLisenter_okng = new ClickLisenter_Okng();
 
-    DownloadController downloadController;
+    private int currentPageIndex = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,15 +62,46 @@ public class MeasureActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
+        currentPageIndex = 0;
         loadTable();
+
+        btnNextPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btnPreviousPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void loadTable() {
         Target target = MainActivity.CURRENT_TARGET;
         Page[] pages = target.pages;
 
-        if (pages.length > 0) {
-            Page p = pages[0];
+        if (pages.length > currentPageIndex) {
+            for (int i = 0;  i < tlTableMeasure.getChildCount(); ++i) {
+                View child = tlTableMeasure.getChildAt(i);
+                if (child.getId() != R.id.row1 && child.getId() != R.id.row2) {
+                    tlTableMeasure.removeView(child);
+                    --i;
+                }
+            }
+
+
+            Page p = pages[currentPageIndex];
             String[] mpoints = p.measure_points;
 
             LayoutInflater layoutInflater = getLayoutInflater();
@@ -78,6 +122,8 @@ public class MeasureActivity extends BaseActivity {
 
                 tlTableMeasure.addView(view);
             }
+
+            MainActivity.CURRENT_PAGE = p;
         }
     }
 

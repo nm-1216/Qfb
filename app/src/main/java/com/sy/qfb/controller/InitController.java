@@ -60,6 +60,7 @@ public class InitController {
         Cursor c_proj = db.query(QfbContract.ProjectEntry.TABLE_NAME, null, null, null, null, null, null);
         Logger.d("c_proj.getCount() = " + c_proj.getCount());
         if (c_proj.getCount() == 0) {
+//        if (true) {
             String strProj = "";
             if (qfbFileHelper.isFileExist_Project()) {
                 strProj = qfbFileHelper.readFile_Project();
@@ -84,7 +85,7 @@ public class InitController {
                             cv_prd.put(QfbContract.ProductEntry.COLUMN_NAME_PROJID, project.project_id);
                             cv_prd.put(QfbContract.ProductEntry.COLUMN_NAME_PRDID, product.product_id);
                             cv_prd.put(QfbContract.ProductEntry.COLUMN_NAME_PRDNAME, product.product_name);
-                            db.insert(QfbContract.ProductEntry.TABLE_NAME, null, contentValues);
+                            db.insert(QfbContract.ProductEntry.TABLE_NAME, null, cv_prd);
 
                             if (product.targets != null && product.targets.length > 0) {
                                 for(Target target : product.targets) {
@@ -93,7 +94,7 @@ public class InitController {
                                     cv_target.put(QfbContract.TargetEntry.COLUMN_NAME_TID, target.target_id);
                                     cv_target.put(QfbContract.TargetEntry.COLUMN_NAME_TNAME, target.target_name);
                                     cv_target.put(QfbContract.TargetEntry.COLUMN_NAME_TVT, target.value_type);
-                                    db.insert(QfbContract.TargetEntry.TABLE_NAME, null, contentValues);
+                                    db.insert(QfbContract.TargetEntry.TABLE_NAME, null, cv_target);
 
                                     if (target.pages != null && target.pages.length > 0) {
                                         for(Page page : target.pages) {
@@ -111,7 +112,7 @@ public class InitController {
 
                                             }
                                             cv_page.put(QfbContract.PageEntry.COLUMN_NAME_MPOINTS, strMPoints);
-                                            db.insert(QfbContract.PageEntry.TABLE_NAME, null, contentValues);
+                                            db.insert(QfbContract.PageEntry.TABLE_NAME, null, cv_page);
 
                                         }
                                     }
