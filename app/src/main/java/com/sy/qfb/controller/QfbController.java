@@ -32,7 +32,11 @@ public class QfbController {
         Cursor c_prj = db.query(QfbContract.ProjectEntry.TABLE_NAME, null,
                 null, null, null, null, null);
         Logger.d("c_prj.getCount() = " + c_prj.getCount());
-        if (c_prj.getCount() <= 0) return result;
+        if (c_prj.getCount() <= 0) {
+            c_prj.close();
+            db.close();
+            return result;
+        }
 
         c_prj.moveToFirst();
         while(true) {
@@ -56,6 +60,8 @@ public class QfbController {
             if (!c_prj.moveToNext()) break;
         }
 
+        c_prj.close();
+        db.close();
         return result;
     }
 
@@ -67,7 +73,10 @@ public class QfbController {
 
         Logger.d("c_prd.getCount() = " + c_prd.getCount());
 
-        if (c_prd.getCount() <= 0) return result;
+        if (c_prd.getCount() <= 0) {
+            c_prd.close();
+            return result;
+        }
 
         c_prd.moveToFirst();
         while(true) {
@@ -91,6 +100,7 @@ public class QfbController {
             if (!c_prd.moveToNext()) break;
         }
 
+        c_prd.close();
         return result;
     }
 
@@ -100,7 +110,10 @@ public class QfbController {
         Cursor cursor = db.query(QfbContract.TargetEntry.TABLE_NAME, null,
                 QfbContract.TargetEntry.COLUMN_NAME_PRDID + "=?", new String[] {"" + prd_id}, null, null, null);
 
-        if (cursor.getCount() <= 0) return result;
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return result;
+        }
 
         cursor.moveToFirst();
         while(true) {
@@ -124,6 +137,7 @@ public class QfbController {
 
             if (!cursor.moveToNext()) break;
         }
+        cursor.close();
         return result;
     }
 
@@ -133,7 +147,10 @@ public class QfbController {
         Cursor cursor = db.query(QfbContract.PageEntry.TABLE_NAME, null,
                 QfbContract.PageEntry.COLUMN_NAME_TID + "=?", new String[] {"" + tid}, null, null, null);
 
-        if (cursor.getCount() <= 0) return result;
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return result;
+        }
 
         cursor.moveToFirst();
         while(true) {
@@ -154,6 +171,7 @@ public class QfbController {
 
             if (!cursor.moveToNext()) break;
         }
+        cursor.close();
         return result;
     }
 

@@ -7,6 +7,7 @@ import android.provider.ContactsContract;
 
 import com.sy.qfb.db.QfbContract;
 import com.sy.qfb.db.QfbDbHelper;
+import com.sy.qfb.util.Logger;
 
 /**
  * Created by shenyin on 2017/6/8.
@@ -19,11 +20,18 @@ public class UploadController {
     public int getDataSize() {
         db = QfbDbHelper.getInstance().getWritableDatabase();
 
+        Cursor c = db.query(QfbContract.DataEntry.TABLE_NAME, null, null, null, null, null, null);
+        Logger.d("c.getCount() = " + c.getCount());
+
         cursor = db.query(QfbContract.DataEntry.TABLE_NAME, null,
                 QfbContract.DataEntry.COLUMN_NAME_UPLOADED + "=?",
                 new String[] {"0"}, null, null, null);
 
+        Logger.d("cursor.getCount() = " + cursor.getCount());
+
         if (cursor.getCount() <= 0) {
+            cursor.close();
+            db.close();
             return 0;
         }
         return cursor.getCount();
@@ -44,6 +52,7 @@ public class UploadController {
             }
         }
 
+        cursor.close();
         db.close();
     }
 }

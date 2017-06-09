@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.sy.qfb.db.QfbContract;
 import com.sy.qfb.db.QfbDbHelper;
 import com.sy.qfb.model.MeasureData;
+import com.sy.qfb.util.Logger;
 
 import java.util.List;
 
@@ -36,7 +37,8 @@ public class SaveController {
             content.put(QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP, data.timestamp);
             content.put(QfbContract.DataEntry.COLUMN_NAME_UPLOADED, 0);
 
-            db.insert(QfbContract.DataEntry.TABLE_NAME, null, content);
+            long rowId = db.insert(QfbContract.DataEntry.TABLE_NAME, null, content);
+            Logger.d("rowId = " + rowId);
         }
 
         db.endTransaction();

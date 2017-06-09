@@ -32,6 +32,7 @@ public class UserController {
             }
         }
         c.close();
+        db.close();
         return false;
     }
 }

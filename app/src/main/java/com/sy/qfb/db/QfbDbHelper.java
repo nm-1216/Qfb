@@ -12,7 +12,7 @@ import com.sy.qfb.ble.MyApplication;
  */
 
 public class QfbDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Qfb.db";
 
     private static final String SQL_CREATE_USER =
@@ -100,26 +100,22 @@ public class QfbDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.beginTransaction();
         db.execSQL(SQL_CREATE_USER);
         db.execSQL(SQL_CREATE_PROJ);
         db.execSQL(SQL_CREATE_PRD);
         db.execSQL(SQL_CREATE_TARGET);
         db.execSQL(SQL_CREATE_PAGE);
         db.execSQL(SQL_CREATE_DATA);
-        db.endTransaction();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.beginTransaction();
         db.execSQL(SQL_DELETE_USER);
         db.execSQL(SQL_DELETE_PROJ);
         db.execSQL(SQL_DELETE_PRD);
         db.execSQL(SQL_DELETE_TARGET);
         db.execSQL(SQL_DELETE_PAGE);
         db.execSQL(SQL_DELETE_DATA);
-        db.endTransaction();
         onCreate(db);
     }
 }

@@ -26,7 +26,10 @@ public class LoginController {
 
         Cursor c = db.query(QfbContract.UserEntry.TABLE_NAME, null, null, null, null, null, null);
 
-        if (c.getCount() == 0) return result;
+        if (c.getCount() == 0) {
+            db.close();
+            return result;
+        }
 
         c.moveToFirst();
         while (true) {
@@ -42,6 +45,8 @@ public class LoginController {
             if (!c.moveToNext()) break;
         }
 
+        c.close();
+        db.close();
         return result;
     }
 }

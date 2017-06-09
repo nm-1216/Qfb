@@ -55,7 +55,7 @@ public class InitController {
                 }
             }
         }
-
+        c_user.close();
 
         Cursor c_proj = db.query(QfbContract.ProjectEntry.TABLE_NAME, null, null, null, null, null, null);
         Logger.d("c_proj.getCount() = " + c_proj.getCount());
@@ -126,7 +126,8 @@ public class InitController {
                 }
             }
         }
-
+        c_proj.close();
+        db.close();
 
     }
 }

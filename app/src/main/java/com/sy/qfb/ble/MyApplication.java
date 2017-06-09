@@ -21,7 +21,6 @@ import com.sy.qfb.net.VolleyHelper;
 
 		APP_CONTEXT = this.getApplicationContext();
 
-
 		new InitController().init();
 	}
 	public void setFileName(String filename){
