@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
  * Created by shenyin on 2017/6/4.
  */
 
-public class MeasureSubjectActivity extends Activity {
+public class MeasureSubjectActivity extends BaseActivity {
     @BindView(R.id.lv_subject)
     ListView lvSubject;
 

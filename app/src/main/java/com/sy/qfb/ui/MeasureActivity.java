@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
  * Created by jshenf on 2017/6/8.
  */
 
-public class MeasureActivity extends Activity {
+public class MeasureActivity extends BaseActivity {
     @BindView(R.id.tl_measure)
     TableLayout tlTableMeasure;
 

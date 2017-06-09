@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
  * Created by shenyin on 2017/6/4.
  */
 
-public class ProjectActivity extends Activity {
+public class ProjectActivity extends BaseActivity {
     @BindView(R.id.lv_project)
     ListView lvProject;
 

@@ -14,7 +14,7 @@ import com.sy.qfb.R;
  * Created by shenyin on 2017/6/4.
  */
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
     private Button btnLogin;
 
     @Override

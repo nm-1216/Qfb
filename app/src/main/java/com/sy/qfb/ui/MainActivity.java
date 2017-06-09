@@ -8,13 +8,20 @@ import android.view.View;
 import android.widget.Button;
 
 import com.sy.qfb.R;
+import com.sy.qfb.model.Project;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Created by shenyin on 2017/6/4.
  */
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseActivity {
+    public static List<Project> PROJECTS = new ArrayList<Project>();
+
+
     private Button btnProject;
     private Button btnUpload;
     private Button btnDownload;
