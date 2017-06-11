@@ -1,6 +1,8 @@
 package com.sy.qfb.ui;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sy.qfb.R;
+import com.sy.qfb.ble.activity.DeviceScanActivity;
 import com.sy.qfb.controller.DownloadController;
 import com.sy.qfb.controller.SaveController;
 import com.sy.qfb.model.MeasureData;
@@ -24,7 +27,9 @@ import com.sy.qfb.model.Project;
 import com.sy.qfb.model.Target;
 import com.sy.qfb.model.User;
 import com.sy.qfb.util.Logger;
+import com.sy.qfb.util.ToastHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -56,6 +61,18 @@ public class MeasureActivity extends BaseActivity {
     @BindView(R.id.tv_page_indicator)
     TextView tvPageIndicator;
 
+    @BindView(R.id.tv_part_pn)
+    TextView tvPartPn;
+
+    @BindView(R.id.tv_part_name)
+    TextView tvPartName;
+
+    @BindView(R.id.tv_measure_target)
+    TextView tvMeasureTarget;
+
+    @BindView(R.id.tv_date)
+    TextView tvDate;
+
     ClickLisenter_Okng clickLisenter_okng = new ClickLisenter_Okng();
 
     private int currentPageIndex = 0;
@@ -64,6 +81,8 @@ public class MeasureActivity extends BaseActivity {
 
     private SaveController saveController = new SaveController();
 
+    private TextView currentTextView = null;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +90,22 @@ public class MeasureActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
+        tvPartPn.setText("" + MainActivity.CURRENT_PRODUCT.product_id);
+
+        tvPartName.setText(MainActivity.CURRENT_PRODUCT.product_name);
+        tvMeasureTarget.setText(MainActivity.CURRENT_TARGET.target_name);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        tvDate.setText(sdf.format(new Date()));
+
+        if (MainActivity.CURRENT_TARGET.value_type.equals("data")) {
+            Intent intent = new Intent(MeasureActivity.this, DeviceScanActivity.class);
+            startActivity(intent);
+        }
+
+
         currentPageIndex = 0;
         loadTable();
+        setPageIndicator();
 
         btnPreviousPage.setEnabled(false);
         btnNextPage.setEnabled(false);
@@ -85,10 +118,11 @@ public class MeasureActivity extends BaseActivity {
                 currentPageIndex--;
                 if (currentPageIndex < 0) {
                     currentPageIndex = 0;
-                    Toast.makeText(MeasureActivity.this, "已在第一页！", Toast.LENGTH_SHORT);
+                    ToastHelper.showShort("已在第一页！");
                     return;
                 }
                 loadTable();
+                setPageIndicator();
                 btnPreviousPage.setEnabled(false);
                 btnNextPage.setEnabled(false);
                 btnPreviousPage.setVisibility(View.INVISIBLE);
@@ -100,12 +134,13 @@ public class MeasureActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 currentPageIndex++;
-                if (currentPageIndex > MainActivity.CURRENT_TARGET.pages.length) {
+                if (currentPageIndex > MainActivity.CURRENT_TARGET.pages.length - 1) {
                     currentPageIndex = MainActivity.CURRENT_TARGET.pages.length - 1;
-                    Toast.makeText(MeasureActivity.this, "已在最后一页！", Toast.LENGTH_SHORT);
+                    ToastHelper.showShort("已在最后一页！");
                     return;
                 }
                 loadTable();
+                setPageIndicator();
                 btnPreviousPage.setEnabled(false);
                 btnNextPage.setEnabled(false);
                 btnPreviousPage.setVisibility(View.INVISIBLE);
@@ -127,12 +162,18 @@ public class MeasureActivity extends BaseActivity {
         });
     }
 
+    private void setPageIndicator() {
+        int totalPage = MainActivity.CURRENT_TARGET.pages.length;
+        String indication = String.format("页码 Page No. " + (currentPageIndex + 1) + " of " + totalPage);
+        tvPageIndicator.setText(indication);
+    }
+
     private void loadTable() {
         Target target = MainActivity.CURRENT_TARGET;
         Page[] pages = target.pages;
 
         if (pages.length > currentPageIndex) {
-            for (int i = 0;  i < tlTableMeasure.getChildCount(); ++i) {
+            for (int i = 0; i < tlTableMeasure.getChildCount(); ++i) {
                 View child = tlTableMeasure.getChildAt(i);
                 if (child.getId() != R.id.row1 && child.getId() != R.id.row2) {
                     tlTableMeasure.removeView(child);
@@ -174,7 +215,22 @@ public class MeasureActivity extends BaseActivity {
     private class ClickLisenter_Okng implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            if (currentTextView != null) {
+//                TableRow.LayoutParams lp = new TableRow.LayoutParams();
+//                lp.setMargins(0, 0, 0, 0);
+//                currentTextView.setLayoutParams(lp);
+                currentTextView.setBackgroundColor(Color.WHITE);
+                currentTextView.setTextColor(Color.BLACK);
+            }
+
             TextView tvText = (TextView) v;
+            currentTextView = tvText;
+//            TableRow.LayoutParams lp = new TableRow.LayoutParams();
+//            lp.setMargins(1, 1, 1, 1);
+//            currentTextView.setLayoutParams(lp);
+            currentTextView.setBackgroundColor(Color.BLUE);
+            currentTextView.setTextColor(Color.WHITE);
+
             String strTag = (String) tvText.getTag();
             if (TextUtils.isEmpty(strTag)) {
                 strTag = "NG";
@@ -220,7 +276,7 @@ public class MeasureActivity extends BaseActivity {
 
         saveController.saveData(lstMeasureData);
 
-        Toast.makeText(this, "保存成功", Toast.LENGTH_LONG);
+        ToastHelper.showShort("保存成功！");
     }
 
 }

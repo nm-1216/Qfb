@@ -21,6 +21,8 @@ import com.sy.qfb.net.VolleyHelper;
 
 		APP_CONTEXT = this.getApplicationContext();
 
+//		deleteDatabase("Qfb.db");
+
 		new InitController().init();
 	}
 	public void setFileName(String filename){

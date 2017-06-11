@@ -6,21 +6,15 @@
     android:orientation="vertical">
 
     <com.sy.qfb.view.CommonHeader
-        android:id="@+id/common_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        custom:title_text="测量项目" />
+        custom:title_text="用户手册" />
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:text=".pdf"
+        android:textColor="@android:color/black"
+        android:textSize="22sp" />
 
-        <ListView
-            android:id="@+id/lv_subject"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
 </LinearLayout>

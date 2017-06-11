@@ -8,4 +8,5 @@ public class Page {
     public int page_id;
     public String page_name;
     public String[] measure_points;
+    public String[] pictures;
 }

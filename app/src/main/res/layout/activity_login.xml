@@ -7,15 +7,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_marginRight="300dp"
         android:layout_marginTop="50dp"
+        android:gravity="center"
         android:orientation="vertical"
         android:padding="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@mipmap/logo_u" />
 
         <TextView
             android:id="@+id/tv_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="用户名" />
+            android:layout_marginTop="50dp"
+            android:text="用户名"
+            android:textColor="@android:color/black"
+            android:textSize="26dp" />
 
         <EditText
             android:id="@+id/et_username"
@@ -23,14 +35,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:ems="10"
-            android:text="user1" />
+            android:text="user1"
+            android:textColor="@android:color/black"
+            android:textSize="26dp" />
 
         <TextView
             android:id="@+id/tv_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="密码" />
+            android:text="密码"
+            android:textColor="@android:color/black"
+            android:textSize="26dp" />
 
         <EditText
             android:id="@+id/et_password"
@@ -39,7 +55,9 @@
             android:layout_marginTop="5dp"
             android:ems="10"
             android:inputType="textPassword"
-            android:text="123456" />
+            android:text="123456"
+            android:textColor="@android:color/black"
+            android:textSize="26dp" />
 
         <Button
             android:id="@+id/btn_login"
@@ -48,6 +66,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
-            android:text="Login" />
+            android:text="登录"
+            android:textColor="@android:color/black"
+            android:textSize="26dp" />
     </LinearLayout>
 </LinearLayout>

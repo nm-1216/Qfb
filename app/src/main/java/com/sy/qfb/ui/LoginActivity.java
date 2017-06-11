@@ -67,6 +67,7 @@ public class LoginActivity extends BaseActivity {
                 if (authed) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
+                    LoginActivity.this.finish();
                 } else {
                     showAlertDialog("用户名或密码不对");
                 }

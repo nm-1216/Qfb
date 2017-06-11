@@ -81,7 +81,7 @@ public class DeviceControlActivity extends Activity {
 	private final String LIST_NAME = "NAME";
 	private final String LIST_UUID = "UUID";
 	public MyApplication myApp;
-	private ActionBar actionBar;
+//	private ActionBar actionBar;
 
 	// Code to manage Service lifecycle.
 	private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -124,7 +124,7 @@ public class DeviceControlActivity extends Activity {
 			if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
 				mConnected = true;
 				updateConnectionState(R.string.connected);
-				Toast.makeText(DeviceControlActivity.this, "蓝牙连接成功", 1).show();
+				Toast.makeText(DeviceControlActivity.this, "蓝牙连接成功", Toast.LENGTH_SHORT).show();
 				dialog.show();
 				invalidateOptionsMenu();
 			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
@@ -212,8 +212,8 @@ public class DeviceControlActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gatt_services_characteristics);
 
-		actionBar=getActionBar();
-		actionBar.show();
+//		actionBar=getActionBar();
+//		actionBar.show();
 
 		myApp = new MyApplication();
 //		设置主界面视图
@@ -230,8 +230,8 @@ public class DeviceControlActivity extends Activity {
 		mDataField = (TextView) findViewById(R.id.data_value);
 		mDataHistory = (TextView)findViewById(R.id.history_data);
 
-		getActionBar().setTitle(mDeviceName);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+//		getActionBar().setTitle(mDeviceName);
+//		getActionBar().setDisplayHomeAsUpEnabled(true);
 		Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
 
 		bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);

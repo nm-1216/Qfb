@@ -9,39 +9,67 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".ble.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.LoginActivity">
+        <activity
+            android:name=".ui.SplashActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.MainActivity"/>
-        <activity android:name=".ui.MeasureSubjectActivity"/>
-        <activity android:name=".ui.MeasureActivity"/>
+        <activity
+            android:name=".ui.LoginActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".ui.DownloadActivity"/>
-        <activity android:name=".ui.UploadActivity"/>
+        <activity
+            android:name=".ui.MainActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ui.MeasureSubjectActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ui.MeasureActivity"
+            android:screenOrientation="landscape" />
 
-        <activity android:name=".ble.activity.AchartAcitivty"/>
-        <activity android:name=".ble.activity.DeviceControlActivity"/>
-        <activity android:name=".ble.activity.DeviceScanActivity"/>
-        <activity android:name=".ble.activity.SdcardShow"/>
+        <activity
+            android:name=".ui.DownloadActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ui.UploadActivity"
+            android:screenOrientation="landscape" />
 
-        <service android:name=".ble.service.BluetoothLeService" android:enabled="true"/>
+        <activity
+            android:name=".ble.activity.AchartAcitivty"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ble.activity.DeviceControlActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ble.activity.DeviceScanActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ble.activity.SdcardShow"
+            android:screenOrientation="landscape" />
+
+        <service
+            android:name=".ble.service.BluetoothLeService"
+            android:enabled="true"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

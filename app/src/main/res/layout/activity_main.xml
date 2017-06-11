@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <com.sy.qfb.view.CommonHeader
+        android:id="@+id/common_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        custom:title_text="产品目录" />
 
     <LinearLayout
         android:id="@+id/ll_buttons"
@@ -13,18 +21,45 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btn_manual_pdf"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="用户手册"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/btn_history"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="7天数据查询"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
+
+
+        <Button
             android:id="@+id/btn_upload"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:text="上传" />
+            android:text="上传"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
 
         <Button
             android:id="@+id/btn_download"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:text="下载" />
+            android:text="下载"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
     </LinearLayout>
 
 
@@ -32,7 +67,8 @@
         android:id="@+id/lv_project"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/ll_buttons" />
+        android:layout_above="@id/ll_buttons"
+        android:layout_below="@id/common_header" />
 
 
 </RelativeLayout>
