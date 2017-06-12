@@ -1,10 +1,12 @@
 package com.sy.qfb.model;
 
+import com.orm.SugarRecord;
+import com.orm.dsl.Table;
+
 /**
  * Created by jshenf on 2017/6/9.
  */
-
-public class MeasureData {
+public class MeasureData extends SugarRecord {
     public int dataId;
     public int projectId;
     public int productId;

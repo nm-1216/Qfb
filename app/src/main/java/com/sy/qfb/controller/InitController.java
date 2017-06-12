@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.sy.qfb.ble.MyApplication;
+import com.orhanobut.logger.Logger;
 import com.sy.qfb.db.QfbContract;
 import com.sy.qfb.db.QfbDbHelper;
 import com.sy.qfb.model.Page;
@@ -14,11 +14,7 @@ import com.sy.qfb.model.Product;
 import com.sy.qfb.model.Project;
 import com.sy.qfb.model.Target;
 import com.sy.qfb.model.User;
-import com.sy.qfb.util.Logger;
 import com.sy.qfb.util.QfbFileHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by jshenf on 2017/6/9.

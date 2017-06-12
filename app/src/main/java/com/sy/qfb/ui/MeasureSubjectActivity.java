@@ -1,6 +1,5 @@
 package com.sy.qfb.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,9 +11,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
 import com.sy.qfb.model.Target;
-import com.sy.qfb.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -46,7 +46,7 @@ public final class QfbContract {
     }
 
     public static class DataEntry implements BaseColumns {
-        public static final String TABLE_NAME = "data";
+        public static final String TABLE_NAME = "measure_data";
         public static final String COLUMN_NAME_DATAID = "dataid";
         public static final String COLUMN_NAME_PROJID = "projid";
         public static final String COLUMN_NAME_PRDID = "prdid";

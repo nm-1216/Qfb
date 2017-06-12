@@ -3,11 +3,10 @@ package com.sy.qfb.controller;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.ContactsContract;
 
+import com.orhanobut.logger.Logger;
 import com.sy.qfb.db.QfbContract;
 import com.sy.qfb.db.QfbDbHelper;
-import com.sy.qfb.util.Logger;
 
 /**
  * Created by shenyin on 2017/6/8.

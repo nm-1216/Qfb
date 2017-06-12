@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
 import com.sy.qfb.controller.LoginController;
 import com.sy.qfb.model.User;
@@ -44,6 +45,8 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Logger.d("LoginActivity onCreate()");
 
         ButterKnife.bind(this);
 

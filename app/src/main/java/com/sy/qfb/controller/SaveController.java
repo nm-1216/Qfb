@@ -3,10 +3,10 @@ package com.sy.qfb.controller;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.orhanobut.logger.Logger;
 import com.sy.qfb.db.QfbContract;
 import com.sy.qfb.db.QfbDbHelper;
 import com.sy.qfb.model.MeasureData;
-import com.sy.qfb.util.Logger;
 
 import java.util.List;
 

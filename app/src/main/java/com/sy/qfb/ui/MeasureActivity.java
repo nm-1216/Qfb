@@ -1,32 +1,23 @@
 package com.sy.qfb.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sy.qfb.R;
 import com.sy.qfb.ble.activity.DeviceScanActivity;
-import com.sy.qfb.controller.DownloadController;
 import com.sy.qfb.controller.SaveController;
 import com.sy.qfb.model.MeasureData;
 import com.sy.qfb.model.Page;
-import com.sy.qfb.model.Project;
 import com.sy.qfb.model.Target;
-import com.sy.qfb.model.User;
-import com.sy.qfb.util.Logger;
 import com.sy.qfb.util.ToastHelper;
 
 import java.text.SimpleDateFormat;
@@ -270,6 +261,8 @@ public class MeasureActivity extends BaseActivity {
             data.productId = MainActivity.CURRENT_PRODUCT.product_id;
             data.targetId = MainActivity.CURRENT_TARGET.target_id;
             data.pageId = MainActivity.CURRENT_PAGE.page_id;
+
+//            data.save();
 
             lstMeasureData.add(data);
         }
