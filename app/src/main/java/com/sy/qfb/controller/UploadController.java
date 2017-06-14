@@ -17,7 +17,8 @@ public class UploadController {
     Cursor cursor;
 
     public int getDataSize() {
-        db = QfbDbHelper.getInstance().getWritableDatabase();
+//        db = QfbDbHelper.getInstance().getWritableDatabase();
+        db = QfbDbHelper.getInstance().getReadableDatabase();
 
         Cursor c = db.query(QfbContract.DataEntry.TABLE_NAME, null, null, null, null, null, null);
         Logger.d("c.getCount() = " + c.getCount());

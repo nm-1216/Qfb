@@ -33,7 +33,19 @@ public class MyApplication extends Application {
 
 //        deleteDatabase("Qfb.db");
 
-        Logger.addLogAdapter(new AndroidLogAdapter());
+//        Logger.addLogAdapter(new AndroidLogAdapter());
+
+        Logger.addLogAdapter(new LogAdapter() {
+            @Override
+            public boolean isLoggable(int priority, String tag) {
+                return true;
+            }
+
+            @Override
+            public void log(int priority, String tag, String message) {
+                Log.d("Qfb", message);
+            }
+        });
 
         new InitController().init();
     }

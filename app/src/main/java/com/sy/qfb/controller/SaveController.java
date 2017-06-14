@@ -1,6 +1,7 @@
 package com.sy.qfb.controller;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.orhanobut.logger.Logger;
@@ -41,7 +42,15 @@ public class SaveController {
             Logger.d("rowId = " + rowId);
         }
 
+        Cursor c1 = db.query(QfbContract.DataEntry.TABLE_NAME, null, null, null, null, null, null);
+        Logger.d("c1.getCount() = " + c1.getCount());
+
+        db.setTransactionSuccessful();
         db.endTransaction();
+
+
+        Cursor c = db.query(QfbContract.DataEntry.TABLE_NAME, null, null, null, null, null, null);
+        Logger.d("c.getCount() = " + c.getCount());
 
         db.close();
     }
