@@ -3,7 +3,13 @@ package com.sy.qfb.ble;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.CsvFormatStrategy;
+import com.orhanobut.logger.LogAdapter;
+import com.orhanobut.logger.LogcatLogStrategy;
+import com.orhanobut.logger.Logger;
 import com.orm.SugarContext;
 import com.sy.qfb.controller.InitController;
 import com.sy.qfb.net.VolleyHelper;
@@ -26,6 +32,8 @@ public class MyApplication extends Application {
         SugarContext.init(APP_CONTEXT);
 
 //        deleteDatabase("Qfb.db");
+
+        Logger.addLogAdapter(new AndroidLogAdapter());
 
         new InitController().init();
     }

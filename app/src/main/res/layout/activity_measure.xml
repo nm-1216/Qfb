@@ -50,12 +50,35 @@
                 android:text="保存" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_data_operations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="100dp"
+            android:layout_toLeftOf="@id/ll_btns">
+
+            <Button
+                android:id="@+id/btn_ok"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:textColor="@android:color/black" />
+
+            <Button
+                android:id="@+id/btn_ng"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="NG"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tv_page_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/ll_btns"
-            android:layout_toLeftOf="@id/ll_btns"
+            android:layout_toLeftOf="@id/ll_data_operations"
             android:gravity="center"
             android:text="页码 Page No. 17 of 34"
             android:textColor="@android:color/black"

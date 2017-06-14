@@ -46,7 +46,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Logger.d("LoginActivity onCreate()");
+        Logger.d(new String[] {"LoginActivity onCreate()"});
 
         ButterKnife.bind(this);
 

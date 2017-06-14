@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +11,8 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.orhanobut.logger.LogAdapter;
+import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
 import com.sy.qfb.ble.activity.DeviceScanActivity;
 import com.sy.qfb.controller.SaveController;
@@ -64,14 +65,21 @@ public class MeasureActivity extends BaseActivity {
     @BindView(R.id.tv_date)
     TextView tvDate;
 
-    ClickLisenter_Okng clickLisenter_okng = new ClickLisenter_Okng();
+    @BindView(R.id.btn_ok)
+    Button btnOk;
+
+    @BindView(R.id.btn_ng)
+    Button btnNg;
 
     private int currentPageIndex = 0;
 
-    private List<View> views = new ArrayList<View>();
+    private List<View> addedRows = new ArrayList<View>();
 
     private SaveController saveController = new SaveController();
 
+    private TextView[][] tvArray;
+    private int currentRow_TvArray = 0;
+    private int currentCol_TvArray = 0;
     private TextView currentTextView = null;
 
     @Override
@@ -139,7 +147,6 @@ public class MeasureActivity extends BaseActivity {
             }
         });
 
-
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,6 +158,93 @@ public class MeasureActivity extends BaseActivity {
                 btnNextPage.setVisibility(View.VISIBLE);
             }
         });
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int c_rows = tvArray.length;
+                int c_cols = 4;
+                if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
+                        currentCol_TvArray >= 0 && currentCol_TvArray <4) {
+                    TextView tv = tvArray[currentRow_TvArray][currentCol_TvArray];
+                    if (tv != null) {
+                        tv.setText("OK");
+                    }
+                }
+                goNext();
+            }
+        });
+
+        btnNg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int c_rows = tvArray.length;
+                int c_cols = 4;
+                if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
+                        currentCol_TvArray >= 0 && currentCol_TvArray <4) {
+                    TextView tv = tvArray[currentRow_TvArray][currentCol_TvArray];
+                    if (tv != null) {
+                        tv.setText("NG");
+                    }
+                }
+                goNext();
+            }
+        });
+    }
+
+    private void goNext() {
+        int c_rows = tvArray.length;
+        int c_cols = 4;
+        if (currentRow_TvArray < c_rows - 1) {
+            currentRow_TvArray++;
+        } else {
+            if (currentCol_TvArray == 3) {
+                currentCol_TvArray = 0;
+            } else {
+                currentCol_TvArray++;
+            }
+            currentRow_TvArray = 0;
+        }
+
+        if (currentTextView != null) {
+            hilightTextView(currentTextView, false);
+        }
+        currentTextView = tvArray[currentRow_TvArray][currentCol_TvArray];
+//        if (currentTextView != null) {
+            hilightTextView(currentTextView, true);
+//        }
+
+        View vRow = addedRows.get(currentRow_TvArray);
+//        double width = vRow.getX();
+//        double height = vRow.getY();
+//        Logger.d("width = " + width + ", height = " + height);
+        int height = scScroll.getMeasuredHeight();
+        double scrollY = scScroll.getScrollY();
+        Logger.d("vRow.getY() = " + vRow.getY() + ", scScroll.getScrollY() = " + scScroll.getScrollY()  + ", height = " + height);
+        if (vRow.getY() + 70 > scScroll.getScrollY() + height) {
+            scScroll.scrollTo(0, (int) vRow.getY());
+        }
+        else if (vRow.getY() < scScroll.getScrollY()) {
+            int target_y = (int) (scScroll.getScrollY() - height);
+            if (target_y < 0) target_y = 0;
+            scScroll.scrollTo(0, target_y);
+        }
+    }
+
+    private void hilightTextView(TextView tv, boolean hilight) {
+        if (hilight) {
+//            TableRow.LayoutParams lp = new TableRow.LayoutParams();
+//            lp.setMargins(1, 1, 1, 1);
+//            currentTextView.setLayoutParams(lp);
+            tv.setBackgroundColor(Color.BLUE);
+            tv.setTextColor(Color.WHITE);
+        } else {
+//                TableRow.LayoutParams lp = new TableRow.LayoutParams();
+//                lp.setMargins(0, 0, 0, 0);
+//                currentTextView.setLayoutParams(lp);
+            tv.setBackgroundColor(Color.WHITE);
+            tv.setTextColor(Color.BLACK);
+        }
     }
 
     private void setPageIndicator() {
@@ -172,11 +266,12 @@ public class MeasureActivity extends BaseActivity {
                 }
             }
 
-            views.clear();
-
+            addedRows.clear();
 
             Page p = pages[currentPageIndex];
             String[] mpoints = p.measure_points;
+
+            tvArray = new TextView[mpoints.length][4];
 
             LayoutInflater layoutInflater = getLayoutInflater();
             for (int i = 0; i < mpoints.length; ++i) {
@@ -189,55 +284,54 @@ public class MeasureActivity extends BaseActivity {
                 TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
                 TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
 
-                tvData1.setOnClickListener(clickLisenter_okng);
-                tvData2.setOnClickListener(clickLisenter_okng);
-                tvData3.setOnClickListener(clickLisenter_okng);
-                tvData4.setOnClickListener(clickLisenter_okng);
+                tvData1.setOnClickListener(new ClickLisenter_Okng(i, 0));
+                tvData2.setOnClickListener(new ClickLisenter_Okng(i, 1));
+                tvData3.setOnClickListener(new ClickLisenter_Okng(i, 2));
+                tvData4.setOnClickListener(new ClickLisenter_Okng(i, 3));
+
+                tvArray[i][0] = tvData1;
+                tvArray[i][1] = tvData2;
+                tvArray[i][2] = tvData3;
+                tvArray[i][3] = tvData4;
 
                 tlTableMeasure.addView(view);
 
-                views.add(view);
+                addedRows.add(view);
             }
 
             MainActivity.CURRENT_PAGE = p;
+
+            currentRow_TvArray = 0;
+            currentCol_TvArray = 0;
+            currentTextView = tvArray[currentRow_TvArray][currentCol_TvArray];
+            hilightTextView(currentTextView, true);
         }
     }
+
 
     private class ClickLisenter_Okng implements View.OnClickListener {
+        private int index_row = 0;
+        private int index_col = 0;
+
+        public ClickLisenter_Okng(int r, int c) {
+            this.index_row = r;
+            this.index_col = c;
+        }
+
         @Override
         public void onClick(View v) {
-            if (currentTextView != null) {
-//                TableRow.LayoutParams lp = new TableRow.LayoutParams();
-//                lp.setMargins(0, 0, 0, 0);
-//                currentTextView.setLayoutParams(lp);
-                currentTextView.setBackgroundColor(Color.WHITE);
-                currentTextView.setTextColor(Color.BLACK);
-            }
+            MeasureActivity.this.currentRow_TvArray = index_row;
+            MeasureActivity.this.currentCol_TvArray = index_col;
 
-            TextView tvText = (TextView) v;
-            currentTextView = tvText;
-//            TableRow.LayoutParams lp = new TableRow.LayoutParams();
-//            lp.setMargins(1, 1, 1, 1);
-//            currentTextView.setLayoutParams(lp);
-            currentTextView.setBackgroundColor(Color.BLUE);
-            currentTextView.setTextColor(Color.WHITE);
+            currentTextView = tvArray[currentRow_TvArray][currentCol_TvArray];
 
-            String strTag = (String) tvText.getTag();
-            if (TextUtils.isEmpty(strTag)) {
-                strTag = "NG";
-            } else if (strTag.equals("NG")) {
-                strTag = "OK";
-            } else if (strTag.equals("OK")) {
-                strTag = "NG";
-            }
-            tvText.setTag(strTag);
-            tvText.setText(strTag);
         }
     }
+
 
     private void saveData() {
         List<MeasureData> lstMeasureData = new ArrayList<MeasureData>();
-        for (View view : views) {
+        for (View view : addedRows) {
             MeasureData data = new MeasureData();
 
             TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
