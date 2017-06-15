@@ -52,6 +52,10 @@
         <activity
             android:name=".ui.UploadActivity"
             android:screenOrientation="landscape" />
+        <activity android:name=".ui.HistoryActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".ui.ManualActivity"
+            android:screenOrientation="landscape" />
 
         <activity
             android:name=".ble.activity.AchartAcitivty"

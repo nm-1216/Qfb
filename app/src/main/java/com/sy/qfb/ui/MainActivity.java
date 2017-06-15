@@ -46,6 +46,12 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.lv_project)
     ListView lvProject;
 
+    @BindView(R.id.btn_history)
+    Button btnHistory;
+
+    @BindView(R.id.btn_manual_pdf)
+    Button btnPdf;
+
     private QfbController qfbController;
     private ProjectAdapter projectAdapter;
 
@@ -71,6 +77,22 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DownloadActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnPdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ManualActivity.class);
                 startActivity(intent);
             }
         });

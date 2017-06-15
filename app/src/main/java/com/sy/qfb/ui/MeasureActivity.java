@@ -1,5 +1,6 @@
 package com.sy.qfb.ui;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.orhanobut.logger.LogAdapter;
 import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
 import com.sy.qfb.ble.activity.DeviceScanActivity;
@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -71,16 +72,17 @@ public class MeasureActivity extends BaseActivity {
     @BindView(R.id.btn_ng)
     Button btnNg;
 
-    private int currentPageIndex = 0;
-
-    private List<View> addedRows = new ArrayList<View>();
-
-    private SaveController saveController = new SaveController();
-
-    private TextView[][] tvArray;
+    private int currentPage_Index = 0;
+    private List<View> currentPage_Rows = new ArrayList<View>();
+    private TextView[][] currentPaten_TextViewArray;
     private int currentRow_TvArray = 0;
     private int currentCol_TvArray = 0;
-    private TextView currentTextView = null;
+    private TextView currentPage_ActiveTextView = null;
+
+    private SaveController saveController = new SaveController();
+    private boolean currentPageSaved = false;
+
+    private HashMap<Integer, List<MeasureData>> page_datas = new HashMap<Integer, List<MeasureData>>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,48 +104,24 @@ public class MeasureActivity extends BaseActivity {
         }
 
 
-        currentPageIndex = 0;
+        currentPage_Index = 0;
         loadTable();
         setPageIndicator();
-
-        btnPreviousPage.setEnabled(false);
-        btnNextPage.setEnabled(false);
-        btnPreviousPage.setVisibility(View.INVISIBLE);
-        btnNextPage.setVisibility(View.INVISIBLE);
+        currentPageSaved = false;
 
         btnPreviousPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentPageIndex--;
-                if (currentPageIndex < 0) {
-                    currentPageIndex = 0;
-                    ToastHelper.showShort("已在第一页！");
-                    return;
-                }
-                loadTable();
-                setPageIndicator();
-                btnPreviousPage.setEnabled(false);
-                btnNextPage.setEnabled(false);
-                btnPreviousPage.setVisibility(View.INVISIBLE);
-                btnNextPage.setVisibility(View.INVISIBLE);
+                saveData();
+                gotoPreviousPage();
             }
         });
 
         btnNextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentPageIndex++;
-                if (currentPageIndex > MainActivity.CURRENT_TARGET.pages.length - 1) {
-                    currentPageIndex = MainActivity.CURRENT_TARGET.pages.length - 1;
-                    ToastHelper.showShort("已在最后一页！");
-                    return;
-                }
-                loadTable();
-                setPageIndicator();
-                btnPreviousPage.setEnabled(false);
-                btnNextPage.setEnabled(false);
-                btnPreviousPage.setVisibility(View.INVISIBLE);
-                btnNextPage.setVisibility(View.INVISIBLE);
+                saveData();
+                gotoNextPage();
             }
         });
 
@@ -151,49 +129,74 @@ public class MeasureActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 saveData();
-
-                btnPreviousPage.setEnabled(true);
-                btnNextPage.setEnabled(true);
-                btnPreviousPage.setVisibility(View.VISIBLE);
-                btnNextPage.setVisibility(View.VISIBLE);
             }
         });
 
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int c_rows = tvArray.length;
+                int c_rows = currentPaten_TextViewArray.length;
                 int c_cols = 4;
                 if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
                         currentCol_TvArray >= 0 && currentCol_TvArray <4) {
-                    TextView tv = tvArray[currentRow_TvArray][currentCol_TvArray];
+                    TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
                     if (tv != null) {
                         tv.setText("OK");
                     }
                 }
-                goNext();
+                goNextCell();
             }
         });
 
         btnNg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int c_rows = tvArray.length;
+                int c_rows = currentPaten_TextViewArray.length;
                 int c_cols = 4;
                 if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
                         currentCol_TvArray >= 0 && currentCol_TvArray <4) {
-                    TextView tv = tvArray[currentRow_TvArray][currentCol_TvArray];
+                    TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
                     if (tv != null) {
                         tv.setText("NG");
                     }
                 }
-                goNext();
+                goNextCell();
             }
         });
     }
 
-    private void goNext() {
-        int c_rows = tvArray.length;
+    private void showSaveDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("本页数据还没保存，请先保存再翻页，不然会丢失数据");
+
+    }
+
+    private void gotoNextPage() {
+        currentPage_Index++;
+        if (currentPage_Index > MainActivity.CURRENT_TARGET.pages.length - 1) {
+            currentPage_Index = MainActivity.CURRENT_TARGET.pages.length - 1;
+            ToastHelper.showShort("已在最后一页！");
+            return;
+        }
+        loadTable();
+        setPageIndicator();
+        currentPageSaved = false;
+    }
+
+    private void gotoPreviousPage() {
+        currentPage_Index--;
+        if (currentPage_Index < 0) {
+            currentPage_Index = 0;
+            ToastHelper.showShort("已在第一页！");
+            return;
+        }
+        loadTable();
+        setPageIndicator();
+        currentPageSaved = false;
+    }
+
+    private void goNextCell() {
+        int c_rows = currentPaten_TextViewArray.length;
         int c_cols = 4;
         if (currentRow_TvArray < c_rows - 1) {
             currentRow_TvArray++;
@@ -206,26 +209,23 @@ public class MeasureActivity extends BaseActivity {
             currentRow_TvArray = 0;
         }
 
-        if (currentTextView != null) {
-            hilightTextView(currentTextView, false);
+        if (currentPage_ActiveTextView != null) {
+            hilightTextView(currentPage_ActiveTextView, false);
         }
-        currentTextView = tvArray[currentRow_TvArray][currentCol_TvArray];
-//        if (currentTextView != null) {
-            hilightTextView(currentTextView, true);
+        currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
+//        if (currentPage_ActiveTextView != null) {
+            hilightTextView(currentPage_ActiveTextView, true);
 //        }
 
-        View vRow = addedRows.get(currentRow_TvArray);
-//        double width = vRow.getX();
-//        double height = vRow.getY();
-//        Logger.d("width = " + width + ", height = " + height);
+        View vRow = currentPage_Rows.get(currentRow_TvArray);
         int height = scScroll.getMeasuredHeight();
         double scrollY = scScroll.getScrollY();
         Logger.d("vRow.getY() = " + vRow.getY() + ", scScroll.getScrollY() = " + scScroll.getScrollY()  + ", height = " + height);
-        if (vRow.getY() + 70 > scScroll.getScrollY() + height) {
+        if (vRow.getY() + 70 > scrollY + height) {
             scScroll.scrollTo(0, (int) vRow.getY());
         }
-        else if (vRow.getY() < scScroll.getScrollY()) {
-            int target_y = (int) (scScroll.getScrollY() - height);
+        else if (vRow.getY() < scrollY) {
+            int target_y = (int) (scrollY - height);
             if (target_y < 0) target_y = 0;
             scScroll.scrollTo(0, target_y);
         }
@@ -235,13 +235,13 @@ public class MeasureActivity extends BaseActivity {
         if (hilight) {
 //            TableRow.LayoutParams lp = new TableRow.LayoutParams();
 //            lp.setMargins(1, 1, 1, 1);
-//            currentTextView.setLayoutParams(lp);
+//            currentPage_ActiveTextView.setLayoutParams(lp);
             tv.setBackgroundColor(Color.BLUE);
             tv.setTextColor(Color.WHITE);
         } else {
 //                TableRow.LayoutParams lp = new TableRow.LayoutParams();
 //                lp.setMargins(0, 0, 0, 0);
-//                currentTextView.setLayoutParams(lp);
+//                currentPage_ActiveTextView.setLayoutParams(lp);
             tv.setBackgroundColor(Color.WHITE);
             tv.setTextColor(Color.BLACK);
         }
@@ -249,7 +249,7 @@ public class MeasureActivity extends BaseActivity {
 
     private void setPageIndicator() {
         int totalPage = MainActivity.CURRENT_TARGET.pages.length;
-        String indication = String.format("页码 Page No. " + (currentPageIndex + 1) + " of " + totalPage);
+        String indication = String.format("页码 Page No. " + (currentPage_Index + 1) + " of " + totalPage);
         tvPageIndicator.setText(indication);
     }
 
@@ -257,7 +257,8 @@ public class MeasureActivity extends BaseActivity {
         Target target = MainActivity.CURRENT_TARGET;
         Page[] pages = target.pages;
 
-        if (pages.length > currentPageIndex) {
+        if (currentPage_Index >= 0 && currentPage_Index < pages.length) {
+            // 在 UI 中去掉上一页的行
             for (int i = 0; i < tlTableMeasure.getChildCount(); ++i) {
                 View child = tlTableMeasure.getChildAt(i);
                 if (child.getId() != R.id.row1 && child.getId() != R.id.row2) {
@@ -266,12 +267,14 @@ public class MeasureActivity extends BaseActivity {
                 }
             }
 
-            addedRows.clear();
+            currentPage_Rows.clear();
 
-            Page p = pages[currentPageIndex];
+            Page p = pages[currentPage_Index];
             String[] mpoints = p.measure_points;
 
-            tvArray = new TextView[mpoints.length][4];
+            currentPaten_TextViewArray = new TextView[mpoints.length][4];
+
+            boolean hasPreviousData = page_datas.containsKey(currentPage_Index);
 
             LayoutInflater layoutInflater = getLayoutInflater();
             for (int i = 0; i < mpoints.length; ++i) {
@@ -284,30 +287,48 @@ public class MeasureActivity extends BaseActivity {
                 TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
                 TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
 
-                tvData1.setOnClickListener(new ClickLisenter_Okng(i, 0));
-                tvData2.setOnClickListener(new ClickLisenter_Okng(i, 1));
-                tvData3.setOnClickListener(new ClickLisenter_Okng(i, 2));
-                tvData4.setOnClickListener(new ClickLisenter_Okng(i, 3));
+                if (target.value_type.equals("OK,NG")) {
+                    tvData1.setOnClickListener(new ClickLisenter_Okng(i, 0));
+                    tvData2.setOnClickListener(new ClickLisenter_Okng(i, 1));
+                    tvData3.setOnClickListener(new ClickLisenter_Okng(i, 2));
+                    tvData4.setOnClickListener(new ClickLisenter_Okng(i, 3));
+                }
 
-                tvArray[i][0] = tvData1;
-                tvArray[i][1] = tvData2;
-                tvArray[i][2] = tvData3;
-                tvArray[i][3] = tvData4;
+                if (hasPreviousData) {
+                    List<MeasureData> datas = page_datas.get(currentPage_Index);
+                    loadPreviousData(datas, mpoints[i], tvData1, tvData2, tvData3, tvData4);
+                }
+
+                currentPaten_TextViewArray[i][0] = tvData1;
+                currentPaten_TextViewArray[i][1] = tvData2;
+                currentPaten_TextViewArray[i][2] = tvData3;
+                currentPaten_TextViewArray[i][3] = tvData4;
 
                 tlTableMeasure.addView(view);
 
-                addedRows.add(view);
+                currentPage_Rows.add(view);
             }
 
             MainActivity.CURRENT_PAGE = p;
 
             currentRow_TvArray = 0;
             currentCol_TvArray = 0;
-            currentTextView = tvArray[currentRow_TvArray][currentCol_TvArray];
-            hilightTextView(currentTextView, true);
+            currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
+            hilightTextView(currentPage_ActiveTextView, true);
         }
     }
 
+    private void loadPreviousData(List<MeasureData> datas, String mpoint, TextView tvData1, TextView tvData2, TextView tvData3, TextView tvData4) {
+        for (MeasureData md : datas) {
+            if (mpoint.equals(md.measure_point)) {
+                tvData1.setText(md.value1);
+                tvData2.setText(md.value2);
+                tvData3.setText(md.value3);
+                tvData4.setText(md.value4);
+                break;
+            }
+        }
+    }
 
     private class ClickLisenter_Okng implements View.OnClickListener {
         private int index_row = 0;
@@ -323,15 +344,14 @@ public class MeasureActivity extends BaseActivity {
             MeasureActivity.this.currentRow_TvArray = index_row;
             MeasureActivity.this.currentCol_TvArray = index_col;
 
-            currentTextView = tvArray[currentRow_TvArray][currentCol_TvArray];
-
+            currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
         }
     }
 
 
     private void saveData() {
         List<MeasureData> lstMeasureData = new ArrayList<MeasureData>();
-        for (View view : addedRows) {
+        for (View view : currentPage_Rows) {
             MeasureData data = new MeasureData();
 
             TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
@@ -356,13 +376,13 @@ public class MeasureActivity extends BaseActivity {
             data.targetId = MainActivity.CURRENT_TARGET.target_id;
             data.pageId = MainActivity.CURRENT_PAGE.page_id;
 
-//            data.save();
-
             lstMeasureData.add(data);
         }
 
         saveController.saveData(lstMeasureData);
+        page_datas.put(currentPage_Index, lstMeasureData);
 
+        currentPageSaved = true;
         ToastHelper.showShort("保存成功！");
     }
 
