@@ -3,10 +3,12 @@ package com.sy.qfb.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -39,6 +41,9 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.et_password)
     EditText etPassword;
 
+    @BindView(R.id.chk_remember_pass)
+    CheckBox chkRememberPass;
+
     private LoginController loginController;
 
     @Override
@@ -52,6 +57,14 @@ public class LoginActivity extends BaseActivity {
 
         loginController = new LoginController();
         USERS = loginController.getUsers();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("qfb", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "user1");
+        etUserName.setText(username);
+        if (sharedPreferences.getBoolean("remember_password", false)) {
+            chkRememberPass.setChecked(true);
+            etPassword.setText(sharedPreferences.getString("password", ""));
+        }
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +81,13 @@ public class LoginActivity extends BaseActivity {
                 }
 
                 if (authed) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("qfb", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("remember_password", chkRememberPass.isChecked());
+                    editor.putString("username", etUserName.getText().toString());
+                    editor.putString("password", etPassword.getText().toString());
+                    editor.commit();
+
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     LoginActivity.this.finish();

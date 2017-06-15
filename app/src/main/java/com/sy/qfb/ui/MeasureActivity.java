@@ -376,6 +376,12 @@ public class MeasureActivity extends BaseActivity {
             data.targetId = MainActivity.CURRENT_TARGET.target_id;
             data.pageId = MainActivity.CURRENT_PAGE.page_id;
 
+            data.projectName = MainActivity.CURRENT_PROJECT.project_name;
+            data.productName = MainActivity.CURRENT_PRODUCT.product_name;
+            data.targetName = MainActivity.CURRENT_TARGET.target_name;
+
+            data.targetType = MainActivity.CURRENT_TARGET.value_type;
+
             lstMeasureData.add(data);
         }
 

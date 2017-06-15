@@ -9,8 +9,12 @@ import com.orm.dsl.Table;
 public class MeasureData extends SugarRecord {
     public int dataId;
     public int projectId;
+    public String projectName;
     public int productId;
+    public String productName;
     public int targetId;
+    public String targetName;
+    public String targetType;
     public int pageId;
     public String measure_point;
     public String value1;

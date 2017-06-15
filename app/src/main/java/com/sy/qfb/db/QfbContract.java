@@ -49,8 +49,12 @@ public final class QfbContract {
         public static final String TABLE_NAME = "measure_data";
         public static final String COLUMN_NAME_DATAID = "dataid";
         public static final String COLUMN_NAME_PROJID = "projid";
+        public static final String COLUMN_NAME_PROJ_NAME = "proj_name";
         public static final String COLUMN_NAME_PRDID = "prdid";
+        public static final String COLUMN_NAME_PRD_NAME = "prd_name";
         public static final String COLUMN_NAME_TID = "tid";
+        public static final String COLUMN_NAME_T_NAME = "t_name";
+        public static final String COLUMN_NAME_T_TYPE = "t_type";
         public static final String COLUMN_NAME_PGID = "pgid";
         public static final String COLUMN_NAME_MPOINT = "mpoint";
         public static final String COLUMN_NAME_VALUE_1 = "value1";
