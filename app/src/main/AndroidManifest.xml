@@ -24,7 +24,6 @@
 
         <activity
             android:name=".ui.SplashActivity"
-            android:theme="@style/Theme.AppCompat.Light"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +34,6 @@
         <activity
             android:name=".ui.LoginActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.Light"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
@@ -61,15 +59,19 @@
 
         <activity
             android:name=".ble.activity.AchartAcitivty"
+            android:theme="@android:style/Theme.Holo.Light"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ble.activity.DeviceControlActivity"
+            android:theme="@android:style/Theme.Holo.Light"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ble.activity.DeviceScanActivity"
+            android:theme="@android:style/Theme.Holo.Light"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ble.activity.SdcardShow"
+            android:theme="@android:style/Theme.Holo.Light"
             android:screenOrientation="landscape" />
 
         <service

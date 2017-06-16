@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -193,17 +194,7 @@ public class HistoryActivity extends Activity {
     }
 
 
-    private class DateAdapter implements ExpandableListAdapter {
-        @Override
-        public void registerDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public void unregisterDataSetObserver(DataSetObserver observer) {
-
-        }
-
+    private class DateAdapter extends BaseExpandableListAdapter {
         @Override
         public int getGroupCount() {
             return dates.size();
@@ -263,7 +254,7 @@ public class HistoryActivity extends Activity {
                 tvGroup.setText(simpleDateFormat.format(date));
             }
 
-            return null;
+            return view;
         }
 
         @Override
@@ -284,42 +275,12 @@ public class HistoryActivity extends Activity {
                 view.setOnClickListener(new OnClickListener_History(hp));
             }
 
-            return null;
+            return view;
         }
 
         @Override
         public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return true;
-        }
-
-        @Override
-        public boolean areAllItemsEnabled() {
             return false;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public void onGroupExpanded(int groupPosition) {
-
-        }
-
-        @Override
-        public void onGroupCollapsed(int groupPosition) {
-
-        }
-
-        @Override
-        public long getCombinedChildId(long groupId, long childId) {
-            return groupId * 1000 + childId;
-        }
-
-        @Override
-        public long getCombinedGroupId(long groupId) {
-            return groupId;
         }
 
     }
