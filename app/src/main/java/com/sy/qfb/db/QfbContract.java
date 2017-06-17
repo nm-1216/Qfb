@@ -42,7 +42,14 @@ public final class QfbContract {
         public static final String COLUMN_NAME_TID = "tid";
         public static final String COLUMN_NAME_PGID = "pgid";
         public static final String COLUMN_NAME_PGNAME = "pgname";
-        public static final String COLUMN_NAME_MPOINTS = "mpoints";
+    }
+
+    public static class MeasurePointEntry implements BaseColumns {
+        public static final String TABLE_NAME = "measure_point";
+        public static final String COLUMN_NAME_MPID = "mpid";
+        public static final String COLUMN_NAME_PGID = "pgid";
+        public static final String COLUMN_NAME_POINT = "point";
+        public static final String COLUMN_NAME_DIRECTION = "direction";
     }
 
     public static class DataEntry implements BaseColumns {
@@ -57,6 +64,7 @@ public final class QfbContract {
         public static final String COLUMN_NAME_T_TYPE = "t_type";
         public static final String COLUMN_NAME_PGID = "pgid";
         public static final String COLUMN_NAME_MPOINT = "mpoint";
+        public static final String COLUMN_NAME_DIRECTION = "direction";
         public static final String COLUMN_NAME_VALUE_1 = "value1";
         public static final String COLUMN_NAME_VALUE_2 = "value2";
         public static final String COLUMN_NAME_VALUE_3 = "value3";

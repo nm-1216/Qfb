@@ -17,6 +17,7 @@ import com.sy.qfb.R;
 import com.sy.qfb.ble.activity.DeviceScanActivity;
 import com.sy.qfb.controller.SaveController;
 import com.sy.qfb.model.MeasureData;
+import com.sy.qfb.model.MeasurePoint;
 import com.sy.qfb.model.Page;
 import com.sy.qfb.model.Target;
 import com.sy.qfb.util.ToastHelper;
@@ -98,7 +99,7 @@ public class MeasureActivity extends BaseActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         tvDate.setText(sdf.format(new Date()));
 
-        if (MainActivity.CURRENT_TARGET.value_type.equals("data")) {
+        if (MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data")) {
             Intent intent = new Intent(MeasureActivity.this, DeviceScanActivity.class);
             startActivity(intent);
         }
@@ -270,7 +271,7 @@ public class MeasureActivity extends BaseActivity {
             currentPage_Rows.clear();
 
             Page p = pages[currentPage_Index];
-            String[] mpoints = p.measure_points;
+            MeasurePoint[] mpoints = p.measure_points;
 
             currentPaten_TextViewArray = new TextView[mpoints.length][4];
 
@@ -280,23 +281,30 @@ public class MeasureActivity extends BaseActivity {
             for (int i = 0; i < mpoints.length; ++i) {
                 View view = layoutInflater.inflate(R.layout.item_measure, null);
                 TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
-                tvName.setText(mpoints[i]);
+                tvName.setText(mpoints[i].point);
+                TextView tvDirection = (TextView) view.findViewById(R.id.tv_mp_direction);
+                tvDirection.setText(mpoints[i].direction);
 
                 TextView tvData1 = (TextView) view.findViewById(R.id.tv_data1);
                 TextView tvData2 = (TextView) view.findViewById(R.id.tv_data2);
                 TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
                 TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
 
-                if (target.value_type.equals("OK,NG")) {
+                if (target.value_type.equalsIgnoreCase("OK,NG")) {
                     tvData1.setOnClickListener(new ClickLisenter_Okng(i, 0));
                     tvData2.setOnClickListener(new ClickLisenter_Okng(i, 1));
                     tvData3.setOnClickListener(new ClickLisenter_Okng(i, 2));
                     tvData4.setOnClickListener(new ClickLisenter_Okng(i, 3));
+                } else if (target.value_type.equalsIgnoreCase("data")) {
+                    tvData1.setOnClickListener(new ClickLisenter_Data(i, 0));
+                    tvData2.setOnClickListener(new ClickLisenter_Data(i, 1));
+                    tvData3.setOnClickListener(new ClickLisenter_Data(i, 2));
+                    tvData4.setOnClickListener(new ClickLisenter_Data(i, 3));
                 }
 
                 if (hasPreviousData) {
                     List<MeasureData> datas = page_datas.get(currentPage_Index);
-                    loadPreviousData(datas, mpoints[i], tvData1, tvData2, tvData3, tvData4);
+                    loadPreviousData(datas, mpoints[i].point, tvData1, tvData2, tvData3, tvData4);
                 }
 
                 currentPaten_TextViewArray[i][0] = tvData1;
@@ -344,10 +352,35 @@ public class MeasureActivity extends BaseActivity {
             MeasureActivity.this.currentRow_TvArray = index_row;
             MeasureActivity.this.currentCol_TvArray = index_col;
 
+            if(currentPage_ActiveTextView != null) {
+                hilightTextView(currentPage_ActiveTextView, false);
+            }
             currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
+            hilightTextView(currentPage_ActiveTextView, true);
         }
     }
 
+    private class ClickLisenter_Data implements View.OnClickListener {
+        private int index_row = 0;
+        private int index_col = 0;
+
+        public ClickLisenter_Data(int r, int c) {
+            this.index_row = r;
+            this.index_col = c;
+        }
+
+        @Override
+        public void onClick(View v) {
+            MeasureActivity.this.currentRow_TvArray = index_row;
+            MeasureActivity.this.currentCol_TvArray = index_col;
+
+            if(currentPage_ActiveTextView != null) {
+                hilightTextView(currentPage_ActiveTextView, false);
+            }
+            currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
+            hilightTextView(currentPage_ActiveTextView, true);
+        }
+    }
 
     private void saveData() {
         List<MeasureData> lstMeasureData = new ArrayList<MeasureData>();
@@ -355,6 +388,7 @@ public class MeasureActivity extends BaseActivity {
             MeasureData data = new MeasureData();
 
             TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
+            TextView tvDirection = (TextView) view.findViewById(R.id.tv_mp_direction);
             TextView tvData1 = (TextView) view.findViewById(R.id.tv_data1);
             TextView tvData2 = (TextView) view.findViewById(R.id.tv_data2);
             TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
@@ -379,6 +413,7 @@ public class MeasureActivity extends BaseActivity {
             data.projectName = MainActivity.CURRENT_PROJECT.project_name;
             data.productName = MainActivity.CURRENT_PRODUCT.product_name;
             data.targetName = MainActivity.CURRENT_TARGET.target_name;
+            data.direction = tvDirection.getText().toString();
 
             data.targetType = MainActivity.CURRENT_TARGET.value_type;
 

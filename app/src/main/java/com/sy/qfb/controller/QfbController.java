@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.orhanobut.logger.Logger;
 import com.sy.qfb.db.QfbContract;
 import com.sy.qfb.db.QfbDbHelper;
+import com.sy.qfb.model.MeasurePoint;
 import com.sy.qfb.model.Page;
 import com.sy.qfb.model.Product;
 import com.sy.qfb.model.Project;
@@ -154,15 +155,40 @@ public class QfbController {
         while(true) {
             int pgId = cursor.getInt(cursor.getColumnIndex(QfbContract.PageEntry.COLUMN_NAME_PGID));
             String pgname = cursor.getString(cursor.getColumnIndex(QfbContract.PageEntry.COLUMN_NAME_PGNAME));
-            String mpoints = cursor.getString(cursor.getColumnIndex(QfbContract.PageEntry.COLUMN_NAME_MPOINTS));
 
             Page page = new Page();
             page.page_id = pgId;
             page.page_name = pgname;
-            if (TextUtils.isEmpty(mpoints)) {
-                page.measure_points = new String[0];
+
+            Cursor c_m = db.query(QfbContract.MeasurePointEntry.TABLE_NAME, null,
+                    QfbContract.MeasurePointEntry.COLUMN_NAME_PGID + "=?",
+                    new String[]{"" + pgId}, null, null, null);
+            if (c_m.getCount() <= 0) {
+                page.measure_points = new MeasurePoint[0];
             } else {
-                page.measure_points = mpoints.split(",");
+                List<MeasurePoint> measurePoints = new ArrayList<MeasurePoint>();
+                c_m.moveToFirst();
+                while(true) {
+                    String point = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_POINT));
+                    String direction = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_DIRECTION));
+
+                    MeasurePoint measurePoint = new MeasurePoint();
+                    measurePoint.point = point;
+                    measurePoint.direction = direction;
+                    measurePoint.page_id = pgId;
+
+                    measurePoints.add(measurePoint);
+
+                    if (!c_m.moveToNext()) break;
+                }
+                c_m.close();
+
+                MeasurePoint[] ma = new MeasurePoint[measurePoints.size()];
+                for (int i = 0 ;i < measurePoints.size(); ++i) {
+                    ma[i] = measurePoints.get(i);
+                }
+
+                page.measure_points = ma;
             }
 
             result.add(page);

@@ -1,26 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="500dp">
 
-    <Button
-        android:id="@+id/btn_download"
+    <LinearLayout
+        android:id="@+id/ll_upload_btns"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="100dp"
         android:layout_marginRight="100dp"
-        android:text="下载"
-        android:textSize="30sp" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_status"
+        <Button
+            android:id="@+id/btn_download_user"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="用户数据下载"
+            android:textSize="28sp" />
+
+        <Button
+            android:id="@+id/btn_download_project"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="测量标准下载"
+            android:textSize="28sp" />
+
+        <Button
+            android:id="@+id/btn_download_manual"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="用户手册下载"
+            android:textSize="28sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btn_download"
+        android:layout_above="@id/ll_upload_btns"
         android:layout_margin="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="22dp" />
+        android:background="@android:color/darker_gray">
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:background="@android:color/white"
+            android:paddingLeft="16dp"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+    </LinearLayout>
 
 </RelativeLayout>

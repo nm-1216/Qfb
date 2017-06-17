@@ -26,10 +26,15 @@ public class SaveController {
             ContentValues content = new ContentValues();
 //            content.put(QfbContract.DataEntry.COLUMN_NAME_DATAID, data.dataId);
             content.put(QfbContract.DataEntry.COLUMN_NAME_PROJID, data.projectId);
+            content.put(QfbContract.DataEntry.COLUMN_NAME_PROJ_NAME, data.projectName);
             content.put(QfbContract.DataEntry.COLUMN_NAME_PRDID, data.productId);
+            content.put(QfbContract.DataEntry.COLUMN_NAME_PRD_NAME, data.productName);
             content.put(QfbContract.DataEntry.COLUMN_NAME_TID, data.targetId);
+            content.put(QfbContract.DataEntry.COLUMN_NAME_T_NAME, data.targetName);
+            content.put(QfbContract.DataEntry.COLUMN_NAME_T_TYPE, data.targetType);
             content.put(QfbContract.DataEntry.COLUMN_NAME_PGID, data.pageId);
             content.put(QfbContract.DataEntry.COLUMN_NAME_MPOINT, data.measure_point);
+            content.put(QfbContract.DataEntry.COLUMN_NAME_DIRECTION, data.direction);
             content.put(QfbContract.DataEntry.COLUMN_NAME_VALUE_1, data.value1);
             content.put(QfbContract.DataEntry.COLUMN_NAME_VALUE_2, data.value2);
             content.put(QfbContract.DataEntry.COLUMN_NAME_VALUE_3, data.value3);

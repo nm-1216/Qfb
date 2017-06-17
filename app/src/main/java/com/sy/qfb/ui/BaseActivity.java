@@ -33,9 +33,13 @@ public class BaseActivity extends Activity {
 
     public void showProgressDialog(boolean show) {
         if (show) {
-            progressDialog.show();
+            if (!progressDialog.isShowing()) {
+                progressDialog.show();
+            }
         } else {
-            progressDialog.dismiss();
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
         }
     }
 

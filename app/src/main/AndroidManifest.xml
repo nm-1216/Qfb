@@ -48,9 +48,11 @@
 
         <activity
             android:name=".ui.DownloadActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.UploadActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"
             android:screenOrientation="landscape" />
         <activity android:name=".ui.HistoryActivity"
             android:screenOrientation="landscape" />

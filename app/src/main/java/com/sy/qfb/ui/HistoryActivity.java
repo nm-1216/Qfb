@@ -114,6 +114,9 @@ public class HistoryActivity extends Activity {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
 
         calendar.add(Calendar.DAY_OF_MONTH, 1);
 

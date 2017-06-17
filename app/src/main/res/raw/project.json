@@ -1,990 +1,1259 @@
 [
+{
+	"project_id" : 1,
+	"project_name" : "car",
+	"products" : [
+		{
+			"product_id" : 1,
+			"product_name" : "Door",
+			"targets" :[
+				{
+					"target_id" : 1,
+					"target_name" : "基准孔检测",
+					"value_type" : "OK,NG",
+					"pages" : [
+						{
+							"page_id" : 1,
+							"page_name" : "page datum hole",
+							"pictures" : ["pic_datum_hole_1.png"],
+							"measure_points" : [
+								{
+									"point" : "D-B1",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "D-B1",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "D-B1",
+									"direction" : "孔径"
+								},
+								{
+									"point" : "D-B2",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "D-B2",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "D-B2",
+									"direction" : "孔径"
+								}
+							]
+						}
+					]
+				},
+				{
+					"target_id" : 2,
+					"target_name" : "基准面检测",
+					"value_type" : "OK,NG",
+					"pages" : [
+						{
+							"page_id" : 2,
+							"page_name" : "page Datum Surface",
+							"pictures" : ["pic_datum_surface_1.png"],
+							"measure_points" : [
+								{
+									"point" : "A1",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "A2",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "A3",
+									"direction" : "C/C"
+								}
+							]
+						}
+					]
+				},
+				{
+					"target_id" : 3,
+					"target_name" : "孔检测",
+					"value_type" : "OK,NG",
+					"pages" : [
+						{
+							"page_id" : 3,
+							"page_name" : "hole page 1",
+							"pictures" : ["pic_hole_1.png"],
+							"measure_points" : [
+								{
+									"point" : "2506XCO",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2506XCO",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2506XCO",
+									"direction" : "孔径"
+								},
+								{
+									"point" : "2518XCO",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2518XCO",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2518XCO",
+									"direction" : "孔径"
+								},
+								{
+									"point" : "2538YCO",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2538YCO",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2538YCO",
+									"direction" : "孔径"
+								}
+							]
+						},
+						{
+							"page_id" : 4,
+							"page_name" : "hole page 2",
+							"pictures" : ["pic_hole_2.png"],
+							"measure_points" : [
+								{
+									"point" : "2509YCO",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2509YCO",
+									"direction" : "孔径"
+								},
+								{
+									"point" : "2509YCO",
+									"direction" : "孔径"
+								},
+								{
+									"point" : "2517YCO",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2517YCO",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2517YCO",
+									"direction" : "孔径"
+								},
+								{
+									"point" : "2517YCO",
+									"direction" : "孔径"
+								}
+							]
+						},
+						{
+							"page_id" : 5,
+							"page_name" : "hole page 3",
+							"pictures" : ["pic_hole_3.png"],
+							"measure_points" : [
+								{
+									"point" : "2402XCI",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2402XCI",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2402XCI",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2501XCI",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2501XCI",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2501XCI",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2505XCI",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2505XCI",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2505XCI",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2514XCI",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2514XCI",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2514XCI",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2535YCI",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2535YCI",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2535YCI",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "0104XCI",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "0104XCI",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "0104XCI",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "0105SCI",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "0105SCI",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "0105SCI",
+									"direction" : "孔径"
+								}
+							]
+						},
+						{
+							"page_id" : 6,
+							"page_name" : "hole page 5",
+							"pictures" : ["pic_hole_5.png"],
+							"measure_points" : [
+								{
+									"point" : "2414XCR",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2414XCR",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2414XCR",
+									"direction" : "孔径"
+								},
+								{
+									"point" : "2416XCI",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2416XCI",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2416XCI",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2425XCR",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2425XCR",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2425XCR",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2510XCR",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2510XCR",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2510XCR",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2523XCR",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2523XCR",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2523XCR",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2537XCR",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2537XCR",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2537XCR",
+									"direction" : "孔径"
+								}
+							]
+						},
+						{
+							"page_id" : 7,
+							"page_name" : "hole page 6",
+							"pictures" : ["pic_hole_6.png"],
+							"measure_points" : [
+
+								{
+									"point" : "2407XCF",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2407XCF",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2407XCF",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2424XCF",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2424XCF",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2424XCF",
+									"direction" : "孔径"
+								},
+
+
+								{
+									"point" : "2426XCF",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2426XCF",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2426XCF",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2429XCI",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2429XCI",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2429XCI",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2508XCF",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2508XCF",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2508XCF",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2515XCF",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2515XCF",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2515XCF",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2525XCF",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2525XCF",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2525XCF",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2529XCF",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2529XCF",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2529XCF",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2534XCF",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2534XCF",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2534XCF",
+									"direction" : "孔径"
+								}
+							]
+						},
+						{
+							"page_id" : 8,
+							"page_name" : "hole page 7",
+							"pictures" : ["pic_hole_7.png"],
+							"measure_points" : [
+								{
+									"point" : "2403XCD",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2403XCD",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2403XCD",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2410XCD",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2410XCD",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2410XCD",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2411XCD",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2411XCD",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2411XCD",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2417XCD",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2417XCD",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2417XCD",
+									"direction" : "孔径"
+								},
+
+								{
+									"point" : "2423XCD",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2423XCD",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2423XCD",
+									"direction" : "孔径"
+								}
+							]
+						}
+					]
+				},
+				{
+					"target_id" : 4,
+					"target_name" : "面检测",
+					"value_type" : "data",
+					"pages" : [
+						{
+							"page_id" : 9,
+							"page_name" : "surface page 1",
+							"pictures" : ["pic_surface_1.png"],
+							"measure_points" :[
+								{
+									"point" : "2327SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2339SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2331SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2301SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2338SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2324SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2316SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2335SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2308SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2340SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2332SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2325SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2330SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2326SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2317SCO",
+									"direction" : "C/C"
+								}
+							]
+						},
+						{
+							"page_id" : 10,
+							"page_name" : "surface page 2",
+							"pictures" : ["pic_surface_2_1.png"],
+							"measure_points" : [
+								{
+									"point" : "2333SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2311SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2303SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2304SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2321SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0025SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0027SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0030SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0033SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0034SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0036SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0037SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0038SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0039SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0040SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0041SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0042SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0043SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0044SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0045SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0046SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0047SCO",
+									"direction" : "C/C"
+								}
+							]
+						},
+						{
+							"page_id" : 11,
+							"page_name" : "surface page 3",
+							"pictures" : ["pic_surface_3_1.png"],
+							"measure_points" : [
+								{
+									"point" : "2309SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2314SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2306SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2310SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2322SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2329SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2337SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2312SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2305SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2313SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2320SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2328SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2336SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2315SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2323SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2319SCO",
+									"direction" : "C/C"
+								}
+							]
+						},
+						{
+							"page_id" : 12,
+							"page_name" : "surface page 4",
+							"pictures" : ["pic_surface_4_1.png"],
+							"measure_points" : [
+								{
+									"point" : "2607SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2608SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2602SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2609SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2615SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2616SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2611SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2302SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2617SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2318SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2612SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2334SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2604SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0003SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0004SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0006SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0008SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0101SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0062SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0064SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0066SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0068SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0070SCO",
+									"direction" : "C/C"
+								}
+							]
+						},
+						{
+							"page_id" : 13,
+							"page_name" : "surface page 5",
+							"pictures" : ["pic_surface_5_1.png"],
+							"measure_points" : [
+								{
+									"point" : "0072SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0073SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0074SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2524SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2532SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2527SCO",
+									"direction" : "C/C"
+								}
+							]
+						},
+						{
+							"page_id" : 14,
+							"page_name" : "surface page 6",
+							"pictures" : ["pic_surface_6_1.png"],
+							"measure_points" : [
+								{
+									"point" : "0072SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0073SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0074SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2524SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2532SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2527SCO",
+									"direction" : "C/C"
+								}
+							]
+						},
+						{
+							"page_id" : 15,
+							"page_name" : "surface page 7",
+							"pictures" : ["pic_surface_7_1.png"],
+							"measure_points" : [
+								{
+									"point" : "2307SCU",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2603SCU",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2705SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2703SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2601SCU",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2704SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2702SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2614SCU",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "2706SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2701SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "2605SCU",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "0011SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0012SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0013SCU",
+									"direction" : "U/D"
+								},
+								{
+									"point" : "0015SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0017SCO",
+									"direction" : "C/C"
+								},
+								{
+									"point" : "0018SCO",
+									"direction" : "U/D"
+								}
+							]
+						},
+						{
+							"page_id" : 16,
+							"page_name" : "surface page 8",
+							"pictures" : ["pic_surface_8_1.png"],
+							"measure_points" : [
+								{"point" : "2404SCI","direction" : "C/C"},
+								{"point" : "2405SCI","direction" : "C/C"},
+								{"point" : "2419SCI","direction" : "C/C"},
+								{"point" : "2430SCI","direction" : "C/C"},
+								{"point" : "2401SCI","direction" : "C/C"},
+								{"point" : "2413SCI","direction" : "C/C"},
+								{"point" : "2412SCI","direction" : "C/C"},
+								{"point" : "2421SCI","direction" : "C/C"},
+								{"point" : "2408SCI","direction" : "C/C"},
+								{"point" : "2504SCF","direction" : "F/A"},
+								{"point" : "2528SCF","direction" : "F/A"},
+								{"point" : "2521SCF","direction" : "F/A"},
+								{"point" : "2520SCF","direction" : "F/A"},
+								{"point" : "2420SCI","direction" : "C/C"},
+								{"point" : "2418SCU","direction" : "U/D"},
+								{"point" : "2427SCI","direction" : "C/C"},
+								{"point" : "2428SCI","direction" : "C/C"},
+								{"point" : "2415SCI","direction" : "C/C"},
+								{"point" : "2431SCI","direction" : "C/C"},
+								{"point" : "2406SCI","direction" : "C/C"},
+								{"point" : "0009SCI","direction" : "C/C"},
+								{"point" : "0071SCI","direction" : "C/C"},
+								{"point" : "0021SCI","direction" : "C/C"},
+								{"point" : "0022SCU","direction" : "U/D"},
+								{"point" : "0023SCI","direction" : "C/C"},
+								{"point" : "0024SCI","direction" : "C/C"},
+								{"point" : "0061SCI","direction" : "C/C"},
+								{"point" : "0063SCI","direction" : "C/C"},
+								{"point" : "0065SCI","direction" : "C/C"},
+								{"point" : "0067SCU","direction" : "U/D"},
+								{"point" : "0069SCU","direction" : "U/D"},
+								{"point" : "0102SCI","direction" : "C/C"}
+							]
+						},
+						{
+							"page_id" : 17,
+							"page_name" : "surface page 9",
+							"pictures" : ["pic_surface_9_1.png"],
+							"measure_points" : [
+								{
+									"point" : "2503SCR",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2507SCR",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "2533SCR",
+									"direction" : "F/A"
+								},
+								{
+									"point" : "0101SCI",
+									"direction" : "C/C"
+								}
+							]
+						},
+						{
+							"page_id" : 18,
+							"page_name" : "surface page 10",
+							"pictures" : ["pic_surface_10_1.png"],
+							"measure_points" : [
+								{"point" : "2215HCF","direction" : "F/A"},
+								{"point" : "2232HCF","direction" : "F/A"},
+								{"point" : "2226HCF","direction" : "F/A"},
+								{"point" : "2228HCF","direction" : "F/A"},
+								{"point" : "2208HCF","direction" : "F/A"},
+								{"point" : "2221HCF","direction" : "F/A"},
+								{"point" : "2213HCF","direction" : "F/A"},
+								{"point" : "2237HCF","direction" : "F/A"},
+								{"point" : "2204HCF","direction" : "F/A"},
+								{"point" : "2234HCF","direction" : "F/A"},
+								{"point" : "2235HCF","direction" : "F/A"},
+								{"point" : "2223HCF","direction" : "F/A"},
+								{"point" : "2217HCF","direction" : "F/A"},
+								{"point" : "2233HCF","direction" : "F/A"},
+								{"point" : "2214HCF","direction" : "F/A"}
+							]
+						},
+						{
+							"page_id" : 19,
+							"page_name" : "surface page 11",
+							"pictures" : ["pic_surface_11_1.png"],
+							"measure_points" : [
+								{"point" : "2230HCD","direction" : "U/D"},
+								{"point" : "2210HCD","direction" : "U/D"},
+								{"point" : "2216HCD","direction" : "U/D"},
+								{"point" : "2201HCD","direction" : "U/D"},
+								{"point" : "2219HCD","direction" : "U/D"},
+								{"point" : "0026HCD","direction" : "U/D"},
+								{"point" : "0028HCD","direction" : "U/D"},
+								{"point" : "0031HCD","direction" : "U/D"},
+								{"point" : "0032HCD","direction" : "U/D"},
+								{"point" : "0035HCD","direction" : "U/D"},
+								{"point" : "0048HCD","direction" : "U/D"},
+								{"point" : "0049HCD","direction" : "U/D"},
+								{"point" : "0050HCD","direction" : "U/D"},
+								{"point" : "0051HCD","direction" : "U/D"},
+								{"point" : "0052HCD","direction" : "U/D"},
+								{"point" : "0053HCD","direction" : "U/D"},
+								{"point" : "0054HCD","direction" : "U/D"},
+								{"point" : "0055HCD","direction" : "U/D"},
+								{"point" : "0056HCD","direction" : "U/D"},
+								{"point" : "0057HCD","direction" : "U/D"},
+								{"point" : "0058HCD","direction" : "U/D"},
+								{"point" : "0059HCD","direction" : "U/D"}
+							]
+						},
+						{
+							"page_id" : 20,
+							"page_name" : "surface page 12",
+							"pictures" : ["pic_surface_12_1.png"],
+							"measure_points" : [
+								{"point" : "2236HCR","direction" : "F/A"},
+								{"point" : "2206HCR","direction" : "F/A"},
+								{"point" : "2212HCR","direction" : "F/A"},
+								{"point" : "2220HCR","direction" : "F/A"},
+								{"point" : "2227HCR","direction" : "F/A"},
+								{"point" : "2207HCR","direction" : "F/A"},
+								{"point" : "2205HCR","direction" : "F/A"},
+								{"point" : "2202HCR","direction" : "F/A"},
+								{"point" : "2211HCR","direction" : "F/A"},
+								{"point" : "2218HCR","direction" : "F/A"},
+								{"point" : "2225HCR","direction" : "F/A"},
+								{"point" : "2231HCR","direction" : "F/A"},
+								{"point" : "2222HCR","direction" : "F/A"},
+								{"point" : "2209HCR","direction" : "F/A"},
+								{"point" : "0060HCR","direction" : "F/A"},
+								{"point" : "2224HCR","direction" : "F/A"},
+								{"point" : "2203HCR","direction" : "F/A"},
+								{"point" : "2229HCR","direction" : "F/A"},
+								{"point" : "0001HCR","direction" : "F/A"},
+								{"point" : "0002HCR","direction" : "F/A"},
+								{"point" : "0005HCR","direction" : "F/A"},
+								{"point" : "0007HCR","direction" : "F/A"}
+							]
+						},
+						{
+							"page_id" : 21,
+							"page_name" : "surface page 13",
+							"pictures" : ["pic_surface_13_1.png"],
+							"measure_points" : [
+								{"point" : "2606HCU","direction" : "U/D"},
+								{"point" : "2610HCU","direction" : "U/D"},
+								{"point" : "2613HCU","direction" : "U/D"},
+								{"point" : "0014HCU","direction" : "U/D"},
+								{"point" : "0016HCU","direction" : "U/D"}
+							]
+						},
+						{
+							"page_id" : 22,
+							"page_name" : "surface page 14",
+							"pictures" : ["pic_surface_14.png"],
+							"measure_points" : [
+								{"point" : "0082SCD","direction" : "U/D"},
+								{"point" : "0083SCD","direction" : "U/D"},
+								{"point" : "0084SCD","direction" : "U/D"},
+								{"point" : "0085SCD","direction" : "U/D"},
+								{"point" : "0086SCD","direction" : "U/D"},
+								{"point" : "0087SCF","direction" : "F/A"},
+								{"point" : "0088SCF","direction" : "F/A"},
+								{"point" : "0089SCF","direction" : "F/A"}
+							]
+						},
+						{
+							"page_id" : 23,
+							"page_name" : "surface page 15",
+							"pictures" : ["pic_surface_15.png"],
+							"measure_points" : [
+								{"point" : "0075SCR","direction" : "F/A"},
+								{"point" : "0076SCR","direction" : "F/A"},
+								{"point" : "0077SCR","direction" : "F/A"},
+								{"point" : "0078SCR","direction" : "F/A"},
+								{"point" : "0079SCR","direction" : "F/A"},
+								{"point" : "0080SCR","direction" : "F/A"},
+								{"point" : "0081SCR","direction" : "F/A"}
+							]
+						}
+					]
+				},
+				{
+					"target_id" : 5,
+					"target_name" : "间隙检测",
+					"value_type" : "data",
+					"pages" : [
+						{
+							"page_id" : 24,
+							"page_name" : "trim page 1",
+							"pictures" : ["pic_trim_1.png"],
+							"measure_points" : [
+								{"point" : "2526TCD","direction" : "U/D"},
+								{"point" : "2530TCU","direction" : "U/D"},
+								{"point" : "2512TCU","direction" : "U/D"},
+								{"point" : "2519TCD","direction" : "U/D"},
+								{"point" : "0019TCI","direction" : "C/C"},
+								{"point" : "0020TCR","direction" : "F/A"}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+},
+{
+"project_id": 2,
+"project_name": "Project B",
+"products": [
   {
-    "project_id": 1,
-    "project_name": "Project A",
-    "products": [
+    "product_id": 2,
+    "product_name": "prj 1",
+    "targets": [
       {
-        "product_id": 1,
-        "product_name": "prj 1",
-        "targets": [
+        "target_id": 6,
+        "target_name": "孔检测",
+        "value_type": "OK,NG",
+        "pages": [
           {
-            "target_id": 1,
-            "target_name": "基准孔检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 1,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 2,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_3.png",
-                  "part_4.png"
-                ]
-              }
+            "page_id": 25,
+            "page_name": "page 1",
+            "measure_points": [
+							{"point" : "2526TCD","direction" : "U/D"},
+							{"point" : "2530TCU","direction" : "U/D"},
+							{"point" : "2512TCU","direction" : "U/D"},
+							{"point" : "2519TCD","direction" : "U/D"}
+            ],
+            "pictures": [
+              "part_1.png",
+              "part_2.png"
             ]
           },
           {
-            "target_id": 10,
-            "target_name": "基准面检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 11,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_5.png",
-                  "part_6.png"
-                ]
-              },
-              {
-                "page_id": 12,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          },
-          {
-            "target_id": 11,
-            "target_name": "孔检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 13,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 14,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          },
-          {
-            "target_id": 12,
-            "target_name": "面检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 15,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 16,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          },
-          {
-            "target_id": 13,
-            "target_name": "间隙检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 17,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 18,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "product_id": 2,
-        "product_name": "prj 2",
-        "targets": [
-          {
-            "target_id": 2,
-            "target_name": "基准面检测",
-            "value_type": "data",
-            "pages": [
-              {
-                "page_id": 3,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 4,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          },
-          {
-            "target_id": 20,
-            "target_name": "基准面检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 21,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 22,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          },
-          {
-            "target_id": 21,
-            "target_name": "孔检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 23,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 24,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          },
-          {
-            "target_id": 22,
-            "target_name": "面检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 25,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 26,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          },
-          {
-            "target_id": 23,
-            "target_name": "间隙检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 27,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 28,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "product_id": 3,
-        "product_name": "prj 3",
-        "targets": [
-          {
-            "target_id": 3,
-            "target_name": "间隙检测",
-            "value_type": "data",
-            "pages": [
-              {
-                "page_id": 5,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 6,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          },
-          {
-            "target_id": 30,
-            "target_name": "基准面检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 31,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 32,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          },
-          {
-            "target_id": 31,
-            "target_name": "孔检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 33,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 34,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          },
-          {
-            "target_id": 32,
-            "target_name": "面检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 35,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 36,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO",
-                  "2301SCO",
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
-            ]
-          },
-          {
-            "target_id": 33,
-            "target_name": "间隙检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 37,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 38,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
+            "page_id": 26,
+            "page_name": "page 2",
+            "measure_points": [
+							{"point" : "2526TCD","direction" : "U/D"},
+							{"point" : "2530TCU","direction" : "U/D"},
+							{"point" : "2512TCU","direction" : "U/D"},
+							{"point" : "2519TCD","direction" : "U/D"}
+            ],
+            "pictures": [
+              "part_1.png",
+              "part_2.png"
             ]
           }
         ]
@@ -992,132 +1261,88 @@
     ]
   },
   {
-    "project_id": 2,
-    "project_name": "Project B",
-    "products": [
+    "product_id": 3,
+    "product_name": "prj 2",
+    "targets": [
       {
-        "product_id": 4,
-        "product_name": "prj 1",
-        "targets": [
+        "target_id": 7,
+        "target_name": "面检测",
+        "value_type": "data",
+        "pages": [
           {
-            "target_id": 4,
-            "target_name": "孔检测",
-            "value_type": "OK,NG",
-            "pages": [
-              {
-                "page_id": 7,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 8,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
+            "page_id": 27,
+            "page_name": "page 1",
+            "measure_points": [
+							{"point" : "2526TCD","direction" : "U/D"},
+							{"point" : "2530TCU","direction" : "U/D"},
+							{"point" : "2512TCU","direction" : "U/D"},
+							{"point" : "2519TCD","direction" : "U/D"}
+            ],
+            "pictures": [
+              "part_1.png",
+              "part_2.png"
+            ]
+          },
+          {
+            "page_id": 28,
+            "page_name": "page 2",
+            "measure_points": [
+							{"point" : "2526TCD","direction" : "U/D"},
+							{"point" : "2530TCU","direction" : "U/D"},
+							{"point" : "2512TCU","direction" : "U/D"},
+							{"point" : "2519TCD","direction" : "U/D"}
+            ],
+            "pictures": [
+              "part_1.png",
+              "part_2.png"
             ]
           }
         ]
-      },
+      }
+    ]
+  },
+  {
+    "product_id": 4,
+    "product_name": "prj 3",
+    "targets": [
       {
-        "product_id": 5,
-        "product_name": "prj 2",
-        "targets": [
+        "target_id": 8,
+        "target_name": "间隙检测",
+        "value_type": "data",
+        "pages": [
           {
-            "target_id": 5,
-            "target_name": "面检测",
-            "value_type": "data",
-            "pages": [
-              {
-                "page_id": 9,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 10,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
+            "page_id": 29,
+            "page_name": "page 1",
+            "measure_points": [
+							{"point" : "2526TCD","direction" : "U/D"},
+							{"point" : "2530TCU","direction" : "U/D"},
+							{"point" : "2512TCU","direction" : "U/D"},
+							{"point" : "2519TCD","direction" : "U/D"}
+            ],
+            "pictures": [
+              "part_1.png",
+              "part_2.png"
             ]
-          }
-        ]
-      },
-      {
-        "product_id": 6,
-        "product_name": "prj 3",
-        "targets": [
+          },
           {
-            "target_id": 6,
-            "target_name": "间隙检测",
-            "value_type": "data",
-            "pages": [
-              {
-                "page_id": 11,
-                "page_name": "page 1",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              },
-              {
-                "page_id": 12,
-                "page_name": "page 2",
-                "measure_points": [
-                  "2327SCO",
-                  "2339SCO",
-                  "2331SCO",
-                  "2301SCO"
-                ],
-                "pictures": [
-                  "part_1.png",
-                  "part_2.png"
-                ]
-              }
+            "page_id": 30,
+            "page_name": "page 2",
+            "measure_points": [
+							{"point" : "2526TCD","direction" : "U/D"},
+							{"point" : "2530TCU","direction" : "U/D"},
+							{"point" : "2512TCU","direction" : "U/D"},
+							{"point" : "2519TCD","direction" : "U/D"}
+            ],
+            "pictures": [
+              "part_1.png",
+              "part_2.png"
             ]
           }
         ]
       }
     ]
   }
+]
+}
+
 ]

@@ -6,6 +6,7 @@ import com.sy.qfb.R;
 import com.sy.qfb.ble.MyApplication;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -71,6 +72,22 @@ public class QfbFileHelper {
 
     public void saveFile_Project(String content) {
         saveToFile(FILENAME_PROJECT, content);
+    }
+
+    public void saveFile_Binary(String fileName, byte[] bytes) {
+        Context context = MyApplication.APP_CONTEXT;
+        File fileDir = context.getFilesDir();
+        File file = new File(fileDir, fileName);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bytes);
+            fos.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
     private void saveToFile(String fileName, String content) {

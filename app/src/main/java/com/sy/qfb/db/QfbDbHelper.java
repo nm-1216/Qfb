@@ -12,7 +12,7 @@ import com.sy.qfb.ble.MyApplication;
  */
 
 public class QfbDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Qfb.db";
 
     private static final String SQL_CREATE_USER =
@@ -59,12 +59,20 @@ public class QfbDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + QfbContract.PageEntry.TABLE_NAME + " (" +
                     QfbContract.PageEntry.COLUMN_NAME_PGID + " INTEGER PRIMARY KEY," +
                     QfbContract.PageEntry.COLUMN_NAME_PGNAME + " TEXT," +
-                    QfbContract.PageEntry.COLUMN_NAME_TID + " INTEGER," +
-                    QfbContract.PageEntry.COLUMN_NAME_MPOINTS + " TEXT)";
+                    QfbContract.PageEntry.COLUMN_NAME_TID + " INTEGER)";
 
     private static final String SQL_DELETE_PAGE =
             "DROP TABLE IF EXISTS " + QfbContract.PageEntry.TABLE_NAME;
 
+    private static final String SQL_CREATE_MEASURE_POINT =
+            "CREATE TABLE " + QfbContract.MeasurePointEntry.TABLE_NAME + " (" +
+                    QfbContract.MeasurePointEntry.COLUMN_NAME_MPID + " INTEGER PRIMARY KEY," +
+                    QfbContract.MeasurePointEntry.COLUMN_NAME_PGID + " INTEGER," +
+                    QfbContract.MeasurePointEntry.COLUMN_NAME_POINT + " TEXT," +
+                    QfbContract.MeasurePointEntry.COLUMN_NAME_DIRECTION + " TEXT)";
+
+    private static final String SQL_DELETE_MEASURE_POINT =
+            "DROP TABLE IF EXISTS " + QfbContract.MeasurePointEntry.TABLE_NAME;
 
     private static final String SQL_CREATE_DATA =
             "CREATE TABLE " + QfbContract.DataEntry.TABLE_NAME + " (" +
@@ -78,6 +86,7 @@ public class QfbDbHelper extends SQLiteOpenHelper {
                     QfbContract.DataEntry.COLUMN_NAME_T_TYPE + " TEXT," +
                     QfbContract.DataEntry.COLUMN_NAME_PGID + " INTEGER," +
                     QfbContract.DataEntry.COLUMN_NAME_MPOINT + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_DIRECTION + " TEXT," +
                     QfbContract.DataEntry.COLUMN_NAME_VALUE_1 + " TEXT," +
                     QfbContract.DataEntry.COLUMN_NAME_VALUE_2 + " TEXT," +
                     QfbContract.DataEntry.COLUMN_NAME_VALUE_3 + " TEXT," +
@@ -109,6 +118,7 @@ public class QfbDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_PRD);
         db.execSQL(SQL_CREATE_TARGET);
         db.execSQL(SQL_CREATE_PAGE);
+        db.execSQL(SQL_CREATE_MEASURE_POINT);
         db.execSQL(SQL_CREATE_DATA);
     }
 
@@ -119,6 +129,7 @@ public class QfbDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_PRD);
         db.execSQL(SQL_DELETE_TARGET);
         db.execSQL(SQL_DELETE_PAGE);
+        db.execSQL(SQL_DELETE_MEASURE_POINT);
         db.execSQL(SQL_DELETE_DATA);
         onCreate(db);
     }

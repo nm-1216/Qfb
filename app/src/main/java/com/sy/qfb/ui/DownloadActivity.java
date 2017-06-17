@@ -24,16 +24,19 @@ import butterknife.ButterKnife;
  */
 
 public class DownloadActivity extends BaseActivity {
-    @BindView(R.id.btn_download)
-    Button btnDownload;
+    @BindView(R.id.btn_download_project)
+    Button btnDownloadProject;
+
+    @BindView(R.id.btn_download_user)
+    Button btnDownloadUser;
+
+    @BindView(R.id.btn_download_manual)
+    Button btnDownloadManual;
 
     @BindView(R.id.tv_status)
     TextView tvStatus;
 
     private DownloadController downloadController;
-
-    private boolean finishedDownloadUser;
-    private boolean isFinishedDownloadProject;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,13 +47,10 @@ public class DownloadActivity extends BaseActivity {
 
         downloadController = new DownloadController();
 
-
-        btnDownload.setOnClickListener(new View.OnClickListener() {
+        btnDownloadUser.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 showProgressDialog(true);
-                finishedDownloadUser = false;
-                isFinishedDownloadProject = false;
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -63,32 +63,77 @@ public class DownloadActivity extends BaseActivity {
                 tvStatus.setText(tvStatus.getText() + "\n正在下载  user.json....");
                 downloadController.downloadUsers(new DownloadController.NetworkCallback_Users() {
                     @Override
-                    public void networkCallback_Users(List<User> users) {
-                        tvStatus.setText(tvStatus.getText() + "\nuser.json下载成功！");
-                        finishedDownloadUser = true;
-
-                        if (finishedDownloadUser && isFinishedDownloadProject) {
-                            showProgressDialog(false);
+                    public void networkCallback_Users(boolean success, List<User> users) {
+                        if (success) {
+                            tvStatus.setText(tvStatus.getText() + "\nuser.json下载成功！");
+                        } else {
+                            tvStatus.setText(tvStatus.getText() + "\nuser.json下载失败！");
                         }
-                    }
-                });
-
-
-                tvStatus.setText(tvStatus.getText() + "\n正在下载  product.json....");
-                downloadController.downloadProjects(new DownloadController.NetworkCallback_Projects() {
-                    @Override
-                    public void networkCallback_Projects(List<Project> projects) {
-                        tvStatus.setText(tvStatus.getText() + "\nproduct.json下载成功！");
-                        MainActivity.PROJECTS = projects;
-                        isFinishedDownloadProject = true;
-
-                        if (finishedDownloadUser && isFinishedDownloadProject) {
-                            showProgressDialog(false);
-                        }
+                        showProgressDialog(false);
                     }
                 });
             }
         });
+
+        btnDownloadProject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showProgressDialog(true);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvStatus.setText(tvStatus.getText() + "\n下载超时，请检查网络!");
+                        showProgressDialog(false);
+                    }
+                }, 10000);
+
+                tvStatus.setText(tvStatus.getText() + "\n正在下载  product.json....");
+                downloadController.downloadProjects(new DownloadController.NetworkCallback_Projects() {
+                    @Override
+                    public void networkCallback_Projects(boolean success, List<Project> projects) {
+                        if (success) {
+                            tvStatus.setText(tvStatus.getText() + "\nproduct.json下载成功！");
+                            MainActivity.PROJECTS = projects;
+                        } else {
+                            tvStatus.setText(tvStatus.getText() + "\nproduct.json下载失败！");
+                        }
+                        showProgressDialog(false);
+                    }
+                });
+            }
+        });
+
+        btnDownloadManual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgressDialog(true);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvStatus.setText(tvStatus.getText() + "\n下载超时，请检查网络!");
+                        showProgressDialog(false);
+                    }
+                }, 10000);
+
+                tvStatus.setText(tvStatus.getText() + "\n正在下载  manual.pdf....");
+                downloadController.downloadManual(new DownloadController.NetworkCallback_Manual() {
+                    @Override
+                    public void networkCallback_Manual(boolean success) {
+                        if (success) {
+                            tvStatus.setText(tvStatus.getText() + "\nmanual.pdf下载成功！");
+                        } else {
+                            tvStatus.setText(tvStatus.getText() + "\nmanual.pdf下载失败！");
+                        }
+
+                        showProgressDialog(false);
+                    }
+                });
+
+            }
+        });
+
 
     }
 

@@ -98,17 +98,18 @@ public class InitController {
                                             cv_page.put(QfbContract.PageEntry.COLUMN_NAME_TID, target.target_id);
                                             cv_page.put(QfbContract.PageEntry.COLUMN_NAME_PGID, page.page_id);
                                             cv_page.put(QfbContract.PageEntry.COLUMN_NAME_PGNAME, page.page_name);
+                                            db.insert(QfbContract.PageEntry.TABLE_NAME, null, cv_page);
 
-                                            String strMPoints = "";
                                             if (page.measure_points != null && page.measure_points.length > 0) {
                                                 for (int j = 0; j < page.measure_points.length; ++j) {
-                                                    if (j != 0) strMPoints += ",";
-                                                    strMPoints += page.measure_points[j];
+                                                    ContentValues cv_mp = new ContentValues();
+                                                    cv_mp.put(QfbContract.MeasurePointEntry.COLUMN_NAME_PGID, page.page_id);
+                                                    cv_mp.put(QfbContract.MeasurePointEntry.COLUMN_NAME_POINT, page.measure_points[j].point);
+                                                    cv_mp.put(QfbContract.MeasurePointEntry.COLUMN_NAME_DIRECTION, page.measure_points[j].direction);
+                                                    db.insert(QfbContract.MeasurePointEntry.TABLE_NAME, null, cv_mp);
                                                 }
 
                                             }
-                                            cv_page.put(QfbContract.PageEntry.COLUMN_NAME_MPOINTS, strMPoints);
-                                            db.insert(QfbContract.PageEntry.TABLE_NAME, null, cv_page);
 
                                         }
                                     }

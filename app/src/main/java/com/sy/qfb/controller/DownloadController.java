@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.StringBuilderPrinter;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -14,6 +15,7 @@ import com.sy.qfb.R;
 import com.sy.qfb.ble.MyApplication;
 import com.sy.qfb.model.Project;
 import com.sy.qfb.model.User;
+import com.sy.qfb.net.FileRequest;
 import com.sy.qfb.net.VolleyHelper;
 import com.sy.qfb.util.QfbFileHelper;
 
@@ -22,6 +24,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,18 +36,24 @@ import java.util.List;
 public class DownloadController {
     private static final String TAG = "DownloadController";
 
-//    private static final String url_user = "http://192.168.3.3/user.json";
-//    private static final String url_project = "http://192.168.3.3/project.json";
+    private static final String url_user = "http://192.168.3.3/user.json";
+    private static final String url_project = "http://192.168.3.3/project.json";
+    private static final String url_manual = "http://192.168.3.3/manual.pdf";
 
-    private static final String url_user = "http://10.90.75.149/user.json";
-    private static final String url_project = "http://10.90.75.149/project.json";
+//    private static final String url_user = "http://10.90.75.149/user.json";
+//    private static final String url_project = "http://10.90.75.149/project.json";
+//    private static final String url_manual = "http://10.90.75.149/manual.pdf";
 
     public interface NetworkCallback_Users {
-        void networkCallback_Users(List<User> users);
+        void networkCallback_Users(boolean success, List<User> users);
     }
 
     public interface NetworkCallback_Projects {
-        void networkCallback_Projects(List<Project> projects);
+        void networkCallback_Projects(boolean success, List<Project> projects);
+    }
+
+    public interface NetworkCallback_Manual {
+        void networkCallback_Manual(boolean success);
     }
 
     public void downloadUsers(final NetworkCallback_Users callback) {
@@ -64,13 +73,16 @@ public class DownloadController {
                     lstUser.add(users[i]);
                 }
                 if (callback != null) {
-                    callback.networkCallback_Users(lstUser);
+                    callback.networkCallback_Users(true, lstUser);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "fail");
+                if (callback != null) {
+                    callback.networkCallback_Users(false, null);
+                }
             }
         });
         VolleyHelper.getInstance().makeRequest(request);
@@ -93,16 +105,44 @@ public class DownloadController {
                     lstProjects.add(projects[i]);
                 }
                 if (callback != null) {
-                    callback.networkCallback_Projects(lstProjects);
+                    callback.networkCallback_Projects(true, lstProjects);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "fail");
+                if (callback != null) {
+                    callback.networkCallback_Projects(false, null);
+                }
             }
         });
         VolleyHelper.getInstance().makeRequest(request);
+    }
+
+    public void downloadManual(final NetworkCallback_Manual callback) {
+
+        Request request = new FileRequest(Request.Method.GET, url_manual, new Response.Listener<byte[]>() {
+            @Override
+            public void onResponse(byte[] response) {
+                Log.d(TAG, "success");
+
+                new QfbFileHelper().saveFile_Binary("manual.pdf", response);
+                if (callback != null) {
+                    callback.networkCallback_Manual(true);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "fail");
+                if (callback != null) {
+                    callback.networkCallback_Manual(false);
+                }
+            }
+        });
+        VolleyHelper.getInstance().makeRequest(request);
+
     }
 
 }

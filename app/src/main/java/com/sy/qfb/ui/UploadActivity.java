@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.sy.qfb.R;
 import com.sy.qfb.controller.UploadController;
+import com.sy.qfb.model.MeasureData;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,8 +56,15 @@ public class UploadActivity extends BaseActivity {
                     tvUploadStatus.setText(tvUploadStatus.getText() + "\n没有数据要上传！");
                 } else {
                     tvUploadStatus.setText(tvUploadStatus.getText() + "\n正在上传 " + count + " 条数据！");
-                    uploadController.uploadData();
-                    tvUploadStatus.setText(tvUploadStatus.getText() + "\n数据要上传完毕！");
+                    uploadController.uploadData(new UploadController.UploadFinishCallback() {
+                        @Override
+                        public void finish(int successCount, int failCount,
+                                           HashMap<MeasureData, Integer> uploadRecoder) {
+                            tvUploadStatus.setText(tvUploadStatus.getText() + "\n数据上传完毕！"
+                                    + successCount + "条成功，" + failCount + "条失败！");
+                            showProgressDialog(false);
+                        }
+                    });
                 }
             }
         });
