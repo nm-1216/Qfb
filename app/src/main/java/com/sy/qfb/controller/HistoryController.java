@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.ArrayMap;
 
+import com.orhanobut.logger.Logger;
 import com.sy.qfb.db.QfbContract;
 import com.sy.qfb.db.QfbDbHelper;
 import com.sy.qfb.model.MeasureData;
@@ -11,8 +12,11 @@ import com.sy.qfb.model.Page;
 import com.sy.qfb.model.Product;
 import com.sy.qfb.model.Project;
 import com.sy.qfb.model.Target;
+import com.sy.qfb.viewmodel.ProjectHistoryItem;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,18 +26,140 @@ import java.util.List;
 
 public class HistoryController {
 
+    public List<ProjectHistoryItem> getProjectHistoryItems() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
+
+        long max = calendar.getTimeInMillis();
+        long min = max - 1000 * 60 * 60 * 24 * 7;
+
+
+        SQLiteDatabase db_entries = QfbDbHelper.getInstance().getReadableDatabase();
+        Cursor cursor_entries = db_entries.query(true, QfbContract.DataEntry.TABLE_NAME,
+                new String[]{QfbContract.DataEntry.COLUMN_NAME_PROJID, QfbContract.DataEntry.COLUMN_NAME_PROJ_NAME,
+                        QfbContract.DataEntry.COLUMN_NAME_PRDID, QfbContract.DataEntry.COLUMN_NAME_PRD_NAME,
+                        QfbContract.DataEntry.COLUMN_NAME_TID, QfbContract.DataEntry.COLUMN_NAME_T_NAME,
+                        QfbContract.DataEntry.COLUMN_NAME_T_TYPE, QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP},
+                QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + ">= ? and " +
+                        QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + " < ?",
+                new String[] {"" + min, "" + max}, null, null, null, null);
+
+        List<ProjectHistoryItem> result = new ArrayList<ProjectHistoryItem>();
+        if (cursor_entries.getCount() > 0) {
+            cursor_entries.moveToFirst();
+            while(true) {
+                ProjectHistoryItem item = new ProjectHistoryItem();
+
+                item.projectId = cursor_entries.getInt(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PROJID));
+                item.projectName = cursor_entries.getString(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PROJ_NAME));
+                item.productId = cursor_entries.getInt(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PRDID));
+                item.productName = cursor_entries.getString(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PRD_NAME));
+                item.targetId = cursor_entries.getInt(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TID));
+                item.targetName = cursor_entries.getString(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_NAME));
+                item.targetType = cursor_entries.getString(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_TYPE));
+                item.timeStamp = cursor_entries.getLong(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP));
+
+                result.add(item);
+
+                if (!cursor_entries.moveToNext()) break;
+            }
+        }
+
+        cursor_entries.close();
+        db_entries.close();
+        return result;
+    }
+
+    public List<MeasureData> getData(ProjectHistoryItem item) {
+        SQLiteDatabase db_data = QfbDbHelper.getInstance().getReadableDatabase();
+
+        Cursor cursor = db_data.query(QfbContract.DataEntry.TABLE_NAME,null,
+                QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + "=?",
+                new String[] {"" + item.timeStamp}, null, null, null, null);
+
+        List<MeasureData> result = new ArrayList<MeasureData>();
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while(true) {
+
+                int dataId = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_DATAID));
+                int prjId = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PROJID));
+                String prjName = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PROJ_NAME));
+                int prdId = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PRDID));
+                String prdName = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PRD_NAME));
+                int targetId = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TID));
+                String targetName = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_NAME));
+                String targetType = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_TYPE));
+                int pageId = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PGID));
+                String measurePoint = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_MPOINT));
+                String value1 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_1));
+                String value2 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_2));
+                String value3 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_3));
+                String value4 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_4));
+                String username = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_USERNAME));
+                long timestamp = cursor.getLong(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP));
+                int uploaded = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_UPLOADED));
+
+                MeasureData data = new MeasureData();
+                data.dataId = dataId;
+                data.projectId = prjId;
+                data.projectName = prjName;
+                data.productId = prdId;
+                data.productName = prdName;
+                data.targetId = targetId;
+                data.targetName = targetName;
+                data.targetType = targetType;
+                data.pageId = pageId;
+                data.measure_point = measurePoint;
+                data.value1 = value1;
+                data.value2 = value2;
+                data.value3 = value3;
+                data.value4 = value4;
+                data.username = username;
+                data.timestamp = timestamp;
+                data.uploaded = uploaded;
+
+                result.add(data);
+
+                if (!cursor.moveToNext()) break;
+            }
+        }
+        cursor.close();
+        db_data.close();
+        return result;
+    }
+
     SQLiteDatabase db_shared = null;
 
     public List<Project> getProjects(long min, long max) {
         List<Project> result = new ArrayList<Project>();
 
+
+        Logger.d("min = " + min + ", max = " + max);
         db_shared = QfbDbHelper.getInstance().getReadableDatabase();
+
+        Cursor cTemp = db_shared.query(true, QfbContract.DataEntry.TABLE_NAME,
+                new String[] {QfbContract.DataEntry.COLUMN_NAME_PROJID, QfbContract.DataEntry.COLUMN_NAME_PROJ_NAME},
+                null, null, null, null, null, null);
+
+        Logger.d("cTemp.getCount() = " + cTemp.getCount());
+
+        Cursor cTemp2 = db_shared.query(QfbContract.DataEntry.TABLE_NAME,
+                null, null, null, null, null, null, null);
+        Logger.d("cTemp2.getCount() = " + cTemp2.getCount());
+
+
         Cursor c = db_shared.query(true, QfbContract.DataEntry.TABLE_NAME,
                 new String[] {QfbContract.DataEntry.COLUMN_NAME_PROJID, QfbContract.DataEntry.COLUMN_NAME_PROJ_NAME},
                 QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + ">= ? and " +
                         QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + " < ?",
                 new String[] {"" + min, "" + max}, null, null, null, null);
 
+        Logger.d("c.getCount() = " + c.getCount());
         if (c.getCount() > 0) {
             c.moveToFirst();
             while (true) {

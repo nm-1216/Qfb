@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity {
         btnHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                Intent intent = new Intent(MainActivity.this, HistoryItemActivity.class);
                 startActivity(intent);
             }
         });

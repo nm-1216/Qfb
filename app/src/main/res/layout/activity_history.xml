@@ -20,6 +20,7 @@
         <ExpandableListView
             android:id="@+id/lv_dates"
             android:layout_width="150dp"
+            android:visibility="gone"
             android:layout_height="match_parent" />
 
         <RelativeLayout
@@ -41,6 +42,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:text="上一页" />
 
                 <Button
@@ -48,6 +50,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:text="下一页" />
             </LinearLayout>
 

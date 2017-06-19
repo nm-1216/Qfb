@@ -384,6 +384,8 @@ public class MeasureActivity extends BaseActivity {
 
     private void saveData() {
         List<MeasureData> lstMeasureData = new ArrayList<MeasureData>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
         for (View view : currentPage_Rows) {
             MeasureData data = new MeasureData();
 
@@ -401,8 +403,6 @@ public class MeasureActivity extends BaseActivity {
             data.value4 = tvData4.getText().toString();
 
             data.username = LoginActivity.CURRENT_USER.username;
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date());
             data.timestamp = calendar.getTimeInMillis();
 
             data.projectId = MainActivity.CURRENT_PROJECT.project_id;
