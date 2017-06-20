@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
+import com.sy.qfb.ble.activity.DeviceScanActivity;
 import com.sy.qfb.model.Target;
 
 import java.util.ArrayList;
@@ -94,8 +95,13 @@ public class MeasureSubjectActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 MainActivity.CURRENT_TARGET = target;
-                Intent intent = new Intent(MeasureSubjectActivity.this, MeasureActivity.class);
-                startActivity(intent);
+                if ("data".equals(target.value_type)) {
+                    Intent intent = new Intent(MeasureSubjectActivity.this, DeviceScanActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(MeasureSubjectActivity.this, MeasureActivity.class);
+                    startActivity(intent);
+                }
             }
         }
     }

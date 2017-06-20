@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sy.qfb.R;
+import com.sy.qfb.ui.MeasureActivity;
 
 
 /**
@@ -155,7 +156,8 @@ public class DeviceScanActivity extends ListActivity {
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
 
         if (device == null) return;
-        final Intent intent = new Intent(this, DeviceControlActivity.class);
+//        final Intent intent = new Intent(this, DeviceControlActivity.class);
+        final Intent intent = new Intent(this, MeasureActivity.class);
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
         if (mScanning) {

@@ -1,20 +1,40 @@
 package com.sy.qfb.ui;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.text.BoringLayout;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.SimpleExpandableListAdapter;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
+import com.sy.qfb.ble.activity.DeviceControlActivity;
 import com.sy.qfb.ble.activity.DeviceScanActivity;
+import com.sy.qfb.ble.service.BluetoothLeService;
+import com.sy.qfb.ble.utils.SampleGattAttributes;
 import com.sy.qfb.controller.SaveController;
 import com.sy.qfb.model.MeasureData;
 import com.sy.qfb.model.MeasurePoint;
@@ -73,6 +93,15 @@ public class MeasureActivity extends BaseActivity {
     @BindView(R.id.btn_ng)
     Button btnNg;
 
+    @BindView(R.id.tv_connection_state)
+    TextView tvConnectionState;
+
+    @BindView(R.id.img_1)
+    ImageView img1;
+
+    @BindView(R.id.ll_images)
+    LinearLayout llImages;
+
     private int currentPage_Index = 0;
     private List<View> currentPage_Rows = new ArrayList<View>();
     private TextView[][] currentPaten_TextViewArray;
@@ -84,6 +113,113 @@ public class MeasureActivity extends BaseActivity {
     private boolean currentPageSaved = false;
 
     private HashMap<Integer, List<MeasureData>> page_datas = new HashMap<Integer, List<MeasureData>>();
+
+
+    public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
+    public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+
+    private BluetoothLeService mBluetoothLeService;
+    private BluetoothGattCharacteristic mNotifyCharacteristic;
+    private String mDeviceName;
+    private String mDeviceAddress;
+    private boolean mConnected = false;
+    private ProgressDialog dialog = null;
+
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName,
+                                       IBinder service) {
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service)
+                    .getService();
+            if (!mBluetoothLeService.initialize()) {
+                Logger.e("Unable to initialize Bluetooth");
+                finish();
+            }
+            // Automatically connects to the device upon successful start-up
+            // initialization.
+            mBluetoothLeService.connect(mDeviceAddress);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBluetoothLeService = null;
+        }
+    };
+
+
+    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+                mConnected = true;
+                updateConnectionState(R.string.connected);
+                Toast.makeText(MeasureActivity.this, "蓝牙连接成功", Toast.LENGTH_SHORT).show();
+//                dialog.show();
+                progressDialog.show();
+                invalidateOptionsMenu();
+            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
+                    .equals(action)) {
+                mConnected = false;
+                updateConnectionState(R.string.disconnected);
+                Toast.makeText(MeasureActivity.this, "蓝牙连接断开", Toast.LENGTH_SHORT).show();
+                invalidateOptionsMenu();
+//                clearUI();
+                mBluetoothLeService.connect(mDeviceAddress);
+//                dialog.hide();
+                progressDialog.hide();
+//				updateConnectionState(R.string.connected_server);
+            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
+                    .equals(action)) {
+                //服务加载完毕
+                // Show all the supported services and characteristics on the
+                // user interface.
+//                displayGattServices(mBluetoothLeService
+//                        .getSupportedGattServices());
+//                dialog.hide();
+                progressDialog.hide();
+                updateConnectionState(R.string.connected_server);
+
+            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+                //数据显示
+                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+//                dialog.hide();
+                progressDialog.hide();
+//				updateConnectionState(R.string.connected_server);
+            }
+
+        }
+    };
+
+    private void updateConnectionState(final int resourceId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+//                mConnectionState.setText(resourceId);
+                tvConnectionState.setText(resourceId);
+            }
+        });
+    }
+
+    private void displayData(String data) {
+        if (data != null) {
+//            mDataField.setText(data);
+
+            int c_rows = currentPaten_TextViewArray.length;
+            int c_cols = 4;
+            if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
+                    currentCol_TvArray >= 0 && currentCol_TvArray <4) {
+                TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
+                if (tv != null) {
+                    tv.setText(data);
+                }
+            }
+            goNextCell();
+
+        }
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,11 +234,6 @@ public class MeasureActivity extends BaseActivity {
         tvMeasureTarget.setText(MainActivity.CURRENT_TARGET.target_name);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         tvDate.setText(sdf.format(new Date()));
-
-        if (MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data")) {
-            Intent intent = new Intent(MeasureActivity.this, DeviceScanActivity.class);
-            startActivity(intent);
-        }
 
 
         currentPage_Index = 0;
@@ -164,6 +295,53 @@ public class MeasureActivity extends BaseActivity {
                 goNextCell();
             }
         });
+
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        img1.setMaxWidth(metrics.widthPixels / 4);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.width = metrics.widthPixels / 5;
+        img1.setLayoutParams(params);
+
+        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params1.width = metrics.widthPixels / 5;
+        llImages.setLayoutParams(params1);
+
+
+        if (MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data")) {
+            btnNg.setVisibility(View.GONE);
+            btnOk.setVisibility(View.GONE);
+            tvConnectionState.setVisibility(View.VISIBLE);
+
+            final Intent intent = getIntent();
+            mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+            mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+
+            Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+            bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+        } else {
+            btnNg.setVisibility(View.VISIBLE);
+            btnOk.setVisibility(View.VISIBLE);
+            tvConnectionState.setVisibility(View.GONE);
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        dialog = new ProgressDialog(MeasureActivity.this);
+        dialog.setMessage("正在加载服务");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+        if (mBluetoothLeService != null) {
+            final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+            Logger.d("Connect request result=" + result);
+        }
     }
 
     private void showSaveDialog() {
@@ -426,5 +604,17 @@ public class MeasureActivity extends BaseActivity {
         currentPageSaved = true;
         ToastHelper.showShort("保存成功！");
     }
+
+
+    private static IntentFilter makeGattUpdateIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
+        intentFilter
+                .addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+        return intentFilter;
+    }
+
 
 }
