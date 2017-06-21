@@ -13,7 +13,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.sy.qfb.R;
 import com.sy.qfb.ble.MyApplication;
+import com.sy.qfb.model.Page;
+import com.sy.qfb.model.Product;
 import com.sy.qfb.model.Project;
+import com.sy.qfb.model.Target;
 import com.sy.qfb.model.User;
 import com.sy.qfb.net.FileRequest;
 import com.sy.qfb.net.VolleyHelper;
@@ -36,15 +39,17 @@ import java.util.List;
 public class DownloadController {
     private static final String TAG = "DownloadController";
 
-    private static final String url_user = "http://192.168.3.3/user.json";
-    private static final String url_project = "http://192.168.3.3/project.json";
-    private static final String url_manual = "http://192.168.3.3/manual.pdf";
+//    public static final String SERVER = "http://192.168.3.3/";
+//    private static final String url_user = "http://192.168.3.3/user.json";
+//    private static final String url_project = "http://192.168.3.3/project.json";
+//    private static final String url_manual = "http://192.168.3.3/manual.pdf";
 
-//    private static final String url_user = "http://10.90.75.149/user.json";
-//    private static final String url_project = "http://10.90.75.149/project.json";
-//    private static final String url_manual = "http://10.90.75.149/manual.pdf";
+    public static final String SERVER = "http://10.90.75.149/";
+    private static final String url_user = "http://10.90.75.149/user.json";
+    private static final String url_project = "http://10.90.75.149/project.json";
+    private static final String url_manual = "http://10.90.75.149/manual.pdf";
 
-    public interface NetworkCallback_Users {
+        public interface NetworkCallback_Users {
         void networkCallback_Users(boolean success, List<User> users);
     }
 
@@ -54,6 +59,10 @@ public class DownloadController {
 
     public interface NetworkCallback_Manual {
         void networkCallback_Manual(boolean success);
+    }
+
+    public interface NetworkCallback_Image {
+        void networkCallback_Image(boolean success);
     }
 
     public void downloadUsers(final NetworkCallback_Users callback) {
@@ -104,6 +113,9 @@ public class DownloadController {
                 for (int i = 0; i < projects.length; ++i) {
                     lstProjects.add(projects[i]);
                 }
+
+
+
                 if (callback != null) {
                     callback.networkCallback_Projects(true, lstProjects);
                 }
@@ -144,5 +156,28 @@ public class DownloadController {
         VolleyHelper.getInstance().makeRequest(request);
 
     }
+
+
+    public void downloadImage(final String imgName, final NetworkCallback_Image callback) {
+        String url = DownloadController.SERVER + imgName;
+
+        Request request = new FileRequest(Request.Method.GET, url, new Response.Listener<byte[]>() {
+            @Override
+            public void onResponse(byte[] response) {
+                QfbFileHelper qfbFileHelper = new QfbFileHelper();
+                qfbFileHelper.saveFile_Binary(imgName, response);
+
+                callback.networkCallback_Image(true);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.networkCallback_Image(false);
+            }
+        });
+
+        VolleyHelper.getInstance().makeRequest(request);
+    }
+
 
 }

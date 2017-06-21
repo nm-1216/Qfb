@@ -10,9 +10,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.BoringLayout;
 import android.util.DisplayMetrics;
@@ -42,6 +49,7 @@ import com.sy.qfb.model.Page;
 import com.sy.qfb.model.Target;
 import com.sy.qfb.util.ToastHelper;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -301,14 +309,15 @@ public class MeasureActivity extends BaseActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         img1.setMaxWidth(metrics.widthPixels / 4);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.width = metrics.widthPixels / 5;
         img1.setLayoutParams(params);
 
-        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         params1.width = metrics.widthPixels / 5;
+        params1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        params1.setMargins(10, 10, metrics.widthPixels / 25, 10);
         llImages.setLayoutParams(params1);
-
 
         if (MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data")) {
             btnNg.setVisibility(View.GONE);
@@ -326,6 +335,7 @@ public class MeasureActivity extends BaseActivity {
             btnOk.setVisibility(View.VISIBLE);
             tvConnectionState.setVisibility(View.GONE);
         }
+
     }
 
 
@@ -496,6 +506,21 @@ public class MeasureActivity extends BaseActivity {
             }
 
             MainActivity.CURRENT_PAGE = p;
+
+            if (p.pictures != null) {
+                for (String pictureName : p.pictures) {
+
+                    File fileDir = getFilesDir();
+                    File fileImage = new File(fileDir, pictureName);
+
+                    Uri.Builder builder = new Uri.Builder();
+                    builder.scheme("file");
+                    builder.path(fileImage.getAbsolutePath());
+                    Uri uri = builder.build();
+                    img1.setImageURI(uri);
+
+                }
+            }
 
             currentRow_TvArray = 0;
             currentCol_TvArray = 0;

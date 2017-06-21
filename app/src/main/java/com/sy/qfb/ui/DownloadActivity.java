@@ -1,18 +1,28 @@
 package com.sy.qfb.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.sy.qfb.R;
 import com.sy.qfb.controller.DownloadController;
+import com.sy.qfb.model.Page;
+import com.sy.qfb.model.Product;
 import com.sy.qfb.model.Project;
+import com.sy.qfb.model.Target;
 import com.sy.qfb.model.User;
+import com.sy.qfb.net.FileRequest;
+import com.sy.qfb.net.VolleyHelper;
+import com.sy.qfb.util.QfbFileHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,7 +46,13 @@ public class DownloadActivity extends BaseActivity {
     @BindView(R.id.tv_status)
     TextView tvStatus;
 
+    @BindView(R.id.sv_state)
+    ScrollView svState;
+
+
+
     private DownloadController downloadController;
+    private boolean[] imgFinishedFlags;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,6 +111,7 @@ public class DownloadActivity extends BaseActivity {
                         if (success) {
                             tvStatus.setText(tvStatus.getText() + "\nproduct.json下载成功！");
                             MainActivity.PROJECTS = projects;
+                            downloadImages(MainActivity.PROJECTS);
                         } else {
                             tvStatus.setText(tvStatus.getText() + "\nproduct.json下载失败！");
                         }
@@ -133,10 +150,72 @@ public class DownloadActivity extends BaseActivity {
 
             }
         });
-
-
     }
 
+    private void appendStatus(String status) {
+        tvStatus.setText(tvStatus.getText() + "\n" + status);
+        svState.scrollTo(0, tvStatus.getMeasuredHeight() - 100);
+    }
+
+    private void downloadImages(List<Project> projects) {
+        progressDialog.show();
+
+        List<String> picNames = new ArrayList<String>();
+        for (Project project : projects) {
+            for (Product product : project.products) {
+                for (Target target : product.targets) {
+                    for (Page page : target.pages) {
+                        for (String picName : page.pictures) {
+                            if (!picNames.contains(picName)) {
+                                picNames.add(picName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        imgFinishedFlags = new boolean[picNames.size()];
+
+        for (int i = 0; i < picNames.size(); ++i) {
+            appendStatus("正在下载图片  " + picNames.get(i) );
+            downloadController.downloadImage(picNames.get(i), new ImageCallback(i, picNames.get(i)));
+        }
+    }
+
+    private class ImageCallback implements DownloadController.NetworkCallback_Image {
+        private String picName;
+        private int index;
+
+        public ImageCallback(int i, String picName) {
+            this.index = i;
+            this.picName = picName;
+        }
+
+        @Override
+        public void networkCallback_Image(boolean success) {
+            if (success) {
+                appendStatus("图片  " + picName + "  下载成功" );
+            } else {
+                appendStatus("图片  " + picName + "  下载失败" );
+            }
+
+            imgFinishedFlags[index] = true;
+
+            boolean allFinished = true;
+            for (boolean b : imgFinishedFlags) {
+                if (!b) {
+                    allFinished = false;
+                    break;
+                }
+            }
+
+            if (allFinished) {
+                progressDialog.dismiss();
+                appendStatus("所有图片下载完毕！" );
+            }
+        }
+    }
 
 }
 

@@ -42,15 +42,22 @@
         android:layout_margin="10dp"
         android:background="@android:color/darker_gray">
 
-        <TextView
-            android:id="@+id/tv_status"
+        <ScrollView
+            android:id="@+id/sv_state"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="2dp"
             android:background="@android:color/white"
-            android:paddingLeft="16dp"
-            android:textColor="@android:color/black"
-            android:textSize="24sp" />
+            android:layout_margin="2dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:paddingLeft="16dp"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+        </ScrollView>
     </LinearLayout>
 
 </RelativeLayout>
