@@ -244,6 +244,20 @@ public class MeasureActivity extends BaseActivity {
         tvDate.setText(sdf.format(new Date()));
 
 
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        img1.setMaxWidth(metrics.widthPixels / 4);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.width = metrics.widthPixels / 5;
+        img1.setLayoutParams(params);
+
+        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params1.width = metrics.widthPixels / 5;
+        params1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        params1.setMargins(10, 10, metrics.widthPixels / 25, 10);
+        llImages.setLayoutParams(params1);
+
         currentPage_Index = 0;
         loadTable();
         setPageIndicator();
@@ -305,19 +319,6 @@ public class MeasureActivity extends BaseActivity {
         });
 
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        img1.setMaxWidth(metrics.widthPixels / 4);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.width = metrics.widthPixels / 5;
-        img1.setLayoutParams(params);
-
-        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params1.width = metrics.widthPixels / 5;
-        params1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        params1.setMargins(10, 10, metrics.widthPixels / 25, 10);
-        llImages.setLayoutParams(params1);
 
         if (MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data")) {
             btnNg.setVisibility(View.GONE);

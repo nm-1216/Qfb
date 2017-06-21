@@ -155,10 +155,15 @@ public class QfbController {
         while(true) {
             int pgId = cursor.getInt(cursor.getColumnIndex(QfbContract.PageEntry.COLUMN_NAME_PGID));
             String pgname = cursor.getString(cursor.getColumnIndex(QfbContract.PageEntry.COLUMN_NAME_PGNAME));
+            String strPics = cursor.getString(cursor.getColumnIndex(QfbContract.PageEntry.COLUMN_NAME_PICS));
 
             Page page = new Page();
             page.page_id = pgId;
             page.page_name = pgname;
+
+            if (!TextUtils.isEmpty(strPics)) {
+                page.pictures = strPics.split(",");
+            }
 
             Cursor c_m = db.query(QfbContract.MeasurePointEntry.TABLE_NAME, null,
                     QfbContract.MeasurePointEntry.COLUMN_NAME_PGID + "=?",

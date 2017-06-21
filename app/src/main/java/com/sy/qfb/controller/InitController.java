@@ -98,6 +98,16 @@ public class InitController {
                                             cv_page.put(QfbContract.PageEntry.COLUMN_NAME_TID, target.target_id);
                                             cv_page.put(QfbContract.PageEntry.COLUMN_NAME_PGID, page.page_id);
                                             cv_page.put(QfbContract.PageEntry.COLUMN_NAME_PGNAME, page.page_name);
+
+                                            StringBuilder sb = new StringBuilder();
+                                            if (page.pictures != null) {
+                                                for (int k = 0; k < page.pictures.length; ++k) {
+                                                    if (k != 0) sb.append(",");
+                                                    sb.append(page.pictures[k]);
+                                                }
+                                            }
+                                            cv_page.put(QfbContract.PageEntry.COLUMN_NAME_PICS, sb.toString());
+
                                             db.insert(QfbContract.PageEntry.TABLE_NAME, null, cv_page);
 
                                             if (page.measure_points != null && page.measure_points.length > 0) {

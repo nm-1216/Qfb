@@ -42,6 +42,7 @@ public final class QfbContract {
         public static final String COLUMN_NAME_TID = "tid";
         public static final String COLUMN_NAME_PGID = "pgid";
         public static final String COLUMN_NAME_PGNAME = "pgname";
+        public static final String COLUMN_NAME_PICS = "pictures";
     }
 
     public static class MeasurePointEntry implements BaseColumns {

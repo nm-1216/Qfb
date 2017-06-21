@@ -12,7 +12,7 @@ import com.sy.qfb.ble.MyApplication;
  */
 
 public class QfbDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "Qfb.db";
 
     private static final String SQL_CREATE_USER =
@@ -59,6 +59,7 @@ public class QfbDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + QfbContract.PageEntry.TABLE_NAME + " (" +
                     QfbContract.PageEntry.COLUMN_NAME_PGID + " INTEGER PRIMARY KEY," +
                     QfbContract.PageEntry.COLUMN_NAME_PGNAME + " TEXT," +
+                    QfbContract.PageEntry.COLUMN_NAME_PICS + " TEXT," +
                     QfbContract.PageEntry.COLUMN_NAME_TID + " INTEGER)";
 
     private static final String SQL_DELETE_PAGE =
