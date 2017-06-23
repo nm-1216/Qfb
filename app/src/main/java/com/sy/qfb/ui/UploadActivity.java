@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.sy.qfb.R;
@@ -29,6 +30,9 @@ public class UploadActivity extends BaseActivity {
     @BindView(R.id.btn_upload)
     Button btnUpload;
 
+    @BindView(R.id.sv_state)
+    ScrollView svState;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +48,10 @@ public class UploadActivity extends BaseActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        tvUploadStatus.setText(tvUploadStatus.getText() + "\n上传超时，请检查网络！");
-                        showProgressDialog(false);
+                        if (progressDialog.isShowing()) {
+                            appendStatus("上传超时，请检查网络！");
+                            showProgressDialog(false);
+                        }
                     }
                 }, 10000);
 
@@ -53,14 +59,15 @@ public class UploadActivity extends BaseActivity {
 
                 int count = uploadController.getDataSize();
                 if (count <= 0) {
-                    tvUploadStatus.setText(tvUploadStatus.getText() + "\n没有数据要上传！");
+                    appendStatus("没有数据要上传！");
+                    showProgressDialog(false);
                 } else {
-                    tvUploadStatus.setText(tvUploadStatus.getText() + "\n正在上传 " + count + " 条数据！");
+                    appendStatus("正在上传 " + count + " 条数据！");
                     uploadController.uploadData(new UploadController.UploadFinishCallback() {
                         @Override
                         public void finish(int successCount, int failCount,
                                            HashMap<MeasureData, Integer> uploadRecoder) {
-                            tvUploadStatus.setText(tvUploadStatus.getText() + "\n数据上传完毕！"
+                            appendStatus("数据上传完毕！"
                                     + successCount + "条成功，" + failCount + "条失败！");
                             showProgressDialog(false);
                         }
@@ -69,5 +76,10 @@ public class UploadActivity extends BaseActivity {
             }
         });
 
+    }
+
+    private void appendStatus(String status) {
+        tvUploadStatus.append("\n" + status);
+        svState.fullScroll(View.FOCUS_DOWN);
     }
 }

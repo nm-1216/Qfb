@@ -71,19 +71,21 @@ public class DownloadActivity extends BaseActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        tvStatus.setText(tvStatus.getText() + "\n下载超时，请检查网络!");
-                        showProgressDialog(false);
+                        if (progressDialog.isShowing()) {
+                            appendStatus("下载超时，请检查网络!");
+                            showProgressDialog(false);
+                        }
                     }
                 }, 10000);
 
-                tvStatus.setText(tvStatus.getText() + "\n正在下载  user.json....");
+                appendStatus("正在下载  user.json....");
                 downloadController.downloadUsers(new DownloadController.NetworkCallback_Users() {
                     @Override
                     public void networkCallback_Users(boolean success, List<User> users) {
                         if (success) {
-                            tvStatus.setText(tvStatus.getText() + "\nuser.json下载成功！");
+                            appendStatus("user.json下载成功！");
                         } else {
-                            tvStatus.setText(tvStatus.getText() + "\nuser.json下载失败！");
+                            appendStatus("user.json下载失败！");
                         }
                         showProgressDialog(false);
                     }
@@ -99,21 +101,23 @@ public class DownloadActivity extends BaseActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        tvStatus.setText(tvStatus.getText() + "\n下载超时，请检查网络!");
-                        showProgressDialog(false);
+                        if (progressDialog.isShowing()) {
+                            appendStatus("下载超时，请检查网络!");
+                            showProgressDialog(false);
+                        }
                     }
                 }, 10000);
 
-                tvStatus.setText(tvStatus.getText() + "\n正在下载  product.json....");
+                appendStatus("正在下载  product.json....");
                 downloadController.downloadProjects(new DownloadController.NetworkCallback_Projects() {
                     @Override
                     public void networkCallback_Projects(boolean success, List<Project> projects) {
                         if (success) {
-                            tvStatus.setText(tvStatus.getText() + "\nproduct.json下载成功！");
+                            appendStatus("product.json下载成功！");
                             MainActivity.PROJECTS = projects;
                             downloadImages(MainActivity.PROJECTS);
                         } else {
-                            tvStatus.setText(tvStatus.getText() + "\nproduct.json下载失败！");
+                            appendStatus("product.json下载失败！");
                         }
                         showProgressDialog(false);
                     }
@@ -129,19 +133,21 @@ public class DownloadActivity extends BaseActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        tvStatus.setText(tvStatus.getText() + "\n下载超时，请检查网络!");
-                        showProgressDialog(false);
+                        if (progressDialog.isShowing()) {
+                            appendStatus("下载超时，请检查网络!");
+                            showProgressDialog(false);
+                        }
                     }
                 }, 10000);
 
-                tvStatus.setText(tvStatus.getText() + "\n正在下载  manual.pdf....");
+                appendStatus("正在下载  manual.pdf....");
                 downloadController.downloadManual(new DownloadController.NetworkCallback_Manual() {
                     @Override
                     public void networkCallback_Manual(boolean success) {
                         if (success) {
-                            tvStatus.setText(tvStatus.getText() + "\nmanual.pdf下载成功！");
+                            appendStatus("manual.pdf下载成功！");
                         } else {
-                            tvStatus.setText(tvStatus.getText() + "\nmanual.pdf下载失败！");
+                            appendStatus("manual.pdf下载失败！");
                         }
 
                         showProgressDialog(false);
@@ -153,8 +159,8 @@ public class DownloadActivity extends BaseActivity {
     }
 
     private void appendStatus(String status) {
-        tvStatus.setText(tvStatus.getText() + "\n" + status);
-        svState.scrollTo(0, tvStatus.getMeasuredHeight() - 3);
+        tvStatus.append("\n" + status);
+        svState.fullScroll(View.FOCUS_DOWN);
     }
 
     private void downloadImages(List<Project> projects) {

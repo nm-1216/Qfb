@@ -9,6 +9,8 @@ import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
 import com.joanzapata.pdfview.listener.OnPageChangeListener;
 import com.sy.qfb.R;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -16,7 +18,7 @@ import butterknife.ButterKnife;
  * Created by jshenf on 2017/6/15.
  */
 
-public class ManualActivity extends Activity {
+public class ManualActivity extends BaseActivity {
 
     @BindView(R.id.pdfview)
     PDFView pdfView;
@@ -30,24 +32,34 @@ public class ManualActivity extends Activity {
 
         String pdfName = "manual.pdf";
 
-        pdfView.fromAsset(pdfName)
+        File dir = getFilesDir();
+        File pdfFile = new File(dir, pdfName);
+
+        if (!pdfFile.exists()) {
+            showAlertDialog("没有下载用户手册，请到下载页进行下载！");
+
+        } else {
+
+            pdfView.fromFile(pdfFile)
+//        pdfView.fromAsset(pdfName)
 //                .pages(0, 2, 1, 3, 3, 3)
-                .defaultPage(1)
-                .showMinimap(false)
-                .enableSwipe(true)
+                    .defaultPage(1)
+                    .showMinimap(false)
+                    .enableSwipe(true)
 //                .onDraw(onDrawListener)
-                .onLoad(new OnLoadCompleteListener() {
-                    @Override
-                    public void loadComplete(int nbPages) {
+                    .onLoad(new OnLoadCompleteListener() {
+                        @Override
+                        public void loadComplete(int nbPages) {
 
-                    }
-                })
-                .onPageChange(new OnPageChangeListener() {
-                    @Override
-                    public void onPageChanged(int page, int pageCount) {
+                        }
+                    })
+                    .onPageChange(new OnPageChangeListener() {
+                        @Override
+                        public void onPageChanged(int page, int pageCount) {
 
-                    }
-                })
-                .load();
+                        }
+                    })
+                    .load();
+        }
     }
 }

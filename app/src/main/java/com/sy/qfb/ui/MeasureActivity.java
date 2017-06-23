@@ -255,7 +255,7 @@ public class MeasureActivity extends BaseActivity {
         RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         params1.width = metrics.widthPixels / 5;
         params1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        params1.setMargins(10, 10, metrics.widthPixels / 25, 10);
+        params1.setMargins(0, metrics.heightPixels / 4, metrics.widthPixels / 25, 10);
         llImages.setLayoutParams(params1);
 
         currentPage_Index = 0;
@@ -509,10 +509,12 @@ public class MeasureActivity extends BaseActivity {
             MainActivity.CURRENT_PAGE = p;
 
             if (p.pictures != null) {
-                for (String pictureName : p.pictures) {
+//                for (String pictureName : p.pictures) {
+                if (p.pictures.length > 0) {
 
                     File fileDir = getFilesDir();
-                    File fileImage = new File(fileDir, pictureName);
+//                    File fileImage = new File(fileDir, pictureName);
+                    File fileImage = new File(fileDir, p.pictures[0]);
 
                     Uri.Builder builder = new Uri.Builder();
                     builder.scheme("file");

@@ -26,9 +26,9 @@ public class UploadController {
         void finish(int successCount, int failCount, HashMap<MeasureData, Integer> uploadRecoder);
     }
 
-//    private static String URL_UPLOAD = "http://114.55.105.88:8088/api/MeasureDatas";
+    private static String URL_UPLOAD = "http://114.55.105.88:8088/api/MeasureDatas";
 
-    private static String URL_UPLOAD = "http://10.90.75.149:51956/api/MeasureDatas";
+//    private static String URL_UPLOAD = "http://10.90.75.149:51956/api/MeasureDatas";
 
     SQLiteDatabase db_shared;
     Cursor cursor;
@@ -137,6 +137,7 @@ public class UploadController {
 
         @Override
         public void onErrorResponse(VolleyError error) {
+            error.printStackTrace();
             if (uploadRecoder.containsKey(measureData)) {
                 uploadRecoder.put(measureData, 2);
             }
@@ -188,33 +189,68 @@ public class UploadController {
             this.measureData = data;
         }
 
+
         @Override
         protected Map<String, String> getParams() throws AuthFailureError {
             Map<String, String> params = new HashMap<String, String>();
 //            params.put("data_id", "" + measureData.dataId);
+
+            Logger.d("projectId = " + measureData.projectId + ", projectName = " + measureData.projectName +
+            ", productId = " + measureData.productId + ", productName = " + measureData.productName +
+            ", targetId = " + measureData.targetName + ", targetName = " + measureData.targetName +
+            ", targetType = " + measureData.targetType + ", pageId = " + measureData.pageId +
+            ", measurePoint = " +measureData.measure_point + ", direction = " + measureData.direction +
+            ", value1 = " + measureData.value1 + ", value2 = " + measureData.value2 +
+            ", value3 = " + measureData.value3 + ", value4 = " + measureData.value4 +
+            ", username = " + measureData.username + ", timestamp = " + measureData.timestamp);
+
             params.put("ProjectId", "" + measureData.projectId);
-            params.put("ProjectName", measureData.projectName);
+            params.put("ProjectName", measureData.projectName == null ? "" : measureData.projectName);
             params.put("ProductId", "" + measureData.productId);
-            params.put("ProductName", measureData.productName);
+            params.put("ProductName", measureData.productName == null ? "" : measureData.productName);
             params.put("TargetId", "" + measureData.targetId);
-            params.put("TargetName", measureData.targetName);
-            params.put("TargetType", measureData.targetType);
+            params.put("TargetName", measureData.targetName == null ? "" : measureData.targetName);
+            params.put("TargetType", measureData.targetType == null ? "" : measureData.targetType);
             params.put("PageId", "" + measureData.pageId);
-            params.put("MeasurePoint", measureData.measure_point);
-            params.put("Direction", measureData.direction);
-            params.put("Value1", measureData.value1);
-            params.put("Value2", measureData.value2);
-            params.put("Value3", measureData.value3);
-            params.put("Value4", measureData.value4);
-            params.put("Username", measureData.username);
+            params.put("MeasurePoint", measureData.measure_point == null ? "" : measureData.measure_point);
+            params.put("Direction", measureData.direction == null ? "" : measureData.direction);
+            params.put("Value1", measureData.value1 == null ? "" : measureData.value1);
+            params.put("Value2", measureData.value2 == null ? "" : measureData.value2);
+            params.put("Value3", measureData.value3 == null ? "" : measureData.value3);
+            params.put("Value4", measureData.value4 == null ? "" : measureData.value4);
+            params.put("Username", measureData.username == null ? "" : measureData.username);
             params.put("Timestamp", "" + measureData.timestamp);
+
+
+//            params.put("ProjectId", "" + 1);
+//            params.put("ProjectName", "Car");
+//            params.put("ProductId", "" + 1);
+//            params.put("ProductName", "Door");
+//            params.put("TargetId", "" + 1);
+//            params.put("TargetName", "Hole");
+//            params.put("TargetType", "NG,OK");
+//            params.put("PageId", "" + 1);
+//            params.put("MeasurePoint", "sdf23");
+//            params.put("Direction", "CC");
+//            params.put("Value1", "OK");
+//            params.put("Value2", "OK");
+//            params.put("Value3", "NG");
+//            params.put("Value4", "NG");
+//            params.put("Username", "shenyin");
+//            params.put("Timestamp", "" + 112234235);
+
             return params;
+        }
+
+        @Override
+        protected String getParamsEncoding() {
+            return "UTF-8";
         }
 
         @Override
         public Map<String, String> getHeaders() throws AuthFailureError {
             Map<String, String> result = super.getHeaders();
-            result.put("Content-Type", "application/x-www-form-urlencoded");
+//            result.put("Content-Type", "application/x-www-form-urlencoded");
             return result;
         }
     }
