@@ -154,7 +154,7 @@ public class DownloadActivity extends BaseActivity {
 
     private void appendStatus(String status) {
         tvStatus.setText(tvStatus.getText() + "\n" + status);
-        svState.scrollTo(0, tvStatus.getMeasuredHeight() - 100);
+        svState.scrollTo(0, tvStatus.getMeasuredHeight() - 3);
     }
 
     private void downloadImages(List<Project> projects) {

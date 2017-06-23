@@ -49,13 +49,18 @@ public class DownloadController {
 //    private static final String url_project = "http://10.90.75.149/project.json";
 //    private static final String url_manual = "http://10.90.75.149/manual.pdf";
 
+//    public static final String SERVER = "http://106.15.231.194/";
+//    private static final String url_user = "http://106.15.231.194/user.json";
+//    private static final String url_project = "http://106.15.231.194/project.json";
+//    private static final String url_manual = "http://106.15.231.194/manual.pdf";
 
-    public static final String SERVER = "http://106.15.231.194/";
-    private static final String url_user = "http://106.15.231.194/user.json";
-    private static final String url_project = "http://106.15.231.194/project.json";
-    private static final String url_manual = "http://106.15.231.194/manual.pdf";
 
-        public interface NetworkCallback_Users {
+    public static final String SERVER = "http://114.55.105.88:8088/res/";
+    private static final String url_user = "http://114.55.105.88:8088/res/user.json";
+    private static final String url_project = "http://114.55.105.88:8088/res/project.json";
+    private static final String url_manual = "http://114.55.105.88:8088/res/manual.pdf";
+
+    public interface NetworkCallback_Users {
         void networkCallback_Users(boolean success, List<User> users);
     }
 

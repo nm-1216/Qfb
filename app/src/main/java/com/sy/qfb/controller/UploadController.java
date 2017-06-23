@@ -26,6 +26,8 @@ public class UploadController {
         void finish(int successCount, int failCount, HashMap<MeasureData, Integer> uploadRecoder);
     }
 
+    private static String URL_UPLOAD = "http://114.55.105.88:8088/api/MeasureDatas";
+
     SQLiteDatabase db_shared;
     Cursor cursor;
 
@@ -96,10 +98,9 @@ public class UploadController {
         db_shared.close();
 
         for (MeasureData measureData : uploadRecoder.keySet()) {
-            String url = "";
             VolleyHelper volleyHelper = VolleyHelper.getInstance();
             volleyHelper.makeRequest(new UploadDataRequest(
-                    StringRequest.Method.POST, url, new UploadSuccess(measureData, callback),
+                    StringRequest.Method.POST, URL_UPLOAD, new UploadSuccess(measureData, callback),
                     new UploadFail(measureData, callback), measureData));
         }
     }
@@ -188,22 +189,23 @@ public class UploadController {
         @Override
         protected Map<String, String> getParams() throws AuthFailureError {
             Map<String, String> params = new HashMap<String, String>();
-            params.put("data_id", "" + measureData.dataId);
-            params.put("project_id", "" + measureData.projectId);
-            params.put("project_name", measureData.projectName);
-            params.put("product_id", "" + measureData.productId);
-            params.put("product_name", measureData.productName);
-            params.put("target_id", "" + measureData.targetId);
-            params.put("target_name", measureData.targetName);
-            params.put("target_type", measureData.targetType);
-            params.put("page_id", "" + measureData.pageId);
-            params.put("measure_point", measureData.measure_point);
-            params.put("value1", measureData.value1);
-            params.put("value2", measureData.value2);
-            params.put("value3", measureData.value3);
-            params.put("value4", measureData.value4);
-            params.put("username", measureData.username);
-            params.put("timestamp", "" + measureData.timestamp);
+//            params.put("data_id", "" + measureData.dataId);
+            params.put("ProjectId", "" + measureData.projectId);
+            params.put("ProjectName", measureData.projectName);
+            params.put("ProductId", "" + measureData.productId);
+            params.put("ProductName", measureData.productName);
+            params.put("TargetId", "" + measureData.targetId);
+            params.put("TargetName", measureData.targetName);
+            params.put("TargetType", measureData.targetType);
+            params.put("PageId", "" + measureData.pageId);
+            params.put("MeasurePoint", measureData.measure_point);
+            params.put("Direction", measureData.direction);
+            params.put("Value1", measureData.value1);
+            params.put("Value2", measureData.value2);
+            params.put("Value3", measureData.value3);
+            params.put("Value4", measureData.value4);
+            params.put("Username", measureData.username);
+            params.put("Timestamp", "" + measureData.timestamp);
             return params;
         }
 
