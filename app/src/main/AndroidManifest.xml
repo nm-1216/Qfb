@@ -60,6 +60,9 @@
             android:screenOrientation="landscape" />
         <activity android:name=".ui.ManualActivity"
             android:screenOrientation="landscape" />
+        <activity android:name=".ui.ImageViewActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
 
         <activity
             android:name=".ble.activity.AchartAcitivty"

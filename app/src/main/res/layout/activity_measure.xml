@@ -73,11 +73,11 @@
 
             <TextView
                 android:id="@+id/tv_connection_state"
-                android:layout_width="100dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@android:color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:visibility="gone" />
 
         </LinearLayout>

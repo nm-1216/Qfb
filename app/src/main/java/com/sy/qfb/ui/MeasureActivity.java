@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -128,10 +129,15 @@ public class MeasureActivity extends BaseActivity {
 
     private BluetoothLeService mBluetoothLeService;
     private BluetoothGattCharacteristic mNotifyCharacteristic;
+    private final String LIST_NAME = "NAME";
+    private final String LIST_UUID = "UUID";
+    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
     private String mDeviceName;
     private String mDeviceAddress;
     private boolean mConnected = false;
     private ProgressDialog dialog = null;
+
+    private boolean changed = false;
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -176,24 +182,32 @@ public class MeasureActivity extends BaseActivity {
 //                clearUI();
                 mBluetoothLeService.connect(mDeviceAddress);
 //                dialog.hide();
-                progressDialog.hide();
+                if (progressDialog.isShowing()) {
+                    progressDialog.hide();
+                }
 //				updateConnectionState(R.string.connected_server);
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
                     .equals(action)) {
                 //服务加载完毕
                 // Show all the supported services and characteristics on the
                 // user interface.
-//                displayGattServices(mBluetoothLeService
-//                        .getSupportedGattServices());
+                displayGattServices(mBluetoothLeService
+                        .getSupportedGattServices());
 //                dialog.hide();
-                progressDialog.hide();
+                if (progressDialog.isShowing()) {
+                    progressDialog.hide();
+                }
                 updateConnectionState(R.string.connected_server);
 
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+
+                Logger.d("data available");
                 //数据显示
                 displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
 //                dialog.hide();
-                progressDialog.hide();
+                if (progressDialog.isShowing()) {
+                    progressDialog.hide();
+                }
 //				updateConnectionState(R.string.connected_server);
             }
 
@@ -210,20 +224,27 @@ public class MeasureActivity extends BaseActivity {
         });
     }
 
-    private void displayData(String data) {
+    private void displayData(final String data) {
         if (data != null) {
 //            mDataField.setText(data);
 
-            int c_rows = currentPaten_TextViewArray.length;
-            int c_cols = 4;
-            if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
-                    currentCol_TvArray >= 0 && currentCol_TvArray <4) {
-                TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
-                if (tv != null) {
-                    tv.setText(data);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    int c_rows = currentPaten_TextViewArray.length;
+                    int c_cols = 4;
+                    if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
+                            currentCol_TvArray >= 0 && currentCol_TvArray <4) {
+                        TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
+                        if (tv != null) {
+                            tv.setText(data);
+                        }
+                    }
+                    goNextCell();
+
+                    changed = true;
                 }
-            }
-            goNextCell();
+            });
 
         }
     }
@@ -299,6 +320,7 @@ public class MeasureActivity extends BaseActivity {
                     }
                 }
                 goNextCell();
+                changed = true;
             }
         });
 
@@ -315,6 +337,7 @@ public class MeasureActivity extends BaseActivity {
                     }
                 }
                 goNextCell();
+                changed = true;
             }
         });
 
@@ -344,15 +367,30 @@ public class MeasureActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        dialog = new ProgressDialog(MeasureActivity.this);
-        dialog.setMessage("正在加载服务");
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        if (mBluetoothLeService != null) {
-            final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-            Logger.d("Connect request result=" + result);
+        if (MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data")) {
+            dialog = new ProgressDialog(MeasureActivity.this);
+            dialog.setMessage("正在加载服务");
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+//            if (mBluetoothLeService != null) {
+//                final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+//                Logger.d("Connect request result=" + result);
+//            }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mGattUpdateReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(mServiceConnection);
+        mBluetoothLeService = null;
     }
 
     private void showSaveDialog() {
@@ -464,6 +502,7 @@ public class MeasureActivity extends BaseActivity {
 
             currentPaten_TextViewArray = new TextView[mpoints.length][4];
 
+            changed = false;
             boolean hasPreviousData = page_datas.containsKey(currentPage_Index);
 
             LayoutInflater layoutInflater = getLayoutInflater();
@@ -494,6 +533,7 @@ public class MeasureActivity extends BaseActivity {
                 if (hasPreviousData) {
                     List<MeasureData> datas = page_datas.get(currentPage_Index);
                     loadPreviousData(datas, mpoints[i].point, tvData1, tvData2, tvData3, tvData4);
+                    changed = true;
                 }
 
                 currentPaten_TextViewArray[i][0] = tvData1;
@@ -522,6 +562,7 @@ public class MeasureActivity extends BaseActivity {
                     Uri uri = builder.build();
                     img1.setImageURI(uri);
 
+                    img1.setOnClickListener(new ImageOnClickListener(p.pictures[0]));
                 }
             }
 
@@ -529,6 +570,22 @@ public class MeasureActivity extends BaseActivity {
             currentCol_TvArray = 0;
             currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
             hilightTextView(currentPage_ActiveTextView, true);
+
+        }
+    }
+
+    private class ImageOnClickListener implements View.OnClickListener {
+        private String picName;
+
+        public ImageOnClickListener(String picName) {
+            this.picName = picName;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MeasureActivity.this, ImageViewActivity.class);
+            intent.putExtra("PIC_NAME", picName);
+            startActivity(intent);
         }
     }
 
@@ -589,6 +646,8 @@ public class MeasureActivity extends BaseActivity {
     }
 
     private void saveData() {
+        if (!changed) return;
+
         List<MeasureData> lstMeasureData = new ArrayList<MeasureData>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
@@ -642,6 +701,89 @@ public class MeasureActivity extends BaseActivity {
                 .addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         return intentFilter;
+    }
+    private void displayGattServices(List<BluetoothGattService> gattServices) {
+        if (gattServices == null)
+            return;
+        String uuid = null;
+        // String unknownServiceString =
+        // getResources().getString(R.string.unknown_service);
+        // String unknownCharaString =
+        // getResources().getString(R.string.unknown_characteristic);
+
+        //服务数据
+        ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<HashMap<String, String>>();
+        //特性数据
+        ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData = new ArrayList<ArrayList<HashMap<String, String>>>();
+
+        mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+
+        // Loops through available GATT Services.
+        // 遍历可用的GATT服务
+        for (BluetoothGattService gattService : gattServices) {
+            HashMap<String, String> currentServiceData = new HashMap<String, String>();
+            uuid = gattService.getUuid().toString();
+            // if (uuid.equals("0000fff0-0000-1000-8000-00805f9b34fb")) {
+            currentServiceData.put(LIST_NAME,
+                    SampleGattAttributes.lookup(uuid, "MeasureData CharaString"));
+            currentServiceData.put(LIST_UUID, uuid);
+            gattServiceData.add(currentServiceData);
+
+            ArrayList<HashMap<String, String>> gattCharacteristicGroupData = new ArrayList<HashMap<String, String>>();
+            List<BluetoothGattCharacteristic> gattCharacteristics = gattService
+                    .getCharacteristics();
+            ArrayList<BluetoothGattCharacteristic> charas = new ArrayList<BluetoothGattCharacteristic>();
+
+            // Loops through available Characteristics.
+            for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
+                // charas.add(gattCharacteristic);
+                HashMap<String, String> currentCharaData = new HashMap<String, String>();
+                uuid = gattCharacteristic.getUuid().toString();
+
+                charas.add(gattCharacteristic);
+                currentCharaData.put(LIST_NAME,
+                        SampleGattAttributes.lookup(uuid, "MeasureData CharaString"));
+                currentCharaData.put(LIST_UUID, uuid);
+                gattCharacteristicGroupData.add(currentCharaData);
+
+                if (uuid.equals("0000fff4-0000-1000-8000-00805f9b34fb")) {
+                    final int charaProp = gattCharacteristic.getProperties();
+
+                    if ((charaProp | BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
+                        // If there is an active notification on a characteristic,
+                        // clear
+                        // it first so it doesn't update the data field on the user
+                        // interface.
+                        if (mNotifyCharacteristic != null) {
+                            mBluetoothLeService.setCharacteristicNotification(
+                                    mNotifyCharacteristic, false);
+                            mNotifyCharacteristic = null;
+                        }
+                        mBluetoothLeService.readCharacteristic(gattCharacteristic);
+                    }
+                    if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
+                        mNotifyCharacteristic = gattCharacteristic;
+                        mBluetoothLeService.setCharacteristicNotification(
+                                gattCharacteristic, true);
+                    }
+                }
+
+            }
+            mGattCharacteristics.add(charas);
+            gattCharacteristicData.add(gattCharacteristicGroupData);
+            // }
+        }
+
+//        SimpleExpandableListAdapter gattServiceAdapter = new SimpleExpandableListAdapter(
+//                this, gattServiceData,
+//                android.R.layout.simple_expandable_list_item_2, new String[]{
+//                LIST_NAME, LIST_UUID}, new int[]{android.R.id.text1,
+//                android.R.id.text2}, gattCharacteristicData,
+//                android.R.layout.simple_expandable_list_item_2, new String[]{
+//                LIST_NAME, LIST_UUID}, new int[]{android.R.id.text1,
+//                android.R.id.text2});
+//        mGattServicesList.setAdapter(gattServiceAdapter);
+
     }
 
 

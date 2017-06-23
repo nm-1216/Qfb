@@ -3,7 +3,8 @@
 
 
 
-    <string name="qf_name">质量测量采集</string>
+    <!--<string name="qf_name">质量测量采集</string>-->
+    <string name="qf_name">无线千分表</string>
     <string name="ble_not_supported">不支持蓝牙4.0</string>
     <string name="label_data">数据:</string>
     <string name="label_device_address">设备地址:</string>
