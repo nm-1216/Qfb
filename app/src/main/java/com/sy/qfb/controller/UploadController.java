@@ -26,7 +26,9 @@ public class UploadController {
         void finish(int successCount, int failCount, HashMap<MeasureData, Integer> uploadRecoder);
     }
 
-    private static String URL_UPLOAD = "http://114.55.105.88:8088/api/MeasureDatas";
+//    private static String URL_UPLOAD = "http://114.55.105.88:8088/api/MeasureDatas";
+
+    private static String URL_UPLOAD = "http://10.90.75.149:51956/api/MeasureDatas";
 
     SQLiteDatabase db_shared;
     Cursor cursor;

@@ -44,7 +44,7 @@ public class UploadActivity extends BaseActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        tvUploadStatus.setText(tvUploadStatus.getText() + "\n下载超时，请检查网络！");
+                        tvUploadStatus.setText(tvUploadStatus.getText() + "\n上传超时，请检查网络！");
                         showProgressDialog(false);
                     }
                 }, 10000);
