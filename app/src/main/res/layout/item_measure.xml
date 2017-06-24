@@ -6,33 +6,39 @@
     <TextView
         android:id="@+id/tv_mp_name"
         android:text="2327SCO"
+        android:layout_span="2"
         style="@style/table_content"/>
 
     <TextView
         android:id="@+id/tv_mp_direction"
         android:text="C/C"
+        android:layout_span="2"
         style="@style/table_content"/>
 
     <TextView
         android:id="@+id/tv_data1"
+        android:layout_span="3"
         style="@style/table_content"/>
 
     <TextView
         android:id="@+id/tv_data2"
+        android:layout_span="3"
         style="@style/table_content"/>
 
     <TextView
         android:id="@+id/tv_data3"
+        android:layout_span="3"
         style="@style/table_content"/>
 
     <TextView
         android:id="@+id/tv_data4"
+        android:layout_span="3"
         style="@style/table_content"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_span="3"
+        android:layout_span="8"
         android:background="@android:color/white"
         android:gravity="center"
         android:textColor="@android:color/black"

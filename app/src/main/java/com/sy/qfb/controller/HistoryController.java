@@ -60,8 +60,23 @@ public class HistoryController {
                 item.productName = cursor_entries.getString(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PRD_NAME));
                 item.targetId = cursor_entries.getInt(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TID));
                 item.targetName = cursor_entries.getString(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_NAME));
-                item.targetType = cursor_entries.getString(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_TYPE));
+                item.targetType = cursor_entries.getString(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_TYPE));;
                 item.timeStamp = cursor_entries.getLong(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP));
+
+//                Cursor c_time = db_entries.rawQuery("SELECT " + QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + " FROM " +
+//                                QfbContract.DataEntry.TABLE_NAME + " WHERE " +
+//                                QfbContract.DataEntry.COLUMN_NAME_PROJID + "=" + item.projectId + " AND " +
+//                                QfbContract.DataEntry.COLUMN_NAME_PROJ_NAME + "='" + item.projectName + "' AND " +
+//                                QfbContract.DataEntry.COLUMN_NAME_PRDID + "=" + item.productId + " AND " +
+//                                QfbContract.DataEntry.COLUMN_NAME_PRD_NAME + "='" + item.productName + "' AND " +
+//                                QfbContract.DataEntry.COLUMN_NAME_TID + "=" + item.targetId + " AND " +
+//                                QfbContract.DataEntry.COLUMN_NAME_T_NAME + "='" + item.targetName + "'"
+//                        , null);
+//                if (c_time.getCount() > 0) {
+//                    c_time.moveToFirst();
+//                    item.timeStamp = c_time.getLong(c_time.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP));
+//                }
+//                c_time.close();
 
                 result.add(item);
 
@@ -96,6 +111,7 @@ public class HistoryController {
                 String targetType = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_TYPE));
                 int pageId = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PGID));
                 String measurePoint = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_MPOINT));
+                String direction = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_DIRECTION));
                 String value1 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_1));
                 String value2 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_2));
                 String value3 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_3));
@@ -115,6 +131,7 @@ public class HistoryController {
                 data.targetType = targetType;
                 data.pageId = pageId;
                 data.measure_point = measurePoint;
+                data.direction = direction;
                 data.value1 = value1;
                 data.value2 = value2;
                 data.value3 = value3;

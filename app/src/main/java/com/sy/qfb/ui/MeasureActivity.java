@@ -43,12 +43,14 @@ import com.sy.qfb.ble.activity.DeviceControlActivity;
 import com.sy.qfb.ble.activity.DeviceScanActivity;
 import com.sy.qfb.ble.service.BluetoothLeService;
 import com.sy.qfb.ble.utils.SampleGattAttributes;
+import com.sy.qfb.controller.QfbController;
 import com.sy.qfb.controller.SaveController;
 import com.sy.qfb.model.MeasureData;
 import com.sy.qfb.model.MeasurePoint;
 import com.sy.qfb.model.Page;
 import com.sy.qfb.model.Target;
 import com.sy.qfb.util.ToastHelper;
+import com.sy.qfb.viewmodel.ProjectHistoryItem;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -111,6 +113,9 @@ public class MeasureActivity extends BaseActivity {
     @BindView(R.id.ll_images)
     LinearLayout llImages;
 
+    @BindView(R.id.tv_img_header)
+    TextView tvImgHeader;
+
     private int currentPage_Index = 0;
     private List<View> currentPage_Rows = new ArrayList<View>();
     private TextView[][] currentPaten_TextViewArray;
@@ -138,6 +143,13 @@ public class MeasureActivity extends BaseActivity {
     private ProgressDialog dialog = null;
 
     private boolean changed = false;
+
+    private QfbController qfbController = new QfbController();
+
+    private ProjectHistoryItem projectHistoryItem;
+    private boolean isShowingHistory = false;
+
+    private Calendar savingCalendar;
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -255,7 +267,13 @@ public class MeasureActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measure);
 
+        savingCalendar = Calendar.getInstance();
+        savingCalendar.setTime(new Date());
+
+
         ButterKnife.bind(this);
+
+        this.isShowingHistory = getIntent().hasExtra("history_item");
 
         tvPartPn.setText("" + MainActivity.CURRENT_PRODUCT.product_id);
 
@@ -265,24 +283,34 @@ public class MeasureActivity extends BaseActivity {
         tvDate.setText(sdf.format(new Date()));
 
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//        DisplayMetrics metrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//
+//        img1.setMaxWidth(metrics.widthPixels / 4);
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        params.width = metrics.widthPixels / 5;
+//        img1.setLayoutParams(params);
+//
+//        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//        params1.width = metrics.widthPixels / 5;
+//        params1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//        params1.setMargins(0, metrics.heightPixels / 7, metrics.widthPixels / 25, 10);
+//        llImages.setLayoutParams(params1);
 
-        img1.setMaxWidth(metrics.widthPixels / 4);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.width = metrics.widthPixels / 5;
-        img1.setLayoutParams(params);
 
-        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params1.width = metrics.widthPixels / 5;
-        params1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        params1.setMargins(0, metrics.heightPixels / 4, metrics.widthPixels / 25, 10);
-        llImages.setLayoutParams(params1);
+        if (isShowingHistory) {
+            this.projectHistoryItem = (ProjectHistoryItem) getIntent().getSerializableExtra("history_item");
+
+        }
 
         currentPage_Index = 0;
         loadTable();
         setPageIndicator();
         currentPageSaved = false;
+
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        params.width = tvImgHeader.getWidth() - 20;
+//        img1.setLayoutParams(params);
 
         btnPreviousPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -303,6 +331,7 @@ public class MeasureActivity extends BaseActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isShowingHistory) return;
                 saveData();
             }
         });
@@ -310,6 +339,7 @@ public class MeasureActivity extends BaseActivity {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isShowingHistory) return;
                 int c_rows = currentPaten_TextViewArray.length;
                 int c_cols = 4;
                 if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
@@ -327,6 +357,7 @@ public class MeasureActivity extends BaseActivity {
         btnNg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isShowingHistory) return;
                 int c_rows = currentPaten_TextViewArray.length;
                 int c_cols = 4;
                 if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
@@ -341,33 +372,42 @@ public class MeasureActivity extends BaseActivity {
             }
         });
 
+        if (!isShowingHistory) {
+            if (MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data")) {
+                btnNg.setVisibility(View.GONE);
+                btnOk.setVisibility(View.GONE);
+                tvConnectionState.setVisibility(View.VISIBLE);
+            } else {
+                btnNg.setVisibility(View.VISIBLE);
+                btnOk.setVisibility(View.VISIBLE);
+                tvConnectionState.setVisibility(View.GONE);
+            }
+        } else {
+            btnNg.setVisibility(View.INVISIBLE);
+            btnOk.setVisibility(View.INVISIBLE);
+            tvConnectionState.setVisibility(View.GONE);
+            btnSave.setVisibility(View.INVISIBLE);
+        }
 
-
-        if (MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data")) {
-            btnNg.setVisibility(View.GONE);
-            btnOk.setVisibility(View.GONE);
-            tvConnectionState.setVisibility(View.VISIBLE);
-
+        if (shouldCaptureDataFromBT()) {
             final Intent intent = getIntent();
             mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
             mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
             Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
             bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-        } else {
-            btnNg.setVisibility(View.VISIBLE);
-            btnOk.setVisibility(View.VISIBLE);
-            tvConnectionState.setVisibility(View.GONE);
         }
-
     }
 
+    private boolean shouldCaptureDataFromBT() {
+        return MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data") && !isShowingHistory;
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data")) {
+        if (shouldCaptureDataFromBT()) {
             dialog = new ProgressDialog(MeasureActivity.this);
             dialog.setMessage("正在加载服务");
             dialog.setCanceledOnTouchOutside(false);
@@ -383,14 +423,18 @@ public class MeasureActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(mGattUpdateReceiver);
+        if (shouldCaptureDataFromBT() && mGattUpdateReceiver != null) {
+            unregisterReceiver(mGattUpdateReceiver);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(mServiceConnection);
-        mBluetoothLeService = null;
+        if (shouldCaptureDataFromBT() && mServiceConnection != null) {
+            unbindService(mServiceConnection);
+            mBluetoothLeService = null;
+        }
     }
 
     private void showSaveDialog() {
@@ -498,12 +542,12 @@ public class MeasureActivity extends BaseActivity {
             currentPage_Rows.clear();
 
             Page p = pages[currentPage_Index];
+            MainActivity.CURRENT_PAGE = p;
             MeasurePoint[] mpoints = p.measure_points;
 
             currentPaten_TextViewArray = new TextView[mpoints.length][4];
 
             changed = false;
-            boolean hasPreviousData = page_datas.containsKey(currentPage_Index);
 
             LayoutInflater layoutInflater = getLayoutInflater();
             for (int i = 0; i < mpoints.length; ++i) {
@@ -530,12 +574,6 @@ public class MeasureActivity extends BaseActivity {
                     tvData4.setOnClickListener(new ClickLisenter_Data(i, 3));
                 }
 
-                if (hasPreviousData) {
-                    List<MeasureData> datas = page_datas.get(currentPage_Index);
-                    loadPreviousData(datas, mpoints[i].point, tvData1, tvData2, tvData3, tvData4);
-                    changed = true;
-                }
-
                 currentPaten_TextViewArray[i][0] = tvData1;
                 currentPaten_TextViewArray[i][1] = tvData2;
                 currentPaten_TextViewArray[i][2] = tvData3;
@@ -546,7 +584,44 @@ public class MeasureActivity extends BaseActivity {
                 currentPage_Rows.add(view);
             }
 
-            MainActivity.CURRENT_PAGE = p;
+            List<MeasureData> todayData = qfbController.GetTodayData(
+                    MainActivity.CURRENT_PROJECT.project_id,
+                    MainActivity.CURRENT_PROJECT.project_name,
+                    MainActivity.CURRENT_PRODUCT.product_id,
+                    MainActivity.CURRENT_PRODUCT.product_name,
+                    MainActivity.CURRENT_TARGET.target_id,
+                    MainActivity.CURRENT_TARGET.target_name,
+                    p.page_id, LoginActivity.CURRENT_USER.username
+            );
+            Logger.d("todayData.size() = " + todayData.size());
+            if (todayData.size() > 0) {
+                for (View view : currentPage_Rows) {
+                    TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
+                    TextView tvDirection = (TextView) view.findViewById(R.id.tv_mp_direction);
+                    TextView tvData1 = (TextView) view.findViewById(R.id.tv_data1);
+                    TextView tvData2 = (TextView) view.findViewById(R.id.tv_data2);
+                    TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
+                    TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
+
+                    String mp = tvName.getText().toString();
+                    String direction = tvDirection.getText().toString();
+
+                    Logger.d("mp = " + mp + ", direction = " + direction);
+
+                    for (MeasureData md : todayData) {
+                        if (mp.equals(md.measure_point) && direction.equals(md.direction)) {
+                            Logger.d("has match");
+                            tvData1.setText(md.value1);
+                            tvData2.setText(md.value2);
+                            tvData3.setText(md.value3);
+                            tvData4.setText(md.value4);
+//                            changed = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
 
             if (p.pictures != null) {
 //                for (String pictureName : p.pictures) {
@@ -649,8 +724,6 @@ public class MeasureActivity extends BaseActivity {
         if (!changed) return;
 
         List<MeasureData> lstMeasureData = new ArrayList<MeasureData>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
         for (View view : currentPage_Rows) {
             MeasureData data = new MeasureData();
 
@@ -668,7 +741,9 @@ public class MeasureActivity extends BaseActivity {
             data.value4 = tvData4.getText().toString();
 
             data.username = LoginActivity.CURRENT_USER.username;
-            data.timestamp = calendar.getTimeInMillis();
+            data.timestamp = savingCalendar.getTimeInMillis();
+
+            Logger.d("saved timestamp = " + data.timestamp);
 
             data.projectId = MainActivity.CURRENT_PROJECT.project_id;
             data.productId = MainActivity.CURRENT_PRODUCT.product_id;
@@ -702,6 +777,7 @@ public class MeasureActivity extends BaseActivity {
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         return intentFilter;
     }
+
     private void displayGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null)
             return;

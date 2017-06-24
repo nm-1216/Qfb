@@ -3,6 +3,7 @@ package com.sy.qfb.ble;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -12,6 +13,8 @@ import com.orhanobut.logger.LogcatLogStrategy;
 import com.orhanobut.logger.Logger;
 import com.orm.SugarContext;
 import com.sy.qfb.controller.InitController;
+import com.sy.qfb.db.QfbContract;
+import com.sy.qfb.db.QfbDbHelper;
 import com.sy.qfb.net.VolleyHelper;
 
 @SuppressLint("SdCardPath")
@@ -33,6 +36,8 @@ public class MyApplication extends Application {
 
 //        deleteDatabase("Qfb.db");
 
+//        emptyDataDB();
+
 //        Logger.addLogAdapter(new AndroidLogAdapter());
 
         Logger.addLogAdapter(new LogAdapter() {
@@ -48,6 +53,12 @@ public class MyApplication extends Application {
         });
 
         new InitController().init();
+    }
+
+    private void emptyDataDB() {
+        SQLiteDatabase db = QfbDbHelper.getInstance().getWritableDatabase();
+        db.execSQL("DELETE FROM " + QfbContract.DataEntry.TABLE_NAME);
+        db.close();
     }
 
     public void setFileName(String filename) {
