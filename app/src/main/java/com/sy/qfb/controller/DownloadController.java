@@ -126,7 +126,9 @@ public class DownloadController {
                     lstProjects.add(projects[i]);
                 }
 
-
+                InitController initController = new InitController();
+                initController.clearAllProjectTables();
+                initController.readProjectsFromJsonString(response);
 
                 if (callback != null) {
                     callback.networkCallback_Projects(true, lstProjects);

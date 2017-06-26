@@ -3,6 +3,7 @@ package com.sy.qfb.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
+import com.sy.qfb.ble.activity.DeviceControlActivity;
 import com.sy.qfb.ble.activity.DeviceScanActivity;
 import com.sy.qfb.model.Target;
 
@@ -96,8 +98,16 @@ public class MeasureSubjectActivity extends BaseActivity {
             public void onClick(View v) {
                 MainActivity.CURRENT_TARGET = target;
                 if ("data".equals(target.value_type)) {
-                    Intent intent = new Intent(MeasureSubjectActivity.this, DeviceScanActivity.class);
-                    startActivity(intent);
+                    if (TextUtils.isEmpty(DeviceScanActivity.CURRENT_DEVICE_NAME) ||
+                            TextUtils.isEmpty(DeviceScanActivity.CURRENT_DEVICE_ADDRESS)) {
+                        Intent intent = new Intent(MeasureSubjectActivity.this, DeviceScanActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(MeasureSubjectActivity.this, MeasureActivity.class);
+                        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, DeviceScanActivity.CURRENT_DEVICE_NAME);
+                        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, DeviceScanActivity.CURRENT_DEVICE_ADDRESS);
+                        startActivity(intent);
+                    }
                 } else {
                     Intent intent = new Intent(MeasureSubjectActivity.this, MeasureActivity.class);
                     startActivity(intent);

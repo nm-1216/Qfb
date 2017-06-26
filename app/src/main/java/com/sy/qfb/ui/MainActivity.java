@@ -98,9 +98,6 @@ public class MainActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        qfbController = new QfbController();
-        PROJECTS = qfbController.getProjects();
-
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,10 +130,18 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        qfbController = new QfbController();
+        PROJECTS = qfbController.getProjects();
+
+//        projectAdapter.notifyDataSetChanged();
         projectAdapter = new ProjectAdapter();
         lvProject.setAdapter(projectAdapter);
     }
-
 
     private class ProjectAdapter extends BaseAdapter {
         List<Object> items;
