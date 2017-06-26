@@ -213,7 +213,8 @@ public class MainActivity extends BaseActivity {
                     }
                 }
 
-                tvProjectName.setText("       " + product.product_name + " - " + product.product_id);
+//                tvProjectName.setText("       " + product.product_name + " - " + product.product_id);
+                tvProjectName.setText("       " + product.product_name);
                 view.setOnClickListener(new ClickListener_Product(project, product));
             }
 
