@@ -101,25 +101,27 @@
         android:layout_below="@id/common_header">
 
         <LinearLayout
+            android:id="@+id/ll_form_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:orientation="horizontal">
 
-            <TextView
-                style="@style/table_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
-                android:text="零件号" />
+            <!--<TextView-->
+                <!--style="@style/table_header"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="100dp"-->
+                <!--android:text="零件号" />-->
 
-            <TextView
-                android:id="@+id/tv_part_pn"
-                style="@style/table_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="150dp"
-                android:textColor="@android:color/darker_gray"
-                android:textStyle="normal" />
+            <!--<TextView-->
+                <!--android:id="@+id/tv_part_pn"-->
+                <!--style="@style/table_header"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:minWidth="150dp"-->
+                <!--android:textColor="@android:color/darker_gray"-->
+                <!--android:textStyle="normal" />-->
 
             <TextView
                 style="@style/table_header"
@@ -132,14 +134,17 @@
                 style="@style/table_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="150dp"
+                android:minWidth="400dp"
                 android:textColor="@android:color/darker_gray"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:textStyle="normal" />
 
             <TextView
                 style="@style/table_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:text="测量项" />
 
             <TextView
@@ -171,6 +176,7 @@
         <ScrollView
             android:id="@+id/sc_scroll"
             android:layout_width="match_parent"
+            android:layout_below="@id/ll_form_title"
             android:layout_height="match_parent">
 
             <TableLayout

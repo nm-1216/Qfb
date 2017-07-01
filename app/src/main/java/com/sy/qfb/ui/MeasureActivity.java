@@ -86,8 +86,8 @@ public class MeasureActivity extends BaseActivity {
     @BindView(R.id.tv_page_indicator)
     TextView tvPageIndicator;
 
-    @BindView(R.id.tv_part_pn)
-    TextView tvPartPn;
+//    @BindView(R.id.tv_part_pn)
+//    TextView tvPartPn;
 
     @BindView(R.id.tv_part_name)
     TextView tvPartName;
@@ -275,9 +275,11 @@ public class MeasureActivity extends BaseActivity {
 
         this.isShowingHistory = getIntent().hasExtra("history_item");
 
-        tvPartPn.setText("" + MainActivity.CURRENT_PRODUCT.product_id);
+//        tvPartPn.setText("" + MainActivity.CURRENT_PRODUCT.product_id);
+//        tvPartName.setText(MainActivity.CURRENT_PRODUCT.product_name);
 
-        tvPartName.setText(MainActivity.CURRENT_PRODUCT.product_name);
+        tvPartName.setText(MainActivity.CURRENT_PRODUCT.product_name + " " +
+                MainActivity.CURRENT_PRODUCT.product_id);
         tvMeasureTarget.setText(MainActivity.CURRENT_TARGET.target_name);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         tvDate.setText(sdf.format(new Date()));
