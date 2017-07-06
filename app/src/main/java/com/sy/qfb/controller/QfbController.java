@@ -207,10 +207,10 @@ public class QfbController {
         return result;
     }
 
-    public List<MeasureData> GetTodayData(int projectId, String projectName,
+    public List<MeasureData> GetDataByDate(int projectId, String projectName,
                                           int productId, String productName,
                                           int targetId, String targetName,
-                                          int pageId, String username) {
+                                          int pageId, String username, Date date) {
 
         Logger.d("projectId = " + projectId + ", projectName = " + projectName +
         ", productId = " + productId + ", productName = " + productName +
@@ -219,7 +219,6 @@ public class QfbController {
 
         List<MeasureData> result = new ArrayList<MeasureData>();
 
-        Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.set(Calendar.HOUR, 0);

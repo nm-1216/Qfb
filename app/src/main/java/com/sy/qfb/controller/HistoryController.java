@@ -46,7 +46,7 @@ public class HistoryController {
                         QfbContract.DataEntry.COLUMN_NAME_T_TYPE, QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP},
                 QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + ">= ? and " +
                         QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + " < ?",
-                new String[] {"" + min, "" + max}, null, null, null, null);
+                new String[] {"" + min, "" + max}, null, null, QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + " DESC", null);
 
         List<ProjectHistoryItem> result = new ArrayList<ProjectHistoryItem>();
         if (cursor_entries.getCount() > 0) {

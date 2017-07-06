@@ -116,6 +116,12 @@ public class MeasureActivity extends BaseActivity {
     @BindView(R.id.tv_img_header)
     TextView tvImgHeader;
 
+    @BindView(R.id.tv_img_header_2)
+    TextView tvImgHeader2;
+
+    @BindView(R.id.rl_content)
+    RelativeLayout rlContent;
+
     private int currentPage_Index = 0;
     private List<View> currentPage_Rows = new ArrayList<View>();
     private TextView[][] currentPaten_TextViewArray;
@@ -246,7 +252,7 @@ public class MeasureActivity extends BaseActivity {
                     int c_rows = currentPaten_TextViewArray.length;
                     int c_cols = 4;
                     if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
-                            currentCol_TvArray >= 0 && currentCol_TvArray <4) {
+                            currentCol_TvArray >= 0 && currentCol_TvArray < 4) {
                         TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
                         if (tv != null) {
                             tv.setText(data);
@@ -274,6 +280,9 @@ public class MeasureActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         this.isShowingHistory = getIntent().hasExtra("history_item");
+        if (isShowingHistory) {
+            this.projectHistoryItem = (ProjectHistoryItem) getIntent().getParcelableExtra("history_item");
+        }
 
 //        tvPartPn.setText("" + MainActivity.CURRENT_PRODUCT.product_id);
 //        tvPartName.setText(MainActivity.CURRENT_PRODUCT.product_name);
@@ -300,10 +309,7 @@ public class MeasureActivity extends BaseActivity {
 //        llImages.setLayoutParams(params1);
 
 
-        if (isShowingHistory) {
-            this.projectHistoryItem = (ProjectHistoryItem) getIntent().getSerializableExtra("history_item");
 
-        }
 
         currentPage_Index = 0;
         loadTable();
@@ -345,7 +351,7 @@ public class MeasureActivity extends BaseActivity {
                 int c_rows = currentPaten_TextViewArray.length;
                 int c_cols = 4;
                 if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
-                        currentCol_TvArray >= 0 && currentCol_TvArray <4) {
+                        currentCol_TvArray >= 0 && currentCol_TvArray < 4) {
                     TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
                     if (tv != null) {
                         tv.setText("OK");
@@ -363,7 +369,7 @@ public class MeasureActivity extends BaseActivity {
                 int c_rows = currentPaten_TextViewArray.length;
                 int c_cols = 4;
                 if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
-                        currentCol_TvArray >= 0 && currentCol_TvArray <4) {
+                        currentCol_TvArray >= 0 && currentCol_TvArray < 4) {
                     TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
                     if (tv != null) {
                         tv.setText("NG");
@@ -488,17 +494,16 @@ public class MeasureActivity extends BaseActivity {
         }
         currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
 //        if (currentPage_ActiveTextView != null) {
-            hilightTextView(currentPage_ActiveTextView, true);
+        hilightTextView(currentPage_ActiveTextView, true);
 //        }
 
         View vRow = currentPage_Rows.get(currentRow_TvArray);
         int height = scScroll.getMeasuredHeight();
         double scrollY = scScroll.getScrollY();
-        Logger.d("vRow.getY() = " + vRow.getY() + ", scScroll.getScrollY() = " + scScroll.getScrollY()  + ", height = " + height);
+        Logger.d("vRow.getY() = " + vRow.getY() + ", scScroll.getScrollY() = " + scScroll.getScrollY() + ", height = " + height);
         if (vRow.getY() + 70 > scrollY + height) {
             scScroll.scrollTo(0, (int) vRow.getY());
-        }
-        else if (vRow.getY() < scrollY) {
+        } else if (vRow.getY() < scrollY) {
             int target_y = (int) (scrollY - height);
             if (target_y < 0) target_y = 0;
             scScroll.scrollTo(0, target_y);
@@ -586,17 +591,18 @@ public class MeasureActivity extends BaseActivity {
                 currentPage_Rows.add(view);
             }
 
-            List<MeasureData> todayData = qfbController.GetTodayData(
+            List<MeasureData> previousData = qfbController.GetDataByDate(
                     MainActivity.CURRENT_PROJECT.project_id,
                     MainActivity.CURRENT_PROJECT.project_name,
                     MainActivity.CURRENT_PRODUCT.product_id,
                     MainActivity.CURRENT_PRODUCT.product_name,
                     MainActivity.CURRENT_TARGET.target_id,
                     MainActivity.CURRENT_TARGET.target_name,
-                    p.page_id, LoginActivity.CURRENT_USER.username
+                    p.page_id, LoginActivity.CURRENT_USER.username,
+                    isShowingHistory ? new Date(projectHistoryItem.timeStamp) : new Date()
             );
-            Logger.d("todayData.size() = " + todayData.size());
-            if (todayData.size() > 0) {
+            Logger.d("todayData.size() = " + previousData.size());
+            if (previousData.size() > 0) {
                 for (View view : currentPage_Rows) {
                     TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
                     TextView tvDirection = (TextView) view.findViewById(R.id.tv_mp_direction);
@@ -610,7 +616,7 @@ public class MeasureActivity extends BaseActivity {
 
                     Logger.d("mp = " + mp + ", direction = " + direction);
 
-                    for (MeasureData md : todayData) {
+                    for (MeasureData md : previousData) {
                         if (mp.equals(md.measure_point) && direction.equals(md.direction)) {
                             Logger.d("has match");
                             tvData1.setText(md.value1);
@@ -638,6 +644,7 @@ public class MeasureActivity extends BaseActivity {
                     builder.path(fileImage.getAbsolutePath());
                     Uri uri = builder.build();
                     img1.setImageURI(uri);
+                    adjustImg1();
 
                     img1.setOnClickListener(new ImageOnClickListener(p.pictures[0]));
                 }
@@ -649,6 +656,57 @@ public class MeasureActivity extends BaseActivity {
             hilightTextView(currentPage_ActiveTextView, true);
 
         }
+    }
+
+    private void adjustImg1() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        int width_screen = metrics.widthPixels;
+        int height_screen = metrics.heightPixels;
+
+        float frame_x = (float) (width_screen * 16.0 / 24.0);
+        float frame_y = (float) (height_screen * 3.0 / 15.0);
+        int frame_width = (int) (width_screen * 7.8 / 24.0);
+        int frame_height = (int) (height_screen * 2.8 / 5.0);
+
+        int maxWidth = (int) (width_screen * 8.0 / 24.0);
+        int maxHeight = (int) (height_screen * 2.6 / 5.0);
+
+        img1.setMaxWidth(maxWidth);
+        img1.setMaxHeight(maxHeight);
+
+//        llImages.setMinimumWidth(frame_width);
+//        llImages.setMinimumHeight(frame_height);
+        llImages.setX(frame_x);
+        llImages.setY(frame_y);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(frame_width, frame_height);
+        llImages.setLayoutParams(params);
+
+//        int width = img1.getMeasuredWidth();
+//        int height = img1.getMeasuredHeight();
+//
+//        float x = (float)(frame_x + (frame_width - width) / 2.0);
+//        float y = (float)(frame_y + (frame_height - height) / 2.0);
+//        img1.setX(x);
+//        img1.setY(y);
+
+//        img1.setX(frame_x);
+//        img1.setY(frame_y);
+
+//        int contentWidth = rlContent.getMeasuredWidth();
+//        int contentHeight = rlContent.getMeasuredHeight();
+//
+//        float frame_x = tvImgHeader.getX();
+//        float frame_y = tvImgHeader.getY() + tvImgHeader.getMeasuredHeight();
+//        int maxWidth = tvImgHeader.getMeasuredWidth();
+//        int maxHeight = scScroll.getMeasuredHeight() - tvImgHeader.getMeasuredHeight() -
+//                tvImgHeader2.getMeasuredHeight();
+
+//        img1.setMaxWidth(maxWidth);
+//        img1.setMaxHeight(maxHeight);
+
+
     }
 
     private class ImageOnClickListener implements View.OnClickListener {
@@ -692,7 +750,7 @@ public class MeasureActivity extends BaseActivity {
             MeasureActivity.this.currentRow_TvArray = index_row;
             MeasureActivity.this.currentCol_TvArray = index_col;
 
-            if(currentPage_ActiveTextView != null) {
+            if (currentPage_ActiveTextView != null) {
                 hilightTextView(currentPage_ActiveTextView, false);
             }
             currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
@@ -714,7 +772,7 @@ public class MeasureActivity extends BaseActivity {
             MeasureActivity.this.currentRow_TvArray = index_row;
             MeasureActivity.this.currentCol_TvArray = index_col;
 
-            if(currentPage_ActiveTextView != null) {
+            if (currentPage_ActiveTextView != null) {
                 hilightTextView(currentPage_ActiveTextView, false);
             }
             currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
@@ -769,6 +827,11 @@ public class MeasureActivity extends BaseActivity {
         ToastHelper.showShort("保存成功！");
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveData();
+    }
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();

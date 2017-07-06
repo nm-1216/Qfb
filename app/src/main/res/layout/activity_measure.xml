@@ -95,6 +95,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/rl_bottom"
@@ -108,20 +109,20 @@
             android:orientation="horizontal">
 
             <!--<TextView-->
-                <!--style="@style/table_header"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="100dp"-->
-                <!--android:text="零件号" />-->
+            <!--style="@style/table_header"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="100dp"-->
+            <!--android:text="零件号" />-->
 
             <!--<TextView-->
-                <!--android:id="@+id/tv_part_pn"-->
-                <!--style="@style/table_header"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:minWidth="150dp"-->
-                <!--android:textColor="@android:color/darker_gray"-->
-                <!--android:textStyle="normal" />-->
+            <!--android:id="@+id/tv_part_pn"-->
+            <!--style="@style/table_header"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:minWidth="150dp"-->
+            <!--android:textColor="@android:color/darker_gray"-->
+            <!--android:textStyle="normal" />-->
 
             <TextView
                 style="@style/table_header"
@@ -134,10 +135,13 @@
                 style="@style/table_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="400dp"
-                android:textColor="@android:color/darker_gray"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:maxWidth="400dp"
+                android:minWidth="380dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@android:color/darker_gray"
                 android:textStyle="normal" />
 
             <TextView
@@ -176,8 +180,8 @@
         <ScrollView
             android:id="@+id/sc_scroll"
             android:layout_width="match_parent"
-            android:layout_below="@id/ll_form_title"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@id/ll_form_title">
 
             <TableLayout
                 android:id="@+id/tl_measure"
@@ -208,6 +212,7 @@
 
                     <TextView
                         style="@style/table_header"
+                        android:id="@+id/tv_img_header_2"
                         android:layout_span="8"
                         android:text="测点图/截面" />
                 </TableRow>
@@ -258,10 +263,8 @@
 
         <LinearLayout
             android:id="@+id/ll_images"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -269,9 +272,10 @@
                 android:id="@+id/img_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="260dp"
-                android:maxHeight="280dp"
                 android:adjustViewBounds="true"
+                android:scaleType="center"
+                android:maxHeight="240dp"
+                android:maxWidth="280dp"
                 android:src="@drawable/part_1" />
 
         </LinearLayout>
