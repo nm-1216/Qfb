@@ -8,4 +8,6 @@ public class MeasurePoint {
     public int page_id;
     public String point;
     public String direction;
+    public String upperTolerance;
+    public String lowerTolerance;
 }

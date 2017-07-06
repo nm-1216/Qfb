@@ -137,10 +137,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:maxWidth="400dp"
                 android:minWidth="380dp"
-                android:maxLines="1"
-                android:ellipsize="end"
                 android:textColor="@android:color/darker_gray"
                 android:textStyle="normal" />
 
@@ -197,22 +197,36 @@
 
                     <TextView
                         style="@style/table_header"
-                        android:layout_span="2"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
                         android:text="测点号" />
 
                     <TextView
                         style="@style/table_header"
-                        android:layout_span="2"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
                         android:text="控制方向" />
 
                     <TextView
                         style="@style/table_header"
-                        android:layout_span="12"
-                        android:text="测量数据" />
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
+                        android:text="上公差" />
 
                     <TextView
                         style="@style/table_header"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
+                        android:text="下公差" />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="10"
+                        android:text="测量数据" />
+
+                    <TextView
                         android:id="@+id/tv_img_header_2"
+                        style="@style/table_header"
                         android:layout_span="8"
                         android:text="测点图/截面" />
                 </TableRow>
@@ -224,33 +238,77 @@
 
                     <TextView
                         style="@style/table_header"
-                        android:layout_span="2"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
                         android:text="Point No." />
 
                     <TextView
                         style="@style/table_header"
-                        android:layout_span="2"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
                         android:text="Direct." />
 
                     <TextView
                         style="@style/table_header"
-                        android:layout_span="3"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
+                        android:text="Upper Tol." />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
+                        android:text="Lower Tol." />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
                         android:text="1" />
 
                     <TextView
                         style="@style/table_header"
-                        android:layout_span="3"
+                        android:layout_span="1"
                         android:text="2" />
 
                     <TextView
                         style="@style/table_header"
-                        android:layout_span="3"
+                        android:layout_span="1"
                         android:text="3" />
 
                     <TextView
                         style="@style/table_header"
-                        android:layout_span="3"
+                        android:layout_span="1"
                         android:text="4" />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="5" />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="6" />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="7" />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="8" />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="9" />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="10" />
 
                     <TextView
                         android:id="@+id/tv_img_header"
@@ -273,9 +331,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:scaleType="center"
                 android:maxHeight="240dp"
                 android:maxWidth="280dp"
+                android:scaleType="centerInside"
                 android:src="@drawable/part_1" />
 
         </LinearLayout>

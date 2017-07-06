@@ -179,10 +179,14 @@ public class QfbController {
                 while(true) {
                     String point = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_POINT));
                     String direction = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_DIRECTION));
+                    String upperTolerance = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_UPPER_TOLERANCE));
+                    String lowerTolerance = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_LOWER_TOLERANCE));
 
                     MeasurePoint measurePoint = new MeasurePoint();
                     measurePoint.point = point;
                     measurePoint.direction = direction;
+                    measurePoint.upperTolerance = upperTolerance;
+                    measurePoint.lowerTolerance = lowerTolerance;
                     measurePoint.page_id = pgId;
 
                     measurePoints.add(measurePoint);
@@ -278,10 +282,18 @@ public class QfbController {
                 int page_Id = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PGID));
                 String measurePoint = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_MPOINT));
                 String direction = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_DIRECTION));
+                String upperTolerance = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_UPPER_TOLERANCE));
+                String lowerTolerance = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_LOWER_TOLERANCE));
                 String value1 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_1));
                 String value2 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_2));
                 String value3 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_3));
                 String value4 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_4));
+                String value5 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_5));
+                String value6 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_6));
+                String value7 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_7));
+                String value8 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_8));
+                String value9 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_9));
+                String value10 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_10));
                 String user_name = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_USERNAME));
                 long timestamp = cursor.getLong(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP));
                 int uploaded = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_UPLOADED));
@@ -298,10 +310,18 @@ public class QfbController {
                 data.pageId = page_Id;
                 data.measure_point = measurePoint;
                 data.direction = direction;
+                data.upperTolerance = upperTolerance;
+                data.lowerTolerance = lowerTolerance;
                 data.value1 = value1;
                 data.value2 = value2;
                 data.value3 = value3;
                 data.value4 = value4;
+                data.value5 = value5;
+                data.value6 = value6;
+                data.value7 = value7;
+                data.value8 = value8;
+                data.value9 = value9;
+                data.value10 = value10;
                 data.username = user_name;
                 data.timestamp = timestamp;
                 data.uploaded = uploaded;

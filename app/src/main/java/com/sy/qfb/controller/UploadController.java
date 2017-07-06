@@ -65,10 +65,19 @@ public class UploadController {
             String targetType = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_TYPE));
             int pageId = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PGID));
             String measurePoint = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_MPOINT));
+            String direction = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_DIRECTION));
+            String upperTolerance = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_UPPER_TOLERANCE));
+            String lowerTolerance = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_LOWER_TOLERANCE));
             String value1 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_1));
             String value2 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_2));
             String value3 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_3));
             String value4 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_4));
+            String value5 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_5));
+            String value6 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_6));
+            String value7 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_7));
+            String value8 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_8));
+            String value9 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_9));
+            String value10 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_10));
             String username = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_USERNAME));
             long timestamp = cursor.getLong(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP));
 
@@ -83,10 +92,19 @@ public class UploadController {
             measureData.targetType = targetType;
             measureData.pageId = pageId;
             measureData.measure_point = measurePoint;
+            measureData.direction = direction;
+            measureData.upperTolerance = upperTolerance;
+            measureData.lowerTolerance = lowerTolerance;
             measureData.value1 = value1;
             measureData.value2 = value2;
             measureData.value3 = value3;
             measureData.value4 = value4;
+            measureData.value5 = value5;
+            measureData.value6 = value6;
+            measureData.value7 = value7;
+            measureData.value8 = value8;
+            measureData.value9 = value9;
+            measureData.value10 = value10;
             measureData.username = username;
             measureData.timestamp = timestamp;
 
@@ -214,10 +232,18 @@ public class UploadController {
             params.put("PageId", "" + measureData.pageId);
             params.put("MeasurePoint", measureData.measure_point == null ? "" : measureData.measure_point);
             params.put("Direction", measureData.direction == null ? "" : measureData.direction);
+            params.put("UpperTolerance", measureData.upperTolerance == null ? "" : measureData.upperTolerance);
+            params.put("LowerTolerance", measureData.lowerTolerance == null ? "" : measureData.lowerTolerance);
             params.put("Value1", measureData.value1 == null ? "" : measureData.value1);
             params.put("Value2", measureData.value2 == null ? "" : measureData.value2);
             params.put("Value3", measureData.value3 == null ? "" : measureData.value3);
             params.put("Value4", measureData.value4 == null ? "" : measureData.value4);
+            params.put("Value5", measureData.value5 == null ? "" : measureData.value5);
+            params.put("Value6", measureData.value6 == null ? "" : measureData.value6);
+            params.put("Value7", measureData.value7 == null ? "" : measureData.value7);
+            params.put("Value8", measureData.value8 == null ? "" : measureData.value8);
+            params.put("Value9", measureData.value9 == null ? "" : measureData.value9);
+            params.put("Value10", measureData.value10 == null ? "" : measureData.value10);
             params.put("Username", measureData.username == null ? "" : measureData.username);
             params.put("Timestamp", "" + measureData.timestamp);
 

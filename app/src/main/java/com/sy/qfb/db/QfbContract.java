@@ -51,6 +51,8 @@ public final class QfbContract {
         public static final String COLUMN_NAME_PGID = "pgid";
         public static final String COLUMN_NAME_POINT = "point";
         public static final String COLUMN_NAME_DIRECTION = "direction";
+        public static final String COLUMN_NAME_UPPER_TOLERANCE = "upper_tolerance";
+        public static final String COLUMN_NAME_LOWER_TOLERANCE = "lower_tolerance";
     }
 
     public static class DataEntry implements BaseColumns {
@@ -66,10 +68,18 @@ public final class QfbContract {
         public static final String COLUMN_NAME_PGID = "pgid";
         public static final String COLUMN_NAME_MPOINT = "mpoint";
         public static final String COLUMN_NAME_DIRECTION = "direction";
+        public static final String COLUMN_NAME_UPPER_TOLERANCE = "upper_tolerance";
+        public static final String COLUMN_NAME_LOWER_TOLERANCE = "lower_tolerance";
         public static final String COLUMN_NAME_VALUE_1 = "value1";
         public static final String COLUMN_NAME_VALUE_2 = "value2";
         public static final String COLUMN_NAME_VALUE_3 = "value3";
         public static final String COLUMN_NAME_VALUE_4 = "value4";
+        public static final String COLUMN_NAME_VALUE_5 = "value5";
+        public static final String COLUMN_NAME_VALUE_6 = "value6";
+        public static final String COLUMN_NAME_VALUE_7 = "value7";
+        public static final String COLUMN_NAME_VALUE_8 = "value8";
+        public static final String COLUMN_NAME_VALUE_9 = "value9";
+        public static final String COLUMN_NAME_VALUE_10 = "value10";
         public static final String COLUMN_NAME_USERNAME = "username";
         public static final String COLUMN_NAME_TIMESTAMP = "timestamp";
         public static final String COLUMN_NAME_UPLOADED = "uploaded";

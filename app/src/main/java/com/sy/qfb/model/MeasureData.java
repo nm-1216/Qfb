@@ -18,10 +18,18 @@ public class MeasureData extends SugarRecord {
     public int pageId;
     public String measure_point;
     public String direction;
+    public String upperTolerance;
+    public String lowerTolerance;
     public String value1;
     public String value2;
     public String value3;
     public String value4;
+    public String value5;
+    public String value6;
+    public String value7;
+    public String value8;
+    public String value9;
+    public String value10;
     public String username;
     public long timestamp;
     public int uploaded;

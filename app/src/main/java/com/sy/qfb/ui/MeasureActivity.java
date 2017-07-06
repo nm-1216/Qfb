@@ -68,6 +68,8 @@ import butterknife.ButterKnife;
  */
 
 public class MeasureActivity extends BaseActivity {
+    private static final int COL_NUM = 10;
+
     @BindView(R.id.tl_measure)
     TableLayout tlTableMeasure;
 
@@ -250,9 +252,8 @@ public class MeasureActivity extends BaseActivity {
                 @Override
                 public void run() {
                     int c_rows = currentPaten_TextViewArray.length;
-                    int c_cols = 4;
                     if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
-                            currentCol_TvArray >= 0 && currentCol_TvArray < 4) {
+                            currentCol_TvArray >= 0 && currentCol_TvArray < COL_NUM) {
                         TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
                         if (tv != null) {
                             tv.setText(data);
@@ -349,9 +350,8 @@ public class MeasureActivity extends BaseActivity {
             public void onClick(View v) {
                 if (isShowingHistory) return;
                 int c_rows = currentPaten_TextViewArray.length;
-                int c_cols = 4;
                 if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
-                        currentCol_TvArray >= 0 && currentCol_TvArray < 4) {
+                        currentCol_TvArray >= 0 && currentCol_TvArray < COL_NUM) {
                     TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
                     if (tv != null) {
                         tv.setText("OK");
@@ -367,9 +367,8 @@ public class MeasureActivity extends BaseActivity {
             public void onClick(View v) {
                 if (isShowingHistory) return;
                 int c_rows = currentPaten_TextViewArray.length;
-                int c_cols = 4;
                 if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
-                        currentCol_TvArray >= 0 && currentCol_TvArray < 4) {
+                        currentCol_TvArray >= 0 && currentCol_TvArray < COL_NUM) {
                     TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
                     if (tv != null) {
                         tv.setText("NG");
@@ -477,11 +476,10 @@ public class MeasureActivity extends BaseActivity {
 
     private void goNextCell() {
         int c_rows = currentPaten_TextViewArray.length;
-        int c_cols = 4;
         if (currentRow_TvArray < c_rows - 1) {
             currentRow_TvArray++;
         } else {
-            if (currentCol_TvArray == 3) {
+            if (currentCol_TvArray == COL_NUM - 1) {
                 currentCol_TvArray = 0;
             } else {
                 currentCol_TvArray++;
@@ -552,7 +550,7 @@ public class MeasureActivity extends BaseActivity {
             MainActivity.CURRENT_PAGE = p;
             MeasurePoint[] mpoints = p.measure_points;
 
-            currentPaten_TextViewArray = new TextView[mpoints.length][4];
+            currentPaten_TextViewArray = new TextView[mpoints.length][COL_NUM];
 
             changed = false;
 
@@ -561,30 +559,60 @@ public class MeasureActivity extends BaseActivity {
                 View view = layoutInflater.inflate(R.layout.item_measure, null);
                 TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
                 tvName.setText(mpoints[i].point);
+
                 TextView tvDirection = (TextView) view.findViewById(R.id.tv_mp_direction);
                 tvDirection.setText(mpoints[i].direction);
+
+                TextView tvUpperTolerance = (TextView) view.findViewById(R.id.tv_upper_tolerance);
+                TextView tvLowerTolerance = (TextView) view.findViewById(R.id.tv_lower_tolerance);
+                tvUpperTolerance.setText(mpoints[i].upperTolerance);
+                tvLowerTolerance.setText(mpoints[i].lowerTolerance);
 
                 TextView tvData1 = (TextView) view.findViewById(R.id.tv_data1);
                 TextView tvData2 = (TextView) view.findViewById(R.id.tv_data2);
                 TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
                 TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
+                TextView tvData5 = (TextView) view.findViewById(R.id.tv_data5);
+                TextView tvData6 = (TextView) view.findViewById(R.id.tv_data6);
+                TextView tvData7 = (TextView) view.findViewById(R.id.tv_data7);
+                TextView tvData8 = (TextView) view.findViewById(R.id.tv_data8);
+                TextView tvData9 = (TextView) view.findViewById(R.id.tv_data9);
+                TextView tvData10 = (TextView) view.findViewById(R.id.tv_data10);
 
                 if (target.value_type.equalsIgnoreCase("OK,NG")) {
                     tvData1.setOnClickListener(new ClickLisenter_Okng(i, 0));
                     tvData2.setOnClickListener(new ClickLisenter_Okng(i, 1));
                     tvData3.setOnClickListener(new ClickLisenter_Okng(i, 2));
                     tvData4.setOnClickListener(new ClickLisenter_Okng(i, 3));
+                    tvData5.setOnClickListener(new ClickLisenter_Okng(i, 4));
+                    tvData6.setOnClickListener(new ClickLisenter_Okng(i, 5));
+                    tvData7.setOnClickListener(new ClickLisenter_Okng(i, 6));
+                    tvData8.setOnClickListener(new ClickLisenter_Okng(i, 7));
+                    tvData9.setOnClickListener(new ClickLisenter_Okng(i, 8));
+                    tvData10.setOnClickListener(new ClickLisenter_Okng(i, 9));
                 } else if (target.value_type.equalsIgnoreCase("data")) {
                     tvData1.setOnClickListener(new ClickLisenter_Data(i, 0));
                     tvData2.setOnClickListener(new ClickLisenter_Data(i, 1));
                     tvData3.setOnClickListener(new ClickLisenter_Data(i, 2));
                     tvData4.setOnClickListener(new ClickLisenter_Data(i, 3));
+                    tvData5.setOnClickListener(new ClickLisenter_Data(i, 4));
+                    tvData6.setOnClickListener(new ClickLisenter_Data(i, 5));
+                    tvData7.setOnClickListener(new ClickLisenter_Data(i, 6));
+                    tvData8.setOnClickListener(new ClickLisenter_Data(i, 7));
+                    tvData9.setOnClickListener(new ClickLisenter_Data(i, 8));
+                    tvData10.setOnClickListener(new ClickLisenter_Data(i, 9));
                 }
 
                 currentPaten_TextViewArray[i][0] = tvData1;
                 currentPaten_TextViewArray[i][1] = tvData2;
                 currentPaten_TextViewArray[i][2] = tvData3;
                 currentPaten_TextViewArray[i][3] = tvData4;
+                currentPaten_TextViewArray[i][4] = tvData5;
+                currentPaten_TextViewArray[i][5] = tvData6;
+                currentPaten_TextViewArray[i][6] = tvData7;
+                currentPaten_TextViewArray[i][7] = tvData8;
+                currentPaten_TextViewArray[i][8] = tvData9;
+                currentPaten_TextViewArray[i][9] = tvData10;
 
                 tlTableMeasure.addView(view);
 
@@ -601,18 +629,28 @@ public class MeasureActivity extends BaseActivity {
                     p.page_id, LoginActivity.CURRENT_USER.username,
                     isShowingHistory ? new Date(projectHistoryItem.timeStamp) : new Date()
             );
-            Logger.d("todayData.size() = " + previousData.size());
+            Logger.d("previousData.size() = " + previousData.size());
             if (previousData.size() > 0) {
                 for (View view : currentPage_Rows) {
                     TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
                     TextView tvDirection = (TextView) view.findViewById(R.id.tv_mp_direction);
+                    TextView tvUpperTolerance = (TextView) view.findViewById(R.id.tv_upper_tolerance);
+                    TextView tvLowerTolerance = (TextView) view.findViewById(R.id.tv_lower_tolerance);
                     TextView tvData1 = (TextView) view.findViewById(R.id.tv_data1);
                     TextView tvData2 = (TextView) view.findViewById(R.id.tv_data2);
                     TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
                     TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
+                    TextView tvData5 = (TextView) view.findViewById(R.id.tv_data5);
+                    TextView tvData6 = (TextView) view.findViewById(R.id.tv_data6);
+                    TextView tvData7 = (TextView) view.findViewById(R.id.tv_data7);
+                    TextView tvData8 = (TextView) view.findViewById(R.id.tv_data8);
+                    TextView tvData9 = (TextView) view.findViewById(R.id.tv_data9);
+                    TextView tvData10 = (TextView) view.findViewById(R.id.tv_data10);
 
                     String mp = tvName.getText().toString();
                     String direction = tvDirection.getText().toString();
+                    String upperTolerance = tvUpperTolerance.getText().toString();
+                    String lowerTolerance = tvLowerTolerance.getText().toString();
 
                     Logger.d("mp = " + mp + ", direction = " + direction);
 
@@ -623,6 +661,12 @@ public class MeasureActivity extends BaseActivity {
                             tvData2.setText(md.value2);
                             tvData3.setText(md.value3);
                             tvData4.setText(md.value4);
+                            tvData5.setText(md.value5);
+                            tvData6.setText(md.value6);
+                            tvData7.setText(md.value7);
+                            tvData8.setText(md.value8);
+                            tvData9.setText(md.value9);
+                            tvData10.setText(md.value10);
 //                            changed = true;
                             break;
                         }
@@ -665,13 +709,13 @@ public class MeasureActivity extends BaseActivity {
         int width_screen = metrics.widthPixels;
         int height_screen = metrics.heightPixels;
 
-        float frame_x = (float) (width_screen * 16.0 / 24.0);
-        float frame_y = (float) (height_screen * 3.0 / 15.0);
-        int frame_width = (int) (width_screen * 7.8 / 24.0);
-        int frame_height = (int) (height_screen * 2.8 / 5.0);
+        float frame_x = (float) (width_screen * 17.3 / 24.0);
+        float frame_y = (float) (height_screen * 4.0 / 15.0);
+        int frame_width = (int) (width_screen * 6.8 / 24.0);
+        int frame_height = (int) (height_screen * 2.5 / 5.0);
 
-        int maxWidth = (int) (width_screen * 8.0 / 24.0);
-        int maxHeight = (int) (height_screen * 2.6 / 5.0);
+        int maxWidth = (int) (width_screen * 6.8 / 24.0);
+        int maxHeight = (int) (height_screen * 2.5 / 5.0);
 
         img1.setMaxWidth(maxWidth);
         img1.setMaxHeight(maxHeight);
@@ -724,7 +768,8 @@ public class MeasureActivity extends BaseActivity {
         }
     }
 
-    private void loadPreviousData(List<MeasureData> datas, String mpoint, TextView tvData1, TextView tvData2, TextView tvData3, TextView tvData4) {
+    private void loadPreviousData(List<MeasureData> datas, String mpoint, TextView tvData1,
+                                  TextView tvData2, TextView tvData3, TextView tvData4) {
         for (MeasureData md : datas) {
             if (mpoint.equals(md.measure_point)) {
                 tvData1.setText(md.value1);
@@ -789,16 +834,33 @@ public class MeasureActivity extends BaseActivity {
 
             TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
             TextView tvDirection = (TextView) view.findViewById(R.id.tv_mp_direction);
+            TextView tvUpperTolerance = (TextView) view.findViewById(R.id.tv_upper_tolerance);
+            TextView tvLowerTolerance = (TextView) view.findViewById(R.id.tv_lower_tolerance);
             TextView tvData1 = (TextView) view.findViewById(R.id.tv_data1);
             TextView tvData2 = (TextView) view.findViewById(R.id.tv_data2);
             TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
             TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
+            TextView tvData5 = (TextView) view.findViewById(R.id.tv_data5);
+            TextView tvData6 = (TextView) view.findViewById(R.id.tv_data6);
+            TextView tvData7 = (TextView) view.findViewById(R.id.tv_data7);
+            TextView tvData8 = (TextView) view.findViewById(R.id.tv_data8);
+            TextView tvData9 = (TextView) view.findViewById(R.id.tv_data9);
+            TextView tvData10 = (TextView) view.findViewById(R.id.tv_data10);
 
             data.measure_point = tvName.getText().toString();
+            data.direction = tvDirection.getText().toString();
+            data.upperTolerance = tvUpperTolerance.getText().toString();
+            data.lowerTolerance = tvLowerTolerance.getText().toString();
             data.value1 = tvData1.getText().toString();
             data.value2 = tvData2.getText().toString();
             data.value3 = tvData3.getText().toString();
             data.value4 = tvData4.getText().toString();
+            data.value5 = tvData5.getText().toString();
+            data.value6 = tvData6.getText().toString();
+            data.value7 = tvData7.getText().toString();
+            data.value8 = tvData8.getText().toString();
+            data.value9 = tvData9.getText().toString();
+            data.value10 = tvData10.getText().toString();
 
             data.username = LoginActivity.CURRENT_USER.username;
             data.timestamp = savingCalendar.getTimeInMillis();
