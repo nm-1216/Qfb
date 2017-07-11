@@ -46,6 +46,9 @@ import com.sy.qfb.ui.MeasureActivity;
  * Activity for scanning and displaying available Bluetooth LE devices.
  */
 public class DeviceScanActivity extends ListActivity {
+    public static String CURRENT_DEVICE_NAME = null;
+    public static String CURRENT_DEVICE_ADDRESS = null;
+
     private LeDeviceListAdapter mLeDeviceListAdapter;
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
@@ -160,6 +163,8 @@ public class DeviceScanActivity extends ListActivity {
         final Intent intent = new Intent(this, MeasureActivity.class);
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+        CURRENT_DEVICE_NAME = device.getName();
+        CURRENT_DEVICE_ADDRESS = device.getAddress();
         if (mScanning) {
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
             mScanning = false;

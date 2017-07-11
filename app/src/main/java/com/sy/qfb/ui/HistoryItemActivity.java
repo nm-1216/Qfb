@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
 import com.sy.qfb.controller.HistoryController;
 import com.sy.qfb.viewmodel.ProjectHistoryItem;
@@ -74,7 +75,16 @@ public class HistoryItemActivity extends Activity {
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(HistoryItemActivity.this, HistoryActivity.class);
+            Logger.d("item.projectId = " + item.projectId + ", projectName = " + item.projectName +
+            ", productId = " + item.productId + ", productName = " + item.productName +
+            ", targetId = " + item.targetId + ", targetName = " + item.targetName);
+
+            MainActivity.setCurrentProject(item.projectId, item.projectName);
+            MainActivity.setCurrentProduct(item.productId, item.productName);
+            MainActivity.setCurrentTarget(item.targetId, item.targetName);
+
+//            Intent intent = new Intent(HistoryItemActivity.this, HistoryActivity.class);
+            Intent intent = new Intent(HistoryItemActivity.this, MeasureActivity.class);
             intent.putExtra("history_item", item);
             startActivity(intent);
         }

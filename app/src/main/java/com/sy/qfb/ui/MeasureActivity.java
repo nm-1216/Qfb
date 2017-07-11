@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -42,12 +43,14 @@ import com.sy.qfb.ble.activity.DeviceControlActivity;
 import com.sy.qfb.ble.activity.DeviceScanActivity;
 import com.sy.qfb.ble.service.BluetoothLeService;
 import com.sy.qfb.ble.utils.SampleGattAttributes;
+import com.sy.qfb.controller.QfbController;
 import com.sy.qfb.controller.SaveController;
 import com.sy.qfb.model.MeasureData;
 import com.sy.qfb.model.MeasurePoint;
 import com.sy.qfb.model.Page;
 import com.sy.qfb.model.Target;
 import com.sy.qfb.util.ToastHelper;
+import com.sy.qfb.viewmodel.ProjectHistoryItem;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -65,6 +68,8 @@ import butterknife.ButterKnife;
  */
 
 public class MeasureActivity extends BaseActivity {
+    private static final int COL_NUM = 10;
+
     @BindView(R.id.tl_measure)
     TableLayout tlTableMeasure;
 
@@ -83,8 +88,8 @@ public class MeasureActivity extends BaseActivity {
     @BindView(R.id.tv_page_indicator)
     TextView tvPageIndicator;
 
-    @BindView(R.id.tv_part_pn)
-    TextView tvPartPn;
+//    @BindView(R.id.tv_part_pn)
+//    TextView tvPartPn;
 
     @BindView(R.id.tv_part_name)
     TextView tvPartName;
@@ -110,6 +115,15 @@ public class MeasureActivity extends BaseActivity {
     @BindView(R.id.ll_images)
     LinearLayout llImages;
 
+    @BindView(R.id.tv_img_header)
+    TextView tvImgHeader;
+
+    @BindView(R.id.tv_img_header_2)
+    TextView tvImgHeader2;
+
+    @BindView(R.id.rl_content)
+    RelativeLayout rlContent;
+
     private int currentPage_Index = 0;
     private List<View> currentPage_Rows = new ArrayList<View>();
     private TextView[][] currentPaten_TextViewArray;
@@ -128,10 +142,22 @@ public class MeasureActivity extends BaseActivity {
 
     private BluetoothLeService mBluetoothLeService;
     private BluetoothGattCharacteristic mNotifyCharacteristic;
+    private final String LIST_NAME = "NAME";
+    private final String LIST_UUID = "UUID";
+    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
     private String mDeviceName;
     private String mDeviceAddress;
     private boolean mConnected = false;
     private ProgressDialog dialog = null;
+
+    private boolean changed = false;
+
+    private QfbController qfbController = new QfbController();
+
+    private ProjectHistoryItem projectHistoryItem;
+    private boolean isShowingHistory = false;
+
+    private Calendar savingCalendar;
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -176,24 +202,32 @@ public class MeasureActivity extends BaseActivity {
 //                clearUI();
                 mBluetoothLeService.connect(mDeviceAddress);
 //                dialog.hide();
-                progressDialog.hide();
+                if (progressDialog.isShowing()) {
+                    progressDialog.hide();
+                }
 //				updateConnectionState(R.string.connected_server);
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
                     .equals(action)) {
                 //服务加载完毕
                 // Show all the supported services and characteristics on the
                 // user interface.
-//                displayGattServices(mBluetoothLeService
-//                        .getSupportedGattServices());
+                displayGattServices(mBluetoothLeService
+                        .getSupportedGattServices());
 //                dialog.hide();
-                progressDialog.hide();
+                if (progressDialog.isShowing()) {
+                    progressDialog.hide();
+                }
                 updateConnectionState(R.string.connected_server);
 
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+
+                Logger.d("data available");
                 //数据显示
                 displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
 //                dialog.hide();
-                progressDialog.hide();
+                if (progressDialog.isShowing()) {
+                    progressDialog.hide();
+                }
 //				updateConnectionState(R.string.connected_server);
             }
 
@@ -210,20 +244,26 @@ public class MeasureActivity extends BaseActivity {
         });
     }
 
-    private void displayData(String data) {
+    private void displayData(final String data) {
         if (data != null) {
 //            mDataField.setText(data);
 
-            int c_rows = currentPaten_TextViewArray.length;
-            int c_cols = 4;
-            if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
-                    currentCol_TvArray >= 0 && currentCol_TvArray <4) {
-                TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
-                if (tv != null) {
-                    tv.setText(data);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    int c_rows = currentPaten_TextViewArray.length;
+                    if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
+                            currentCol_TvArray >= 0 && currentCol_TvArray < COL_NUM) {
+                        TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
+                        if (tv != null) {
+                            tv.setText(data);
+                        }
+                    }
+                    goNextCell();
+
+                    changed = true;
                 }
-            }
-            goNextCell();
+            });
 
         }
     }
@@ -234,34 +274,52 @@ public class MeasureActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measure);
 
+        savingCalendar = Calendar.getInstance();
+        savingCalendar.setTime(new Date());
+
+
         ButterKnife.bind(this);
 
-        tvPartPn.setText("" + MainActivity.CURRENT_PRODUCT.product_id);
+        this.isShowingHistory = getIntent().hasExtra("history_item");
+        if (isShowingHistory) {
+            this.projectHistoryItem = (ProjectHistoryItem) getIntent().getParcelableExtra("history_item");
+        }
 
-        tvPartName.setText(MainActivity.CURRENT_PRODUCT.product_name);
+//        tvPartPn.setText("" + MainActivity.CURRENT_PRODUCT.product_id);
+//        tvPartName.setText(MainActivity.CURRENT_PRODUCT.product_name);
+
+        tvPartName.setText(MainActivity.CURRENT_PRODUCT.product_name + " " +
+                MainActivity.CURRENT_PRODUCT.product_id);
         tvMeasureTarget.setText(MainActivity.CURRENT_TARGET.target_name);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         tvDate.setText(sdf.format(new Date()));
 
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//        DisplayMetrics metrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//
+//        img1.setMaxWidth(metrics.widthPixels / 4);
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        params.width = metrics.widthPixels / 5;
+//        img1.setLayoutParams(params);
+//
+//        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//        params1.width = metrics.widthPixels / 5;
+//        params1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//        params1.setMargins(0, metrics.heightPixels / 7, metrics.widthPixels / 25, 10);
+//        llImages.setLayoutParams(params1);
 
-        img1.setMaxWidth(metrics.widthPixels / 4);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.width = metrics.widthPixels / 5;
-        img1.setLayoutParams(params);
 
-        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params1.width = metrics.widthPixels / 5;
-        params1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        params1.setMargins(10, 10, metrics.widthPixels / 25, 10);
-        llImages.setLayoutParams(params1);
+
 
         currentPage_Index = 0;
         loadTable();
         setPageIndicator();
         currentPageSaved = false;
+
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        params.width = tvImgHeader.getWidth() - 20;
+//        img1.setLayoutParams(params);
 
         btnPreviousPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,6 +340,7 @@ public class MeasureActivity extends BaseActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isShowingHistory) return;
                 saveData();
             }
         });
@@ -289,69 +348,99 @@ public class MeasureActivity extends BaseActivity {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isShowingHistory) return;
                 int c_rows = currentPaten_TextViewArray.length;
-                int c_cols = 4;
                 if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
-                        currentCol_TvArray >= 0 && currentCol_TvArray <4) {
+                        currentCol_TvArray >= 0 && currentCol_TvArray < COL_NUM) {
                     TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
                     if (tv != null) {
                         tv.setText("OK");
                     }
                 }
                 goNextCell();
+                changed = true;
             }
         });
 
         btnNg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isShowingHistory) return;
                 int c_rows = currentPaten_TextViewArray.length;
-                int c_cols = 4;
                 if (currentRow_TvArray >= 0 && currentRow_TvArray < c_rows &&
-                        currentCol_TvArray >= 0 && currentCol_TvArray <4) {
+                        currentCol_TvArray >= 0 && currentCol_TvArray < COL_NUM) {
                     TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
                     if (tv != null) {
                         tv.setText("NG");
                     }
                 }
                 goNextCell();
+                changed = true;
             }
         });
 
+        if (!isShowingHistory) {
+            if (MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data")) {
+                btnNg.setVisibility(View.GONE);
+                btnOk.setVisibility(View.GONE);
+                tvConnectionState.setVisibility(View.VISIBLE);
+            } else {
+                btnNg.setVisibility(View.VISIBLE);
+                btnOk.setVisibility(View.VISIBLE);
+                tvConnectionState.setVisibility(View.GONE);
+            }
+        } else {
+            btnNg.setVisibility(View.INVISIBLE);
+            btnOk.setVisibility(View.INVISIBLE);
+            tvConnectionState.setVisibility(View.GONE);
+            btnSave.setVisibility(View.INVISIBLE);
+        }
 
-
-        if (MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data")) {
-            btnNg.setVisibility(View.GONE);
-            btnOk.setVisibility(View.GONE);
-            tvConnectionState.setVisibility(View.VISIBLE);
-
+        if (shouldCaptureDataFromBT()) {
             final Intent intent = getIntent();
             mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
             mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
             Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
             bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-        } else {
-            btnNg.setVisibility(View.VISIBLE);
-            btnOk.setVisibility(View.VISIBLE);
-            tvConnectionState.setVisibility(View.GONE);
         }
-
     }
 
+    private boolean shouldCaptureDataFromBT() {
+        return MainActivity.CURRENT_TARGET.value_type.equalsIgnoreCase("data") && !isShowingHistory;
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        dialog = new ProgressDialog(MeasureActivity.this);
-        dialog.setMessage("正在加载服务");
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        if (mBluetoothLeService != null) {
-            final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-            Logger.d("Connect request result=" + result);
+        if (shouldCaptureDataFromBT()) {
+            dialog = new ProgressDialog(MeasureActivity.this);
+            dialog.setMessage("正在加载服务");
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+//            if (mBluetoothLeService != null) {
+//                final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+//                Logger.d("Connect request result=" + result);
+//            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (shouldCaptureDataFromBT() && mGattUpdateReceiver != null) {
+            unregisterReceiver(mGattUpdateReceiver);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (shouldCaptureDataFromBT() && mServiceConnection != null) {
+            unbindService(mServiceConnection);
+            mBluetoothLeService = null;
         }
     }
 
@@ -387,11 +476,10 @@ public class MeasureActivity extends BaseActivity {
 
     private void goNextCell() {
         int c_rows = currentPaten_TextViewArray.length;
-        int c_cols = 4;
         if (currentRow_TvArray < c_rows - 1) {
             currentRow_TvArray++;
         } else {
-            if (currentCol_TvArray == 3) {
+            if (currentCol_TvArray == COL_NUM - 1) {
                 currentCol_TvArray = 0;
             } else {
                 currentCol_TvArray++;
@@ -404,17 +492,16 @@ public class MeasureActivity extends BaseActivity {
         }
         currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
 //        if (currentPage_ActiveTextView != null) {
-            hilightTextView(currentPage_ActiveTextView, true);
+        hilightTextView(currentPage_ActiveTextView, true);
 //        }
 
         View vRow = currentPage_Rows.get(currentRow_TvArray);
         int height = scScroll.getMeasuredHeight();
         double scrollY = scScroll.getScrollY();
-        Logger.d("vRow.getY() = " + vRow.getY() + ", scScroll.getScrollY() = " + scScroll.getScrollY()  + ", height = " + height);
+        Logger.d("vRow.getY() = " + vRow.getY() + ", scScroll.getScrollY() = " + scScroll.getScrollY() + ", height = " + height);
         if (vRow.getY() + 70 > scrollY + height) {
             scScroll.scrollTo(0, (int) vRow.getY());
-        }
-        else if (vRow.getY() < scrollY) {
+        } else if (vRow.getY() < scrollY) {
             int target_y = (int) (scrollY - height);
             if (target_y < 0) target_y = 0;
             scScroll.scrollTo(0, target_y);
@@ -460,66 +547,150 @@ public class MeasureActivity extends BaseActivity {
             currentPage_Rows.clear();
 
             Page p = pages[currentPage_Index];
+            MainActivity.CURRENT_PAGE = p;
             MeasurePoint[] mpoints = p.measure_points;
 
-            currentPaten_TextViewArray = new TextView[mpoints.length][4];
+            currentPaten_TextViewArray = new TextView[mpoints.length][COL_NUM];
 
-            boolean hasPreviousData = page_datas.containsKey(currentPage_Index);
+            changed = false;
 
             LayoutInflater layoutInflater = getLayoutInflater();
             for (int i = 0; i < mpoints.length; ++i) {
                 View view = layoutInflater.inflate(R.layout.item_measure, null);
                 TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
                 tvName.setText(mpoints[i].point);
+
                 TextView tvDirection = (TextView) view.findViewById(R.id.tv_mp_direction);
                 tvDirection.setText(mpoints[i].direction);
+
+                TextView tvUpperTolerance = (TextView) view.findViewById(R.id.tv_upper_tolerance);
+                TextView tvLowerTolerance = (TextView) view.findViewById(R.id.tv_lower_tolerance);
+                tvUpperTolerance.setText(mpoints[i].upperTolerance);
+                tvLowerTolerance.setText(mpoints[i].lowerTolerance);
 
                 TextView tvData1 = (TextView) view.findViewById(R.id.tv_data1);
                 TextView tvData2 = (TextView) view.findViewById(R.id.tv_data2);
                 TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
                 TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
+                TextView tvData5 = (TextView) view.findViewById(R.id.tv_data5);
+                TextView tvData6 = (TextView) view.findViewById(R.id.tv_data6);
+                TextView tvData7 = (TextView) view.findViewById(R.id.tv_data7);
+                TextView tvData8 = (TextView) view.findViewById(R.id.tv_data8);
+                TextView tvData9 = (TextView) view.findViewById(R.id.tv_data9);
+                TextView tvData10 = (TextView) view.findViewById(R.id.tv_data10);
 
                 if (target.value_type.equalsIgnoreCase("OK,NG")) {
                     tvData1.setOnClickListener(new ClickLisenter_Okng(i, 0));
                     tvData2.setOnClickListener(new ClickLisenter_Okng(i, 1));
                     tvData3.setOnClickListener(new ClickLisenter_Okng(i, 2));
                     tvData4.setOnClickListener(new ClickLisenter_Okng(i, 3));
+                    tvData5.setOnClickListener(new ClickLisenter_Okng(i, 4));
+                    tvData6.setOnClickListener(new ClickLisenter_Okng(i, 5));
+                    tvData7.setOnClickListener(new ClickLisenter_Okng(i, 6));
+                    tvData8.setOnClickListener(new ClickLisenter_Okng(i, 7));
+                    tvData9.setOnClickListener(new ClickLisenter_Okng(i, 8));
+                    tvData10.setOnClickListener(new ClickLisenter_Okng(i, 9));
                 } else if (target.value_type.equalsIgnoreCase("data")) {
                     tvData1.setOnClickListener(new ClickLisenter_Data(i, 0));
                     tvData2.setOnClickListener(new ClickLisenter_Data(i, 1));
                     tvData3.setOnClickListener(new ClickLisenter_Data(i, 2));
                     tvData4.setOnClickListener(new ClickLisenter_Data(i, 3));
-                }
-
-                if (hasPreviousData) {
-                    List<MeasureData> datas = page_datas.get(currentPage_Index);
-                    loadPreviousData(datas, mpoints[i].point, tvData1, tvData2, tvData3, tvData4);
+                    tvData5.setOnClickListener(new ClickLisenter_Data(i, 4));
+                    tvData6.setOnClickListener(new ClickLisenter_Data(i, 5));
+                    tvData7.setOnClickListener(new ClickLisenter_Data(i, 6));
+                    tvData8.setOnClickListener(new ClickLisenter_Data(i, 7));
+                    tvData9.setOnClickListener(new ClickLisenter_Data(i, 8));
+                    tvData10.setOnClickListener(new ClickLisenter_Data(i, 9));
                 }
 
                 currentPaten_TextViewArray[i][0] = tvData1;
                 currentPaten_TextViewArray[i][1] = tvData2;
                 currentPaten_TextViewArray[i][2] = tvData3;
                 currentPaten_TextViewArray[i][3] = tvData4;
+                currentPaten_TextViewArray[i][4] = tvData5;
+                currentPaten_TextViewArray[i][5] = tvData6;
+                currentPaten_TextViewArray[i][6] = tvData7;
+                currentPaten_TextViewArray[i][7] = tvData8;
+                currentPaten_TextViewArray[i][8] = tvData9;
+                currentPaten_TextViewArray[i][9] = tvData10;
 
                 tlTableMeasure.addView(view);
 
                 currentPage_Rows.add(view);
             }
 
-            MainActivity.CURRENT_PAGE = p;
+            List<MeasureData> previousData = qfbController.GetDataByDate(
+                    MainActivity.CURRENT_PROJECT.project_id,
+                    MainActivity.CURRENT_PROJECT.project_name,
+                    MainActivity.CURRENT_PRODUCT.product_id,
+                    MainActivity.CURRENT_PRODUCT.product_name,
+                    MainActivity.CURRENT_TARGET.target_id,
+                    MainActivity.CURRENT_TARGET.target_name,
+                    p.page_id, LoginActivity.CURRENT_USER.username,
+                    isShowingHistory ? new Date(projectHistoryItem.timeStamp) : new Date()
+            );
+            Logger.d("previousData.size() = " + previousData.size());
+            if (previousData.size() > 0) {
+                for (View view : currentPage_Rows) {
+                    TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
+                    TextView tvDirection = (TextView) view.findViewById(R.id.tv_mp_direction);
+                    TextView tvUpperTolerance = (TextView) view.findViewById(R.id.tv_upper_tolerance);
+                    TextView tvLowerTolerance = (TextView) view.findViewById(R.id.tv_lower_tolerance);
+                    TextView tvData1 = (TextView) view.findViewById(R.id.tv_data1);
+                    TextView tvData2 = (TextView) view.findViewById(R.id.tv_data2);
+                    TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
+                    TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
+                    TextView tvData5 = (TextView) view.findViewById(R.id.tv_data5);
+                    TextView tvData6 = (TextView) view.findViewById(R.id.tv_data6);
+                    TextView tvData7 = (TextView) view.findViewById(R.id.tv_data7);
+                    TextView tvData8 = (TextView) view.findViewById(R.id.tv_data8);
+                    TextView tvData9 = (TextView) view.findViewById(R.id.tv_data9);
+                    TextView tvData10 = (TextView) view.findViewById(R.id.tv_data10);
+
+                    String mp = tvName.getText().toString();
+                    String direction = tvDirection.getText().toString();
+                    String upperTolerance = tvUpperTolerance.getText().toString();
+                    String lowerTolerance = tvLowerTolerance.getText().toString();
+
+                    Logger.d("mp = " + mp + ", direction = " + direction);
+
+                    for (MeasureData md : previousData) {
+                        if (mp.equals(md.measure_point) && direction.equals(md.direction)) {
+                            Logger.d("has match");
+                            tvData1.setText(md.value1);
+                            tvData2.setText(md.value2);
+                            tvData3.setText(md.value3);
+                            tvData4.setText(md.value4);
+                            tvData5.setText(md.value5);
+                            tvData6.setText(md.value6);
+                            tvData7.setText(md.value7);
+                            tvData8.setText(md.value8);
+                            tvData9.setText(md.value9);
+                            tvData10.setText(md.value10);
+//                            changed = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
 
             if (p.pictures != null) {
-                for (String pictureName : p.pictures) {
+//                for (String pictureName : p.pictures) {
+                if (p.pictures.length > 0) {
 
                     File fileDir = getFilesDir();
-                    File fileImage = new File(fileDir, pictureName);
+//                    File fileImage = new File(fileDir, pictureName);
+                    File fileImage = new File(fileDir, p.pictures[0]);
 
                     Uri.Builder builder = new Uri.Builder();
                     builder.scheme("file");
                     builder.path(fileImage.getAbsolutePath());
                     Uri uri = builder.build();
                     img1.setImageURI(uri);
+                    adjustImg1();
 
+                    img1.setOnClickListener(new ImageOnClickListener(p.pictures[0]));
                 }
             }
 
@@ -527,10 +698,78 @@ public class MeasureActivity extends BaseActivity {
             currentCol_TvArray = 0;
             currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
             hilightTextView(currentPage_ActiveTextView, true);
+
         }
     }
 
-    private void loadPreviousData(List<MeasureData> datas, String mpoint, TextView tvData1, TextView tvData2, TextView tvData3, TextView tvData4) {
+    private void adjustImg1() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        int width_screen = metrics.widthPixels;
+        int height_screen = metrics.heightPixels;
+
+        float frame_x = (float) (width_screen * 17.3 / 24.0);
+        float frame_y = (float) (height_screen * 4.0 / 15.0);
+        int frame_width = (int) (width_screen * 6.8 / 24.0);
+        int frame_height = (int) (height_screen * 2.5 / 5.0);
+
+        int maxWidth = (int) (width_screen * 6.8 / 24.0);
+        int maxHeight = (int) (height_screen * 2.5 / 5.0);
+
+        img1.setMaxWidth(maxWidth);
+        img1.setMaxHeight(maxHeight);
+
+//        llImages.setMinimumWidth(frame_width);
+//        llImages.setMinimumHeight(frame_height);
+        llImages.setX(frame_x);
+        llImages.setY(frame_y);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(frame_width, frame_height);
+        llImages.setLayoutParams(params);
+
+//        int width = img1.getMeasuredWidth();
+//        int height = img1.getMeasuredHeight();
+//
+//        float x = (float)(frame_x + (frame_width - width) / 2.0);
+//        float y = (float)(frame_y + (frame_height - height) / 2.0);
+//        img1.setX(x);
+//        img1.setY(y);
+
+//        img1.setX(frame_x);
+//        img1.setY(frame_y);
+
+//        int contentWidth = rlContent.getMeasuredWidth();
+//        int contentHeight = rlContent.getMeasuredHeight();
+//
+//        float frame_x = tvImgHeader.getX();
+//        float frame_y = tvImgHeader.getY() + tvImgHeader.getMeasuredHeight();
+//        int maxWidth = tvImgHeader.getMeasuredWidth();
+//        int maxHeight = scScroll.getMeasuredHeight() - tvImgHeader.getMeasuredHeight() -
+//                tvImgHeader2.getMeasuredHeight();
+
+//        img1.setMaxWidth(maxWidth);
+//        img1.setMaxHeight(maxHeight);
+
+
+    }
+
+    private class ImageOnClickListener implements View.OnClickListener {
+        private String picName;
+
+        public ImageOnClickListener(String picName) {
+            this.picName = picName;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MeasureActivity.this, ImageViewActivity.class);
+            intent.putExtra("PIC_NAME", picName);
+            startActivity(intent);
+        }
+    }
+
+    private void loadPreviousData(List<MeasureData> datas, String mpoint, TextView tvData1,
+                                  TextView tvData2, TextView tvData3, TextView tvData4) {
         for (MeasureData md : datas) {
             if (mpoint.equals(md.measure_point)) {
                 tvData1.setText(md.value1);
@@ -556,7 +795,7 @@ public class MeasureActivity extends BaseActivity {
             MeasureActivity.this.currentRow_TvArray = index_row;
             MeasureActivity.this.currentCol_TvArray = index_col;
 
-            if(currentPage_ActiveTextView != null) {
+            if (currentPage_ActiveTextView != null) {
                 hilightTextView(currentPage_ActiveTextView, false);
             }
             currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
@@ -578,7 +817,7 @@ public class MeasureActivity extends BaseActivity {
             MeasureActivity.this.currentRow_TvArray = index_row;
             MeasureActivity.this.currentCol_TvArray = index_col;
 
-            if(currentPage_ActiveTextView != null) {
+            if (currentPage_ActiveTextView != null) {
                 hilightTextView(currentPage_ActiveTextView, false);
             }
             currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
@@ -587,27 +826,46 @@ public class MeasureActivity extends BaseActivity {
     }
 
     private void saveData() {
+        if (!changed) return;
+
         List<MeasureData> lstMeasureData = new ArrayList<MeasureData>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
         for (View view : currentPage_Rows) {
             MeasureData data = new MeasureData();
 
             TextView tvName = (TextView) view.findViewById(R.id.tv_mp_name);
             TextView tvDirection = (TextView) view.findViewById(R.id.tv_mp_direction);
+            TextView tvUpperTolerance = (TextView) view.findViewById(R.id.tv_upper_tolerance);
+            TextView tvLowerTolerance = (TextView) view.findViewById(R.id.tv_lower_tolerance);
             TextView tvData1 = (TextView) view.findViewById(R.id.tv_data1);
             TextView tvData2 = (TextView) view.findViewById(R.id.tv_data2);
             TextView tvData3 = (TextView) view.findViewById(R.id.tv_data3);
             TextView tvData4 = (TextView) view.findViewById(R.id.tv_data4);
+            TextView tvData5 = (TextView) view.findViewById(R.id.tv_data5);
+            TextView tvData6 = (TextView) view.findViewById(R.id.tv_data6);
+            TextView tvData7 = (TextView) view.findViewById(R.id.tv_data7);
+            TextView tvData8 = (TextView) view.findViewById(R.id.tv_data8);
+            TextView tvData9 = (TextView) view.findViewById(R.id.tv_data9);
+            TextView tvData10 = (TextView) view.findViewById(R.id.tv_data10);
 
             data.measure_point = tvName.getText().toString();
+            data.direction = tvDirection.getText().toString();
+            data.upperTolerance = tvUpperTolerance.getText().toString();
+            data.lowerTolerance = tvLowerTolerance.getText().toString();
             data.value1 = tvData1.getText().toString();
             data.value2 = tvData2.getText().toString();
             data.value3 = tvData3.getText().toString();
             data.value4 = tvData4.getText().toString();
+            data.value5 = tvData5.getText().toString();
+            data.value6 = tvData6.getText().toString();
+            data.value7 = tvData7.getText().toString();
+            data.value8 = tvData8.getText().toString();
+            data.value9 = tvData9.getText().toString();
+            data.value10 = tvData10.getText().toString();
 
             data.username = LoginActivity.CURRENT_USER.username;
-            data.timestamp = calendar.getTimeInMillis();
+            data.timestamp = savingCalendar.getTimeInMillis();
+
+            Logger.d("saved timestamp = " + data.timestamp);
 
             data.projectId = MainActivity.CURRENT_PROJECT.project_id;
             data.productId = MainActivity.CURRENT_PRODUCT.product_id;
@@ -631,6 +889,11 @@ public class MeasureActivity extends BaseActivity {
         ToastHelper.showShort("保存成功！");
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveData();
+    }
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -640,6 +903,90 @@ public class MeasureActivity extends BaseActivity {
                 .addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         return intentFilter;
+    }
+
+    private void displayGattServices(List<BluetoothGattService> gattServices) {
+        if (gattServices == null)
+            return;
+        String uuid = null;
+        // String unknownServiceString =
+        // getResources().getString(R.string.unknown_service);
+        // String unknownCharaString =
+        // getResources().getString(R.string.unknown_characteristic);
+
+        //服务数据
+        ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<HashMap<String, String>>();
+        //特性数据
+        ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData = new ArrayList<ArrayList<HashMap<String, String>>>();
+
+        mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+
+        // Loops through available GATT Services.
+        // 遍历可用的GATT服务
+        for (BluetoothGattService gattService : gattServices) {
+            HashMap<String, String> currentServiceData = new HashMap<String, String>();
+            uuid = gattService.getUuid().toString();
+            // if (uuid.equals("0000fff0-0000-1000-8000-00805f9b34fb")) {
+            currentServiceData.put(LIST_NAME,
+                    SampleGattAttributes.lookup(uuid, "MeasureData CharaString"));
+            currentServiceData.put(LIST_UUID, uuid);
+            gattServiceData.add(currentServiceData);
+
+            ArrayList<HashMap<String, String>> gattCharacteristicGroupData = new ArrayList<HashMap<String, String>>();
+            List<BluetoothGattCharacteristic> gattCharacteristics = gattService
+                    .getCharacteristics();
+            ArrayList<BluetoothGattCharacteristic> charas = new ArrayList<BluetoothGattCharacteristic>();
+
+            // Loops through available Characteristics.
+            for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
+                // charas.add(gattCharacteristic);
+                HashMap<String, String> currentCharaData = new HashMap<String, String>();
+                uuid = gattCharacteristic.getUuid().toString();
+
+                charas.add(gattCharacteristic);
+                currentCharaData.put(LIST_NAME,
+                        SampleGattAttributes.lookup(uuid, "MeasureData CharaString"));
+                currentCharaData.put(LIST_UUID, uuid);
+                gattCharacteristicGroupData.add(currentCharaData);
+
+                if (uuid.equals("0000fff4-0000-1000-8000-00805f9b34fb")) {
+                    final int charaProp = gattCharacteristic.getProperties();
+
+                    if ((charaProp | BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
+                        // If there is an active notification on a characteristic,
+                        // clear
+                        // it first so it doesn't update the data field on the user
+                        // interface.
+                        if (mNotifyCharacteristic != null) {
+                            mBluetoothLeService.setCharacteristicNotification(
+                                    mNotifyCharacteristic, false);
+                            mNotifyCharacteristic = null;
+                        }
+                        mBluetoothLeService.readCharacteristic(gattCharacteristic);
+                    }
+                    if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
+                        mNotifyCharacteristic = gattCharacteristic;
+                        mBluetoothLeService.setCharacteristicNotification(
+                                gattCharacteristic, true);
+                    }
+                }
+
+            }
+            mGattCharacteristics.add(charas);
+            gattCharacteristicData.add(gattCharacteristicGroupData);
+            // }
+        }
+
+//        SimpleExpandableListAdapter gattServiceAdapter = new SimpleExpandableListAdapter(
+//                this, gattServiceData,
+//                android.R.layout.simple_expandable_list_item_2, new String[]{
+//                LIST_NAME, LIST_UUID}, new int[]{android.R.id.text1,
+//                android.R.id.text2}, gattCharacteristicData,
+//                android.R.layout.simple_expandable_list_item_2, new String[]{
+//                LIST_NAME, LIST_UUID}, new int[]{android.R.id.text1,
+//                android.R.id.text2});
+//        mGattServicesList.setAdapter(gattServiceAdapter);
+
     }
 
 

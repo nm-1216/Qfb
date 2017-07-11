@@ -46,7 +46,7 @@ public class HistoryController {
                         QfbContract.DataEntry.COLUMN_NAME_T_TYPE, QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP},
                 QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + ">= ? and " +
                         QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + " < ?",
-                new String[] {"" + min, "" + max}, null, null, null, null);
+                new String[] {"" + min, "" + max}, null, null, QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + " DESC", null);
 
         List<ProjectHistoryItem> result = new ArrayList<ProjectHistoryItem>();
         if (cursor_entries.getCount() > 0) {
@@ -60,8 +60,23 @@ public class HistoryController {
                 item.productName = cursor_entries.getString(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PRD_NAME));
                 item.targetId = cursor_entries.getInt(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TID));
                 item.targetName = cursor_entries.getString(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_NAME));
-                item.targetType = cursor_entries.getString(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_TYPE));
+                item.targetType = cursor_entries.getString(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_TYPE));;
                 item.timeStamp = cursor_entries.getLong(cursor_entries.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP));
+
+//                Cursor c_time = db_entries.rawQuery("SELECT " + QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + " FROM " +
+//                                QfbContract.DataEntry.TABLE_NAME + " WHERE " +
+//                                QfbContract.DataEntry.COLUMN_NAME_PROJID + "=" + item.projectId + " AND " +
+//                                QfbContract.DataEntry.COLUMN_NAME_PROJ_NAME + "='" + item.projectName + "' AND " +
+//                                QfbContract.DataEntry.COLUMN_NAME_PRDID + "=" + item.productId + " AND " +
+//                                QfbContract.DataEntry.COLUMN_NAME_PRD_NAME + "='" + item.productName + "' AND " +
+//                                QfbContract.DataEntry.COLUMN_NAME_TID + "=" + item.targetId + " AND " +
+//                                QfbContract.DataEntry.COLUMN_NAME_T_NAME + "='" + item.targetName + "'"
+//                        , null);
+//                if (c_time.getCount() > 0) {
+//                    c_time.moveToFirst();
+//                    item.timeStamp = c_time.getLong(c_time.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP));
+//                }
+//                c_time.close();
 
                 result.add(item);
 
@@ -96,10 +111,19 @@ public class HistoryController {
                 String targetType = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_TYPE));
                 int pageId = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PGID));
                 String measurePoint = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_MPOINT));
+                String direction = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_DIRECTION));
+                String upperTolerance = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_UPPER_TOLERANCE));
+                String lowerTolerance = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_LOWER_TOLERANCE));
                 String value1 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_1));
                 String value2 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_2));
                 String value3 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_3));
                 String value4 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_4));
+                String value5 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_5));
+                String value6 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_6));
+                String value7 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_7));
+                String value8 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_8));
+                String value9 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_9));
+                String value10 = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_VALUE_10));
                 String username = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_USERNAME));
                 long timestamp = cursor.getLong(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP));
                 int uploaded = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_UPLOADED));
@@ -115,10 +139,19 @@ public class HistoryController {
                 data.targetType = targetType;
                 data.pageId = pageId;
                 data.measure_point = measurePoint;
+                data.direction = direction;
+                data.upperTolerance = upperTolerance;
+                data.lowerTolerance = lowerTolerance;
                 data.value1 = value1;
                 data.value2 = value2;
                 data.value3 = value3;
                 data.value4 = value4;
+                data.value5 = value5;
+                data.value6 = value6;
+                data.value7 = value7;
+                data.value8 = value8;
+                data.value9 = value9;
+                data.value10 = value10;
                 data.username = username;
                 data.timestamp = timestamp;
                 data.uploaded = uploaded;

@@ -32,6 +32,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
 import com.sy.qfb.ble.utils.SampleGattAttributes;
 import com.sy.qfb.ble.utils.Util;
 
@@ -116,6 +117,7 @@ public class BluetoothLeService extends Service {
         public void onCharacteristicRead(BluetoothGatt gatt,
                                          BluetoothGattCharacteristic characteristic,
                                          int status) {
+            Logger.d("onCharacteristicRead()");
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 ///ooooooooooooooooooo
                 broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
@@ -125,6 +127,7 @@ public class BluetoothLeService extends Service {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt,
                                             BluetoothGattCharacteristic characteristic) {
+            Logger.d("onCharacteristicChanged()");
             broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
         }
     };

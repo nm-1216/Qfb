@@ -5,12 +5,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.StringBuilderPrinter;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
 import com.sy.qfb.ble.MyApplication;
 import com.sy.qfb.model.Page;
@@ -19,6 +21,7 @@ import com.sy.qfb.model.Project;
 import com.sy.qfb.model.Target;
 import com.sy.qfb.model.User;
 import com.sy.qfb.net.FileRequest;
+import com.sy.qfb.net.MyStringRequest;
 import com.sy.qfb.net.VolleyHelper;
 import com.sy.qfb.util.QfbFileHelper;
 
@@ -30,6 +33,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -110,27 +114,39 @@ public class DownloadController {
     }
 
     public void downloadProjects(final NetworkCallback_Projects callback) {
-        Request request = new StringRequest(Request.Method.GET, url_project, new Response.Listener<String>() {
+        Request request = new MyStringRequest(Request.Method.GET, url_project, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "success");
+                Logger.d(response);
 
-                if (!TextUtils.isEmpty(response)) {
-                    new QfbFileHelper().saveFile_Project(response);
-                }
+//                try {
+//                    response = new String(response.getBytes(), "UTF-8");
 
-                Gson gson = new Gson();
-                Project[] projects = gson.fromJson(response, Project[].class);
-                List<Project> lstProjects = new ArrayList<Project>();
-                for (int i = 0; i < projects.length; ++i) {
-                    lstProjects.add(projects[i]);
-                }
+                    if (!TextUtils.isEmpty(response)) {
+                        new QfbFileHelper().saveFile_Project(response);
+                    }
 
+                    Gson gson = new Gson();
+                    Project[] projects = gson.fromJson(response, Project[].class);
+                    List<Project> lstProjects = new ArrayList<Project>();
+                    for (int i = 0; i < projects.length; ++i) {
+                        lstProjects.add(projects[i]);
+                    }
 
+                    InitController initController = new InitController();
+                    initController.clearAllProjectTables();
+                    initController.readProjectsFromJsonString(response);
 
-                if (callback != null) {
-                    callback.networkCallback_Projects(true, lstProjects);
-                }
+                    if (callback != null) {
+                        callback.networkCallback_Projects(true, lstProjects);
+                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    if (callback != null) {
+//                        callback.networkCallback_Projects(false, null);
+//                    }
+//                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -140,7 +156,14 @@ public class DownloadController {
                     callback.networkCallback_Projects(false, null);
                 }
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> result = super.getHeaders();
+//                result.put("Accept-Charset", "UTF-8");
+                return result;
+            }
+        };
         VolleyHelper.getInstance().makeRequest(request);
     }
 

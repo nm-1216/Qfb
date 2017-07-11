@@ -5,37 +5,87 @@
 
     <TextView
         android:id="@+id/tv_mp_name"
-        android:text="2327SCO"
-        style="@style/table_content"/>
+        style="@style/table_content"
+        android:layout_span="1"
+        android:maxWidth="20dp"
+        android:text="2327SCO" />
 
     <TextView
         android:id="@+id/tv_mp_direction"
-        android:text="C/C"
-        style="@style/table_content"/>
+        style="@style/table_content"
+        android:layout_span="1"
+        android:maxWidth="20dp"
+        android:text="C/C" />
+
+    <TextView
+        android:id="@+id/tv_upper_tolerance"
+        style="@style/table_content"
+        android:layout_span="1"
+        android:maxWidth="20dp" />
+
+    <TextView
+        android:id="@+id/tv_lower_tolerance"
+        style="@style/table_content"
+        android:layout_span="1"
+        android:maxWidth="20dp" />
 
     <TextView
         android:id="@+id/tv_data1"
-        style="@style/table_content"/>
+        style="@style/table_content"
+        android:layout_span="1" />
 
     <TextView
         android:id="@+id/tv_data2"
-        style="@style/table_content"/>
+        style="@style/table_content"
+        android:layout_span="1" />
 
     <TextView
         android:id="@+id/tv_data3"
-        style="@style/table_content"/>
+        style="@style/table_content"
+        android:layout_span="1" />
 
     <TextView
         android:id="@+id/tv_data4"
-        style="@style/table_content"/>
+        style="@style/table_content"
+        android:layout_span="1" />
+
+    <TextView
+        android:id="@+id/tv_data5"
+        style="@style/table_content"
+        android:layout_span="1" />
+
+    <TextView
+        android:id="@+id/tv_data6"
+        style="@style/table_content"
+        android:layout_span="1" />
+
+    <TextView
+        android:id="@+id/tv_data7"
+        style="@style/table_content"
+        android:layout_span="1" />
+
+    <TextView
+        android:id="@+id/tv_data8"
+        style="@style/table_content"
+        android:layout_span="1" />
+
+    <TextView
+        android:id="@+id/tv_data9"
+        style="@style/table_content"
+        android:layout_span="1" />
+
+    <TextView
+        android:id="@+id/tv_data10"
+        style="@style/table_content"
+        android:layout_span="1" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_span="3"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_span="8"
         android:background="@android:color/white"
         android:gravity="center"
-        android:textColor="@android:color/black"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"/>
+        android:textColor="@android:color/black" />
 </TableRow>

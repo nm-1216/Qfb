@@ -12,7 +12,7 @@ import com.sy.qfb.ble.MyApplication;
  */
 
 public class QfbDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 8;
     public static final String DATABASE_NAME = "Qfb.db";
 
     private static final String SQL_CREATE_USER =
@@ -70,7 +70,9 @@ public class QfbDbHelper extends SQLiteOpenHelper {
                     QfbContract.MeasurePointEntry.COLUMN_NAME_MPID + " INTEGER PRIMARY KEY," +
                     QfbContract.MeasurePointEntry.COLUMN_NAME_PGID + " INTEGER," +
                     QfbContract.MeasurePointEntry.COLUMN_NAME_POINT + " TEXT," +
-                    QfbContract.MeasurePointEntry.COLUMN_NAME_DIRECTION + " TEXT)";
+                    QfbContract.MeasurePointEntry.COLUMN_NAME_DIRECTION + " TEXT," +
+                    QfbContract.MeasurePointEntry.COLUMN_NAME_UPPER_TOLERANCE + " TEXT," +
+                    QfbContract.MeasurePointEntry.COLUMN_NAME_LOWER_TOLERANCE + " TEXT)";
 
     private static final String SQL_DELETE_MEASURE_POINT =
             "DROP TABLE IF EXISTS " + QfbContract.MeasurePointEntry.TABLE_NAME;
@@ -88,10 +90,18 @@ public class QfbDbHelper extends SQLiteOpenHelper {
                     QfbContract.DataEntry.COLUMN_NAME_PGID + " INTEGER," +
                     QfbContract.DataEntry.COLUMN_NAME_MPOINT + " TEXT," +
                     QfbContract.DataEntry.COLUMN_NAME_DIRECTION + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_UPPER_TOLERANCE + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_LOWER_TOLERANCE + " TEXT," +
                     QfbContract.DataEntry.COLUMN_NAME_VALUE_1 + " TEXT," +
                     QfbContract.DataEntry.COLUMN_NAME_VALUE_2 + " TEXT," +
                     QfbContract.DataEntry.COLUMN_NAME_VALUE_3 + " TEXT," +
                     QfbContract.DataEntry.COLUMN_NAME_VALUE_4 + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_VALUE_5 + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_VALUE_6 + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_VALUE_7 + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_VALUE_8 + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_VALUE_9 + " TEXT," +
+                    QfbContract.DataEntry.COLUMN_NAME_VALUE_10 + " TEXT," +
                     QfbContract.DataEntry.COLUMN_NAME_USERNAME + " TEXT," +
                     QfbContract.DataEntry.COLUMN_NAME_UPLOADED + " INTEGER," +
                     QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP + " NUMBER)";

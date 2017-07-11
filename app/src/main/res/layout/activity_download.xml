@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="500dp">
+    android:layout_width="450dp"
+    android:layout_height="400dp">
 
     <LinearLayout
         android:id="@+id/ll_upload_btns"
@@ -9,30 +9,30 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/btn_download_user"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:text="用户数据下载"
-            android:textSize="28sp" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/btn_download_project"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:text="测量标准下载"
-            android:textSize="28sp" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/btn_download_manual"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:text="用户手册下载"
-            android:textSize="28sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -54,9 +54,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/white"
-                android:paddingLeft="16dp"
+                android:paddingLeft="6dp"
                 android:textColor="@android:color/black"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
         </ScrollView>
     </LinearLayout>
 

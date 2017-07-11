@@ -37,6 +37,42 @@ public class MainActivity extends BaseActivity {
     public static Target CURRENT_TARGET = null;
     public static Page CURRENT_PAGE = null;
 
+    public static void setCurrentProject(int projectId, String projectName) {
+        if (PROJECTS != null) {
+            for (Project project : PROJECTS) {
+                if (project.project_id == projectId && project.project_name != null &&
+                        project.project_name.equals(projectName)) {
+                    CURRENT_PROJECT = project;
+                    break;
+                }
+            }
+        }
+    }
+
+    public static void setCurrentProduct(int productId, String productName) {
+        if (CURRENT_PROJECT != null && CURRENT_PROJECT.products != null) {
+            for (Product product : CURRENT_PROJECT.products) {
+                if (product.product_id == productId && product.product_name != null &&
+                        product.product_name.equals(productName)) {
+                    CURRENT_PRODUCT = product;
+                    break;
+                }
+            }
+        }
+    }
+
+    public static void setCurrentTarget(int targetId, String targetName) {
+        if (CURRENT_PRODUCT != null && CURRENT_PRODUCT.targets != null) {
+            for (Target target : CURRENT_PRODUCT.targets) {
+                if (target.target_id == targetId && target.target_name != null &&
+                        target.target_name.equals(targetName)) {
+                    CURRENT_TARGET = target;
+                    break;
+                }
+            }
+        }
+    }
+
     @BindView(R.id.btn_upload)
     Button btnUpload;
 
@@ -61,9 +97,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-
-        qfbController = new QfbController();
-        PROJECTS = qfbController.getProjects();
 
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,10 +130,18 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        qfbController = new QfbController();
+        PROJECTS = qfbController.getProjects();
+
+//        projectAdapter.notifyDataSetChanged();
         projectAdapter = new ProjectAdapter();
         lvProject.setAdapter(projectAdapter);
     }
-
 
     private class ProjectAdapter extends BaseAdapter {
         List<Object> items;
@@ -172,7 +213,8 @@ public class MainActivity extends BaseActivity {
                     }
                 }
 
-                tvProjectName.setText("       " + product.product_name + " - " + product.product_id);
+//                tvProjectName.setText("       " + product.product_name + " - " + product.product_id);
+                tvProjectName.setText("       " + product.product_name);
                 view.setOnClickListener(new ClickListener_Product(project, product));
             }
 

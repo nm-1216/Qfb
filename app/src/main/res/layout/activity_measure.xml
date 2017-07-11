@@ -73,11 +73,11 @@
 
             <TextView
                 android:id="@+id/tv_connection_state"
-                android:layout_width="100dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@android:color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:visibility="gone" />
 
         </LinearLayout>
@@ -94,33 +94,35 @@
             android:textSize="24sp" />
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/rl_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/rl_bottom"
-        android:layout_below="@id/common_header"
-        android:orientation="vertical">
+        android:layout_below="@id/common_header">
 
         <LinearLayout
+            android:id="@+id/ll_form_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:orientation="horizontal">
 
-            <TextView
-                style="@style/table_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
-                android:text="零件号" />
+            <!--<TextView-->
+            <!--style="@style/table_header"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="100dp"-->
+            <!--android:text="零件号" />-->
 
-            <TextView
-                android:id="@+id/tv_part_pn"
-                style="@style/table_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="150dp"
-                android:textColor="@android:color/darker_gray"
-                android:textStyle="normal" />
+            <!--<TextView-->
+            <!--android:id="@+id/tv_part_pn"-->
+            <!--style="@style/table_header"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:minWidth="150dp"-->
+            <!--android:textColor="@android:color/darker_gray"-->
+            <!--android:textStyle="normal" />-->
 
             <TextView
                 style="@style/table_header"
@@ -133,7 +135,12 @@
                 style="@style/table_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="150dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:maxWidth="400dp"
+                android:minWidth="380dp"
                 android:textColor="@android:color/darker_gray"
                 android:textStyle="normal" />
 
@@ -141,6 +148,7 @@
                 style="@style/table_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:text="测量项" />
 
             <TextView
@@ -172,99 +180,163 @@
         <ScrollView
             android:id="@+id/sc_scroll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@id/ll_form_title">
 
-            <RelativeLayout
+            <TableLayout
+                android:id="@+id/tl_measure"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:background="@android:color/darker_gray"
+                android:stretchColumns="*">
 
-                <TableLayout
-                    android:id="@+id/tl_measure"
+                <TableRow
+                    android:id="@+id/row1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/darker_gray"
-                    android:stretchColumns="*">
+                    android:layout_height="wrap_content">
 
-                    <TableRow
-                        android:id="@+id/row1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
+                        android:text="测点号" />
 
-                        <TextView
-                            style="@style/table_header"
-                            android:text="测点号" />
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
+                        android:text="控制方向" />
 
-                        <TextView
-                            style="@style/table_header"
-                            android:text="控制方向" />
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
+                        android:text="上公差" />
 
-                        <TextView
-                            style="@style/table_header"
-                            android:layout_span="4"
-                            android:text="测量数据" />
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
+                        android:text="下公差" />
 
-                        <TextView
-                            style="@style/table_header"
-                            android:layout_span="3"
-                            android:text="测点图/截面" />
-                    </TableRow>
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="10"
+                        android:text="测量数据" />
 
-                    <TableRow
-                        android:id="@+id/row2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_img_header_2"
+                        style="@style/table_header"
+                        android:layout_span="8"
+                        android:text="测点图/截面" />
+                </TableRow>
 
-                        <TextView
-                            style="@style/table_header"
-                            android:text="Point No." />
+                <TableRow
+                    android:id="@+id/row2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                        <TextView
-                            style="@style/table_header"
-                            android:text="Direct." />
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
+                        android:text="Point No." />
 
-                        <TextView
-                            style="@style/table_header"
-                            android:text="1" />
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
+                        android:text="Direct." />
 
-                        <TextView
-                            style="@style/table_header"
-                            android:text="2" />
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
+                        android:text="Upper Tol." />
 
-                        <TextView
-                            style="@style/table_header"
-                            android:text="3" />
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:maxWidth="20dp"
+                        android:text="Lower Tol." />
 
-                        <TextView
-                            style="@style/table_header"
-                            android:text="4" />
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="1" />
 
-                        <TextView
-                            style="@style/table_header"
-                            android:layout_span="3"
-                            android:text="Measurement Point Drawing/Section" />
-                    </TableRow>
-                </TableLayout>
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="2" />
 
-                <LinearLayout
-                    android:id="@+id/ll_images"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginTop="50dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="3" />
 
-                    <ImageView
-                        android:id="@+id/img_1"
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/part_1" />
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="4" />
 
-                </LinearLayout>
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="5" />
 
-            </RelativeLayout>
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="6" />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="7" />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="8" />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="9" />
+
+                    <TextView
+                        style="@style/table_header"
+                        android:layout_span="1"
+                        android:text="10" />
+
+                    <TextView
+                        android:id="@+id/tv_img_header"
+                        style="@style/table_header"
+                        android:layout_span="8"
+                        android:text="Measurement Point Drawing/Section" />
+                </TableRow>
+            </TableLayout>
         </ScrollView>
-    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_images"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:maxHeight="240dp"
+                android:maxWidth="280dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/part_1" />
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
