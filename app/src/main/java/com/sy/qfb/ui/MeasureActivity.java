@@ -223,7 +223,12 @@ public class MeasureActivity extends BaseActivity {
 
                 Logger.d("data available");
                 //数据显示
-                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+//                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
+                data = data.trim();
+                if (data.endsWith("mm")) data = data.replace("mm", "");
+                data = data.trim();
+                displayData(data);
 //                dialog.hide();
                 if (progressDialog.isShowing()) {
                     progressDialog.hide();
