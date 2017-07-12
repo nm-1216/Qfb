@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_mp_name"
+        style="@style/table_content"
+        android:layout_span="1"
+        android:maxWidth="20dp"
+        android:text="2327SCO" />
+
+    <TextView
+        android:id="@+id/tv_mp_direction"
+        style="@style/table_content"
+        android:layout_span="1"
+        android:maxWidth="20dp"
+        android:text="C/C" />
+
+    <TextView
+        android:id="@+id/tv_upper_tolerance"
+        style="@style/table_content"
+        android:layout_span="1"
+        android:maxWidth="20dp" />
+
+    <TextView
+        android:id="@+id/tv_lower_tolerance"
+        style="@style/table_content"
+        android:layout_span="1"
+        android:maxWidth="20dp" />
+</TableRow>

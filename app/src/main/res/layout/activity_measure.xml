@@ -183,140 +183,194 @@
             android:layout_height="match_parent"
             android:layout_below="@id/ll_form_title">
 
-            <TableLayout
-                android:id="@+id/tl_measure"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/darker_gray"
-                android:stretchColumns="*">
+                android:layout_height="match_parent">
 
-                <TableRow
-                    android:id="@+id/row1"
+                <TableLayout
+                    android:id="@+id/tl_left"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:background="@android:color/darker_gray"
+                    android:stretchColumns="*">
+
+                    <TableRow
+                        android:id="@+id/row1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/table_header"
+                            android:layout_span="1"
+                            android:maxWidth="20dp"
+                            android:text="测点号" />
+
+                        <TextView
+                            style="@style/table_header"
+                            android:layout_span="1"
+                            android:maxWidth="20dp"
+                            android:text="控制方向" />
+
+                        <TextView
+                            style="@style/table_header"
+                            android:layout_span="1"
+                            android:maxWidth="20dp"
+                            android:text="上公差" />
+
+                        <TextView
+                            style="@style/table_header"
+                            android:layout_span="1"
+                            android:maxWidth="20dp"
+                            android:text="下公差" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/row2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/table_header"
+                            android:layout_span="1"
+                            android:maxWidth="20dp"
+                            android:text="Point No." />
+
+                        <TextView
+                            style="@style/table_header"
+                            android:layout_span="1"
+                            android:maxWidth="20dp"
+                            android:text="Direct." />
+
+                        <TextView
+                            style="@style/table_header"
+                            android:layout_span="1"
+                            android:maxWidth="20dp"
+                            android:text="Up Tol." />
+
+                        <TextView
+                            style="@style/table_header"
+                            android:layout_span="1"
+                            android:maxWidth="20dp"
+                            android:text="Lo Tol." />
+                    </TableRow>
+                </TableLayout>
+
+                <TableLayout
+                    android:id="@+id/tl_right"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/darker_gray"
+                    android:stretchColumns="*">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_img_header_2"
+                            style="@style/table_header"
+                            android:text="测点图/截面" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_img_header"
+                            style="@style/table_header"
+                            android:text="Measurement Point Drawing/Section" />
+                    </TableRow>
+                </TableLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/tl_right"
+                    android:layout_toRightOf="@id/tl_left"
+                    android:orientation="vertical">
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:maxWidth="20dp"
-                        android:text="测点号" />
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/darker_gray"
+                        android:stretchColumns="*">
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:maxWidth="20dp"
-                        android:text="控制方向" />
+                        <TableRow
+                            android:id="@+id/tr_data_head_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:maxWidth="20dp"
-                        android:text="上公差" />
+                            <TextView
+                                style="@style/table_header"
+                                android:text="测量数据" />
+                        </TableRow>
+                    </TableLayout>
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:maxWidth="20dp"
-                        android:text="下公差" />
+                    <HorizontalScrollView
+                        android:id="@+id/hsv_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="10"
-                        android:text="测量数据" />
+                        <TableLayout
+                            android:id="@+id/tl_data"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/darker_gray"
+                            android:stretchColumns="*">
 
-                    <TextView
-                        android:id="@+id/tv_img_header_2"
-                        style="@style/table_header"
-                        android:layout_span="8"
-                        android:text="测点图/截面" />
-                </TableRow>
+                            <TableRow
+                                android:id="@+id/tr_data_head_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-                <TableRow
-                    android:id="@+id/row2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                                <TextView
+                                    style="@style/table_data"
+                                    android:text="1" />
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:maxWidth="20dp"
-                        android:text="Point No." />
+                                <TextView
+                                    style="@style/table_data"
+                                    android:text="2" />
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:maxWidth="20dp"
-                        android:text="Direct." />
+                                <TextView
+                                    style="@style/table_data"
+                                    android:text="3" />
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:maxWidth="20dp"
-                        android:text="Upper Tol." />
+                                <TextView
+                                    style="@style/table_data"
+                                    android:text="4" />
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:maxWidth="20dp"
-                        android:text="Lower Tol." />
+                                <TextView
+                                    style="@style/table_data"
+                                    android:text="5" />
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:text="1" />
+                                <TextView
+                                    style="@style/table_data"
+                                    android:text="6" />
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:text="2" />
+                                <TextView
+                                    style="@style/table_data"
+                                    android:text="7" />
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:text="3" />
+                                <TextView
+                                    style="@style/table_data"
+                                    android:text="8" />
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:text="4" />
+                                <TextView
+                                    style="@style/table_data"
+                                    android:text="9" />
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:text="5" />
+                                <TextView
+                                    style="@style/table_data"
+                                    android:text="10" />
 
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:text="6" />
-
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:text="7" />
-
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:text="8" />
-
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:text="9" />
-
-                    <TextView
-                        style="@style/table_header"
-                        android:layout_span="1"
-                        android:text="10" />
-
-                    <TextView
-                        android:id="@+id/tv_img_header"
-                        style="@style/table_header"
-                        android:layout_span="8"
-                        android:text="Measurement Point Drawing/Section" />
-                </TableRow>
-            </TableLayout>
+                            </TableRow>
+                        </TableLayout>
+                    </HorizontalScrollView>
+                </LinearLayout>
+            </RelativeLayout>
         </ScrollView>
 
         <LinearLayout
