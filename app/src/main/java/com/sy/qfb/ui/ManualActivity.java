@@ -46,6 +46,7 @@ public class ManualActivity extends BaseActivity {
                     .defaultPage(1)
                     .showMinimap(false)
                     .enableSwipe(true)
+                    .swipeVertical(true)
 //                .onDraw(onDrawListener)
                     .onLoad(new OnLoadCompleteListener() {
                         @Override
