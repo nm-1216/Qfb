@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="400dp"
+    android:layout_height="300dp">
+
+    <TextView
+        android:id="@+id/tv_server_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:text="服务器地址:端口"/>
+
+    <EditText
+        android:id="@+id/et_server_address"
+        android:layout_width="match_parent"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:text="确定"/>
+
+</LinearLayout>

@@ -16,6 +16,7 @@ import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
 import com.sy.qfb.controller.LoginController;
 import com.sy.qfb.model.User;
+import com.sy.qfb.util.Global;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,9 @@ public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.chk_remember_pass)
     CheckBox chkRememberPass;
+
+    @BindView(R.id.tv_setting)
+    TextView tvSetting;
 
     private LoginController loginController;
 
@@ -96,5 +100,23 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
+
+
+        SharedPreferences sharedPreferences1 = getSharedPreferences("qfb", MODE_PRIVATE);
+        if (sharedPreferences1.contains("server_domain"))
+        {
+            Global.SERVER_ADDRESS = sharedPreferences1.getString("server_domain", "114.55.105.88:8088");
+        }
+
+
+        tvSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, ServerSettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 }

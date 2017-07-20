@@ -62,6 +62,10 @@
         <activity android:name=".ui.ImageViewActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Dialog"/>
+        <activity android:name=".ui.ServerSettingActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
+
 
         <activity
             android:name=".ble.activity.AchartAcitivty"
