@@ -37,7 +37,7 @@ public class ServerSettingActivity extends BaseActivity {
         ButterKnife.bind(this);
 
 
-        etServerAddress.setText(Global.getServerAddress(this));
+        etServerAddress.setText(Global.getServerAddress());
 
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
