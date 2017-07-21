@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
 import com.sy.qfb.util.Global;
 
@@ -35,7 +36,8 @@ public class ServerSettingActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        etServerAddress.setText(Global.SERVER_ADDRESS);
+
+        etServerAddress.setText(Global.getServerAddress(this));
 
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,8 +48,6 @@ public class ServerSettingActivity extends BaseActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("server_domain", serverAddress);
                 editor.commit();
-
-                Global.SERVER_ADDRESS = serverAddress;
 
                 ServerSettingActivity.this.finish();
             }

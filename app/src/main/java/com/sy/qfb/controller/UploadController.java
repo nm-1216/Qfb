@@ -9,6 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.orhanobut.logger.Logger;
+import com.sy.qfb.ble.MyApplication;
 import com.sy.qfb.db.QfbContract;
 import com.sy.qfb.db.QfbDbHelper;
 import com.sy.qfb.model.MeasureData;
@@ -26,11 +27,6 @@ public class UploadController {
     public interface UploadFinishCallback {
         void finish(int successCount, int failCount, HashMap<MeasureData, Integer> uploadRecoder);
     }
-
-//    private static String URL_UPLOAD = "http://114.55.105.88:8088/api/MeasureDatas";
-    private static String URL_UPLOAD = "http://" + Global.SERVER_ADDRESS + "/api/MeasureDatas";
-
-//    private static String URL_UPLOAD = "http://10.90.75.149:51956/api/MeasureDatas";
 
     SQLiteDatabase db_shared;
     Cursor cursor;
@@ -124,7 +120,8 @@ public class UploadController {
         for (MeasureData measureData : uploadRecoder.keySet()) {
             VolleyHelper volleyHelper = VolleyHelper.getInstance();
             volleyHelper.makeRequest(new UploadDataRequest(
-                    StringRequest.Method.POST, URL_UPLOAD, new UploadSuccess(measureData, callback),
+                    StringRequest.Method.POST, Global.getUrl_Upload(),
+                    new UploadSuccess(measureData, callback),
                     new UploadFail(measureData, callback), measureData));
         }
     }

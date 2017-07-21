@@ -1,5 +1,6 @@
 package com.sy.qfb.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -109,6 +110,8 @@ public class DownloadActivity extends BaseActivity {
                 }, 10000);
 
                 appendStatus("正在下载  product.json....");
+                SharedPreferences sharedPreferences = getSharedPreferences("qfb", MODE_PRIVATE);
+                String userName = sharedPreferences.getString("username", "project");
                 downloadController.downloadProjects(new DownloadController.NetworkCallback_Projects() {
                     @Override
                     public void networkCallback_Projects(boolean success, List<Project> projects) {
@@ -121,7 +124,7 @@ public class DownloadActivity extends BaseActivity {
                         }
                         showProgressDialog(false);
                     }
-                });
+                }, userName);
             }
         });
 

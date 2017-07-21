@@ -1,7 +1,15 @@
 package com.sy.qfb.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,15 +17,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.sy.qfb.R;
+import com.sy.qfb.controller.DownloadController;
 import com.sy.qfb.controller.QfbController;
 import com.sy.qfb.model.Page;
 import com.sy.qfb.model.Product;
 import com.sy.qfb.model.Project;
+import com.sy.qfb.model.QfbVersion;
 import com.sy.qfb.model.Target;
+import com.sy.qfb.view.CommonHeader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +100,9 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.btn_manual_pdf)
     Button btnPdf;
 
+    @BindView(R.id.common_header)
+    CommonHeader header;
+
     private QfbController qfbController;
     private ProjectAdapter projectAdapter;
 
@@ -130,6 +145,15 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        ImageView imgRight = (ImageView) header.findViewById(R.id.img_right);
+        imgRight.setVisibility(View.VISIBLE);
+        imgRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ServerSettingActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -141,6 +165,65 @@ public class MainActivity extends BaseActivity {
 //        projectAdapter.notifyDataSetChanged();
         projectAdapter = new ProjectAdapter();
         lvProject.setAdapter(projectAdapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (isNetworkConnected()) {
+            try {
+                PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+                String version = pInfo.versionName;
+                final DownloadController downloadController = new DownloadController();
+                showProgressDialog(true);
+                downloadController.hasNewVersion(new DownloadController.VersionCallback() {
+                    @Override
+                    public void versionCallback(boolean success, boolean hasNewVersion, final QfbVersion qfbVersion) {
+                        showProgressDialog(false);
+                        if (success) {
+                            if (hasNewVersion) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                builder.setMessage("有最新版本：" + qfbVersion.latest_version + "，是否要下载？");
+                                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        showProgressDialog(true);
+                                        downloadController.downloadNewVersion(qfbVersion, new DownloadController.DownloadNewVersionCallback() {
+                                            @Override
+                                            public void downloaded(boolean succes, String filePath) {
+                                                showProgressDialog(false);
+
+                                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                                intent.setDataAndType(Uri.parse("file://" + filePath),"application/vnd.android.package-archive");
+                                                startActivity(intent);
+                                            }
+                                        });
+                                        dialog.dismiss();
+                                    }
+                                });
+                                builder.setCancelable(false);
+                                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }, Double.parseDouble(version));
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private class ProjectAdapter extends BaseAdapter {

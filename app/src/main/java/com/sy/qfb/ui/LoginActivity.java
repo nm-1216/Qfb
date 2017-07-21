@@ -102,13 +102,6 @@ public class LoginActivity extends BaseActivity {
         });
 
 
-        SharedPreferences sharedPreferences1 = getSharedPreferences("qfb", MODE_PRIVATE);
-        if (sharedPreferences1.contains("server_domain"))
-        {
-            Global.SERVER_ADDRESS = sharedPreferences1.getString("server_domain", "114.55.105.88:8088");
-        }
-
-
         tvSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

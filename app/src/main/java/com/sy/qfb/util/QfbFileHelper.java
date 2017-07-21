@@ -74,7 +74,7 @@ public class QfbFileHelper {
         saveToFile(FILENAME_PROJECT, content);
     }
 
-    public void saveFile_Binary(String fileName, byte[] bytes) {
+    public String saveFile_Binary(String fileName, byte[] bytes) {
         Context context = MyApplication.APP_CONTEXT;
         File fileDir = context.getFilesDir();
         File file = new File(fileDir, fileName);
@@ -85,9 +85,11 @@ public class QfbFileHelper {
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(bytes);
             fos.close();
+            return file.getAbsolutePath();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+        return "";
     }
 
     private void saveToFile(String fileName, String content) {
