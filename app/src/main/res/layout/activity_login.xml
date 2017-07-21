@@ -83,7 +83,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
-            android:text="修改服务器地址"/>
+            android:textColor="@android:color/darker_gray"
+            android:text="修改服务器地址"
+            android:layout_marginTop="10dp"
+            />
     </LinearLayout>
 </LinearLayout>

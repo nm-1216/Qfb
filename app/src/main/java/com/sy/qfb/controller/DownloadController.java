@@ -23,6 +23,7 @@ import com.sy.qfb.model.User;
 import com.sy.qfb.net.FileRequest;
 import com.sy.qfb.net.MyStringRequest;
 import com.sy.qfb.net.VolleyHelper;
+import com.sy.qfb.util.Global;
 import com.sy.qfb.util.QfbFileHelper;
 
 import java.io.File;
@@ -60,10 +61,17 @@ public class DownloadController {
 //    private static final String url_manual = "http://106.15.231.194/res/manual.pdf";
 
 
-    public static final String SERVER = "http://114.55.105.88:8088/res/";
-    private static final String url_user = "http://114.55.105.88:8088/res/user.json";
-    private static final String url_project = "http://114.55.105.88:8088/res/project.json";
-    private static final String url_manual = "http://114.55.105.88:8088/res/manual.pdf";
+//    public static final String SERVER = "http://114.55.105.88:8088/res/";
+//    private static final String url_user = "http://114.55.105.88:8088/res/user.json";
+//    private static final String url_project = "http://114.55.105.88:8088/res/project.json";
+//    private static final String url_manual = "http://114.55.105.88:8088/res/manual.pdf";
+
+
+    public static final String SERVER = "http://" + Global.SERVER_ADDRESS + "/res/";
+    private static final String url_user = "http://" + Global.SERVER_ADDRESS + "/res/user.json";
+    private static final String url_project = "http://" + Global.SERVER_ADDRESS + "/res/project.json";
+    private static final String url_manual = "http://" + Global.SERVER_ADDRESS + "/res/manual.pdf";
+
 
     public interface NetworkCallback_Users {
         void networkCallback_Users(boolean success, List<User> users);

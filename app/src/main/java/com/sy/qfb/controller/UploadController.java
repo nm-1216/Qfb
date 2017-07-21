@@ -13,6 +13,7 @@ import com.sy.qfb.db.QfbContract;
 import com.sy.qfb.db.QfbDbHelper;
 import com.sy.qfb.model.MeasureData;
 import com.sy.qfb.net.VolleyHelper;
+import com.sy.qfb.util.Global;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,8 @@ public class UploadController {
         void finish(int successCount, int failCount, HashMap<MeasureData, Integer> uploadRecoder);
     }
 
-    private static String URL_UPLOAD = "http://114.55.105.88:8088/api/MeasureDatas";
+//    private static String URL_UPLOAD = "http://114.55.105.88:8088/api/MeasureDatas";
+    private static String URL_UPLOAD = "http://" + Global.SERVER_ADDRESS + "/api/MeasureDatas";
 
 //    private static String URL_UPLOAD = "http://10.90.75.149:51956/api/MeasureDatas";
 
@@ -64,6 +66,7 @@ public class UploadController {
             String targetName = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_NAME));
             String targetType = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_TYPE));
             int pageId = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PGID));
+            int pointId = cursor.getInt(cursor.getColumnIndex((QfbContract.DataEntry.COLUMN_NAME_MPID)));
             String measurePoint = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_MPOINT));
             String direction = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_DIRECTION));
             String upperTolerance = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_UPPER_TOLERANCE));
@@ -91,6 +94,7 @@ public class UploadController {
             measureData.targetName = targetName;
             measureData.targetType = targetType;
             measureData.pageId = pageId;
+            measureData.pointId = pointId;
             measureData.measure_point = measurePoint;
             measureData.direction = direction;
             measureData.upperTolerance = upperTolerance;
@@ -230,6 +234,7 @@ public class UploadController {
             params.put("TargetName", measureData.targetName == null ? "" : measureData.targetName);
             params.put("TargetType", measureData.targetType == null ? "" : measureData.targetType);
             params.put("PageId", "" + measureData.pageId);
+            params.put("pointId", "" + measureData.pointId);
             params.put("MeasurePoint", measureData.measure_point == null ? "" : measureData.measure_point);
             params.put("Direction", measureData.direction == null ? "" : measureData.direction);
             params.put("UpperTolerance", measureData.upperTolerance == null ? "" : measureData.upperTolerance);

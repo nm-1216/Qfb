@@ -16,6 +16,7 @@ public class MeasureData extends SugarRecord {
     public String targetName;
     public String targetType;
     public int pageId;
+    public int pointId;
     public String measure_point;
     public String direction;
     public String upperTolerance;

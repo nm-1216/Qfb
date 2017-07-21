@@ -66,6 +66,7 @@ public final class QfbContract {
         public static final String COLUMN_NAME_T_NAME = "t_name";
         public static final String COLUMN_NAME_T_TYPE = "t_type";
         public static final String COLUMN_NAME_PGID = "pgid";
+        public static final String COLUMN_NAME_MPID = "mpid";
         public static final String COLUMN_NAME_MPOINT = "mpoint";
         public static final String COLUMN_NAME_DIRECTION = "direction";
         public static final String COLUMN_NAME_UPPER_TOLERANCE = "upper_tolerance";

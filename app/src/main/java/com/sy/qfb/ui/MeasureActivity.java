@@ -599,6 +599,7 @@ public class MeasureActivity extends BaseActivity {
                 View leftView = layoutInflater.inflate(R.layout.item_measure_left, null);
                 TextView tvName = (TextView) leftView.findViewById(R.id.tv_mp_name);
                 tvName.setText(mpoints[i].point);
+                tvName.setTag(mpoints[i].pointId);
 
                 TextView tvDirection = (TextView) leftView.findViewById(R.id.tv_mp_direction);
                 tvDirection.setText(mpoints[i].direction);
@@ -898,6 +899,7 @@ public class MeasureActivity extends BaseActivity {
             TextView tvData9 = (TextView) dataRow.findViewById(R.id.tv_data9);
             TextView tvData10 = (TextView) dataRow.findViewById(R.id.tv_data10);
 
+            data.pointId = (int) tvName.getTag();
             data.measure_point = tvName.getText().toString();
             data.direction = tvDirection.getText().toString();
             data.upperTolerance = tvUpperTolerance.getText().toString();
