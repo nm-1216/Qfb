@@ -1,5 +1,7 @@
 package com.sy.qfb.controller;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -11,6 +13,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.sy.qfb.ble.MyApplication;
+import com.sy.qfb.db.QfbContract;
+import com.sy.qfb.db.QfbDbHelper;
 import com.sy.qfb.model.Project;
 import com.sy.qfb.model.User;
 import com.sy.qfb.model.QfbVersion;
@@ -70,9 +74,18 @@ public class DownloadController {
                 Gson gson = new Gson();
                 User[] users = gson.fromJson(response, User[].class);
                 List<User> lstUser = new ArrayList<User>();
+                SQLiteDatabase db = QfbDbHelper.getInstance().getWritableDatabase();
+                db.execSQL("DELETE FROM " + QfbContract.UserEntry.TABLE_NAME);
                 for (int i = 0; i < users.length; ++i) {
                     lstUser.add(users[i]);
+
+                    ContentValues cv = new ContentValues();
+                    cv.put(QfbContract.UserEntry.COLUMN_NAME_USERNAME, users[i].username);
+                    cv.put(QfbContract.UserEntry.COLUMN_NAME_PASSWORD, users[i].password);
+                    db.insert(QfbContract.UserEntry.TABLE_NAME, null, cv);
                 }
+                db.close();
+
                 if (callback != null) {
                     callback.networkCallback_Users(true, lstUser);
                 }
