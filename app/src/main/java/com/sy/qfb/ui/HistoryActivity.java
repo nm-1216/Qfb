@@ -171,8 +171,8 @@ public class HistoryActivity extends Activity {
 //            List<Project> projects = historyController.getProjects(timestamp_min, timestamp_max);
 //            Logger.d("projects.size() = " + projects.size());
 //
-//            for (Project project : projects) {
-//                List<Product> products = historyController.getProducts(timestamp_min, timestamp_max, project.project_id);
+//            for (Project project_json : projects) {
+//                List<Product> products = historyController.getProducts(timestamp_min, timestamp_max, project_json.project_id);
 //                Logger.d("products.size() = " + products.size());
 //
 //                for (Product product : products) {
@@ -341,7 +341,7 @@ public class HistoryActivity extends Activity {
 
 //    private class HistoryPoint {
 //        public Date date;
-//        public Project project;
+//        public Project project_json;
 //        public Product product;
 //        public Target target;
 //        public ArrayMap<Page, List<MeasureData>> pageAndData;

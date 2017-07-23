@@ -277,6 +277,29 @@ public class MeasureActivity extends BaseActivity {
                         if (tv != null) {
                             tv.setText(data);
                         }
+//                        if (isCurrentNGOK()) {
+//                            if ("NG".equals(data)) {
+//                                tv.setBackgroundColor(Color.RED);
+//                            } else {
+//                                tv.setBackgroundColor(Color.WHITE);
+//                            }
+//                        } else {
+                        MeasurePoint mp = (MeasurePoint) tv.getTag();
+                        if (mp != null) {
+                            try {
+                                double currentValue = Double.parseDouble(data);
+                                double upper = Double.parseDouble(mp.upperTolerance);
+                                double lower = Double.parseDouble(mp.lowerTolerance);
+                                if (currentValue > upper || currentValue < lower) {
+                                    tv.setBackgroundColor(Color.RED);
+                                } else {
+                                    tv.setBackgroundColor(Color.WHITE);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+//                        }
                     }
                     goNextCell();
 
@@ -329,8 +352,6 @@ public class MeasureActivity extends BaseActivity {
 //        llImages.setLayoutParams(params1);
 
 
-
-
         currentPage_Index = 0;
         loadTable();
         setPageIndicator();
@@ -374,6 +395,7 @@ public class MeasureActivity extends BaseActivity {
                     TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
                     if (tv != null) {
                         tv.setText("OK");
+                        tv.setBackgroundColor(Color.WHITE);
                     }
                 }
                 goNextCell();
@@ -391,6 +413,7 @@ public class MeasureActivity extends BaseActivity {
                     TextView tv = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
                     if (tv != null) {
                         tv.setText("NG");
+                        tv.setBackgroundColor(Color.RED);
                     }
                 }
                 goNextCell();
@@ -550,8 +573,37 @@ public class MeasureActivity extends BaseActivity {
 //                TableRow.LayoutParams lp = new TableRow.LayoutParams();
 //                lp.setMargins(0, 0, 0, 0);
 //                currentPage_ActiveTextView.setLayoutParams(lp);
-            tv.setBackgroundColor(Color.WHITE);
-            tv.setTextColor(Color.BLACK);
+
+            String data = tv.getText().toString();
+            if (isCurrentNGOK()) {
+                if ("NG".equals(data)) {
+                    tv.setBackgroundColor(Color.RED);
+                    tv.setTextColor(Color.WHITE);
+                } else {
+                    tv.setBackgroundColor(Color.WHITE);
+                    tv.setTextColor(Color.BLACK);
+                }
+            } else {
+                MeasurePoint mp = (MeasurePoint) tv.getTag();
+                if (mp != null) {
+                    try {
+                        double currentValue = Double.parseDouble(data);
+                        double upper = Double.parseDouble(mp.upperTolerance);
+                        double lower = Double.parseDouble(mp.lowerTolerance);
+                        if (currentValue > upper || currentValue < lower) {
+                            tv.setBackgroundColor(Color.RED);
+                            tv.setTextColor(Color.WHITE);
+                        } else {
+                            tv.setBackgroundColor(Color.WHITE);
+                            tv.setTextColor(Color.BLACK);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+//            tv.setBackgroundColor(Color.WHITE);
+//            tv.setTextColor(Color.BLACK);
         }
     }
 
@@ -559,6 +611,11 @@ public class MeasureActivity extends BaseActivity {
         int totalPage = MainActivity.CURRENT_TARGET.pages.length;
         String indication = String.format("页码 Page No. " + (currentPage_Index + 1) + " of " + totalPage);
         tvPageIndicator.setText(indication);
+    }
+
+    private boolean isCurrentNGOK() {
+        Target target = MainActivity.CURRENT_TARGET;
+        return target.value_type.equalsIgnoreCase("OK,NG");
     }
 
     private void loadTable() {
@@ -599,7 +656,7 @@ public class MeasureActivity extends BaseActivity {
                 View leftView = layoutInflater.inflate(R.layout.item_measure_left, null);
                 TextView tvName = (TextView) leftView.findViewById(R.id.tv_mp_name);
                 tvName.setText(mpoints[i].point);
-                tvName.setTag(mpoints[i].pointId);
+                tvName.setTag(mpoints[i]);
 
                 TextView tvDirection = (TextView) leftView.findViewById(R.id.tv_mp_direction);
                 tvDirection.setText(mpoints[i].direction);
@@ -624,6 +681,17 @@ public class MeasureActivity extends BaseActivity {
                 TextView tvData8 = (TextView) dataView.findViewById(R.id.tv_data8);
                 TextView tvData9 = (TextView) dataView.findViewById(R.id.tv_data9);
                 TextView tvData10 = (TextView) dataView.findViewById(R.id.tv_data10);
+
+                tvData1.setTag(mpoints[i]);
+                tvData2.setTag(mpoints[i]);
+                tvData3.setTag(mpoints[i]);
+                tvData4.setTag(mpoints[i]);
+                tvData5.setTag(mpoints[i]);
+                tvData6.setTag(mpoints[i]);
+                tvData7.setTag(mpoints[i]);
+                tvData8.setTag(mpoints[i]);
+                tvData9.setTag(mpoints[i]);
+                tvData10.setTag(mpoints[i]);
 
                 if (target.value_type.equalsIgnoreCase("OK,NG")) {
                     tvData1.setOnClickListener(new ClickLisenter_Okng(i, 0));
@@ -717,6 +785,16 @@ public class MeasureActivity extends BaseActivity {
                             tvData8.setText(md.value8);
                             tvData9.setText(md.value9);
                             tvData10.setText(md.value10);
+                            hilightTextView(tvData1, false);
+                            hilightTextView(tvData2, false);
+                            hilightTextView(tvData3, false);
+                            hilightTextView(tvData4, false);
+                            hilightTextView(tvData5, false);
+                            hilightTextView(tvData6, false);
+                            hilightTextView(tvData7, false);
+                            hilightTextView(tvData8, false);
+                            hilightTextView(tvData9, false);
+                            hilightTextView(tvData10, false);
 //                            changed = true;
                             break;
                         }
@@ -746,8 +824,11 @@ public class MeasureActivity extends BaseActivity {
 
             currentRow_TvArray = 0;
             currentCol_TvArray = 0;
-            currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
-            hilightTextView(currentPage_ActiveTextView, true);
+            if (currentRow_TvArray < currentPaten_TextViewArray.length &&
+                    currentCol_TvArray < currentPaten_TextViewArray[0].length) {
+                currentPage_ActiveTextView = currentPaten_TextViewArray[currentRow_TvArray][currentCol_TvArray];
+                hilightTextView(currentPage_ActiveTextView, true);
+            }
 
         }
     }
@@ -899,7 +980,10 @@ public class MeasureActivity extends BaseActivity {
             TextView tvData9 = (TextView) dataRow.findViewById(R.id.tv_data9);
             TextView tvData10 = (TextView) dataRow.findViewById(R.id.tv_data10);
 
-            data.pointId = (int) tvName.getTag();
+            MeasurePoint mp = (MeasurePoint) tvName.getTag();
+            if (mp != null) {
+                data.pointId = mp.pointId;
+            }
             data.measure_point = tvName.getText().toString();
             data.direction = tvDirection.getText().toString();
             data.upperTolerance = tvUpperTolerance.getText().toString();

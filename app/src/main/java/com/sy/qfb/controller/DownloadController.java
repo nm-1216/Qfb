@@ -90,7 +90,7 @@ public class DownloadController {
     }
 
     public void downloadProjects(final NetworkCallback_Projects callback, String userName) {
-        String prj_url = Global.getUrl_User() + userName + ".json";
+        String prj_url = Global.getUrl_Base() + userName + ".json";
         Request request = new MyStringRequest(Request.Method.GET, prj_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

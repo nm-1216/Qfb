@@ -109,18 +109,18 @@ public class DownloadActivity extends BaseActivity {
                     }
                 }, 10000);
 
-                appendStatus("正在下载  product.json....");
                 SharedPreferences sharedPreferences = getSharedPreferences("qfb", MODE_PRIVATE);
-                String userName = sharedPreferences.getString("username", "project");
+                final String userName = sharedPreferences.getString("username", "project");
+                appendStatus("正在下载  " + userName + ".json....");
                 downloadController.downloadProjects(new DownloadController.NetworkCallback_Projects() {
                     @Override
                     public void networkCallback_Projects(boolean success, List<Project> projects) {
                         if (success) {
-                            appendStatus("product.json下载成功！");
+                            appendStatus(userName + ".json下载成功！");
                             MainActivity.PROJECTS = projects;
                             downloadImages(MainActivity.PROJECTS);
                         } else {
-                            appendStatus("product.json下载失败！");
+                            appendStatus(userName + ".json下载失败！");
                         }
                         showProgressDialog(false);
                     }
