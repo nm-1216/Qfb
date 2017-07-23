@@ -70,6 +70,7 @@ public class SaveController {
             content.put(QfbContract.DataEntry.COLUMN_NAME_T_NAME, data.targetName);
             content.put(QfbContract.DataEntry.COLUMN_NAME_T_TYPE, data.targetType);
             content.put(QfbContract.DataEntry.COLUMN_NAME_PGID, data.pageId);
+            content.put(QfbContract.DataEntry.COLUMN_NAME_MPID, data.pointId);
             content.put(QfbContract.DataEntry.COLUMN_NAME_MPOINT, data.measure_point);
             content.put(QfbContract.DataEntry.COLUMN_NAME_DIRECTION, data.direction);
             content.put(QfbContract.DataEntry.COLUMN_NAME_UPPER_TOLERANCE, data.upperTolerance);
@@ -116,6 +117,7 @@ public class SaveController {
                 String target_Name = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_NAME));
                 String targetType = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_TYPE));
                 int page_Id = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PGID));
+                int pointId = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_MPID));
                 String measurePoint = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_MPOINT));
                 String direction = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_DIRECTION));
                 String upperTolerance = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_UPPER_TOLERANCE));

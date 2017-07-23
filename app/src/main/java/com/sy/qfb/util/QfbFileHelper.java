@@ -1,6 +1,7 @@
 package com.sy.qfb.util;
 
 import android.content.Context;
+import android.os.Environment;
 
 import com.sy.qfb.R;
 import com.sy.qfb.ble.MyApplication;
@@ -77,6 +78,24 @@ public class QfbFileHelper {
     public String saveFile_Binary(String fileName, byte[] bytes) {
         Context context = MyApplication.APP_CONTEXT;
         File fileDir = context.getFilesDir();
+        File file = new File(fileDir, fileName);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bytes);
+            fos.close();
+            return file.getAbsolutePath();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        return "";
+    }
+
+    public String saveFile_Download(String fileName, byte[] bytes) {
+        Context context = MyApplication.APP_CONTEXT;
+        File fileDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(fileDir, fileName);
         try {
             if (!file.exists()) {

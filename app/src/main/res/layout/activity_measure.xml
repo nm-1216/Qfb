@@ -139,8 +139,8 @@
                 android:layout_marginRight="20dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:maxWidth="400dp"
-                android:minWidth="380dp"
+                android:maxWidth="300dp"
+                android:minWidth="280dp"
                 android:textColor="@android:color/darker_gray"
                 android:textStyle="normal" />
 

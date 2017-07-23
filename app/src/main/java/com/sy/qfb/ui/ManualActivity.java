@@ -40,8 +40,8 @@ public class ManualActivity extends BaseActivity {
 
         } else {
 
-            pdfView.fromFile(pdfFile)
-//        pdfView.fromAsset(pdfName)
+//            pdfView.fromFile(pdfFile)
+        pdfView.fromAsset(pdfName)
 //                .pages(0, 2, 1, 3, 3, 3)
                     .defaultPage(1)
                     .showMinimap(false)

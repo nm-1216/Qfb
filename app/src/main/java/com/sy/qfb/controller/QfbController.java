@@ -178,12 +178,14 @@ public class QfbController {
                 c_m.moveToFirst();
                 while(true) {
                     String point = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_POINT));
+                    int pointId = c_m.getInt(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_MPID));
                     String direction = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_DIRECTION));
                     String upperTolerance = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_UPPER_TOLERANCE));
                     String lowerTolerance = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_LOWER_TOLERANCE));
 
                     MeasurePoint measurePoint = new MeasurePoint();
                     measurePoint.point = point;
+                    measurePoint.pointId = pointId;
                     measurePoint.direction = direction;
                     measurePoint.upperTolerance = upperTolerance;
                     measurePoint.lowerTolerance = lowerTolerance;
@@ -280,6 +282,7 @@ public class QfbController {
                 String target_Name = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_NAME));
                 String targetType = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_T_TYPE));
                 int page_Id = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_PGID));
+                int pointId = cursor.getInt(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_MPID));
                 String measurePoint = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_MPOINT));
                 String direction = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_DIRECTION));
                 String upperTolerance = cursor.getString(cursor.getColumnIndex(QfbContract.DataEntry.COLUMN_NAME_UPPER_TOLERANCE));
@@ -308,6 +311,7 @@ public class QfbController {
                 data.targetName = target_Name;
                 data.targetType = targetType;
                 data.pageId = page_Id;
+                data.pointId = pointId;
                 data.measure_point = measurePoint;
                 data.direction = direction;
                 data.upperTolerance = upperTolerance;

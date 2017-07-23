@@ -218,15 +218,18 @@ public class DownloadController {
         Request request = new FileRequest(Request.Method.GET, url, new Response.Listener<byte[]>() {
             @Override
             public void onResponse(byte[] response) {
+                Logger.d("download apk success");
                 String fileName = qfbVersion.file_name;
                 QfbFileHelper qfbFileHelper = new QfbFileHelper();
-                String filePath = qfbFileHelper.saveFile_Binary(fileName, response);
+                String filePath = qfbFileHelper.saveFile_Download(fileName, response);
+                Logger.d("filePath = " + filePath);
 
                 downloadCallback.downloaded(true, filePath);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Logger.d("download apk fail");
                 downloadCallback.downloaded(false, "");
             }
         });

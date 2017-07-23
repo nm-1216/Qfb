@@ -328,10 +328,10 @@ public class MeasureActivity extends BaseActivity {
         }
 
 //        tvPartPn.setText("" + MainActivity.CURRENT_PRODUCT.product_id);
-//        tvPartName.setText(MainActivity.CURRENT_PRODUCT.product_name);
+        tvPartName.setText(MainActivity.CURRENT_PRODUCT.product_name);
 
-        tvPartName.setText(MainActivity.CURRENT_PRODUCT.product_name + " " +
-                MainActivity.CURRENT_PRODUCT.product_id);
+//        tvPartName.setText(MainActivity.CURRENT_PRODUCT.product_name + " " +
+//                MainActivity.CURRENT_PRODUCT.product_id);
         tvMeasureTarget.setText(MainActivity.CURRENT_TARGET.target_name);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         tvDate.setText(sdf.format(new Date()));
@@ -840,7 +840,7 @@ public class MeasureActivity extends BaseActivity {
         int width_screen = metrics.widthPixels;
         int height_screen = metrics.heightPixels;
 
-        float frame_x = (float) (width_screen * 17.3 / 24.0);
+        float frame_x = (float) (width_screen * 16.3 / 24.0);
         float frame_y = (float) (height_screen * 4.0 / 15.0);
         int frame_width = (int) (width_screen * 6.8 / 24.0);
         int frame_height = (int) (height_screen * 2.5 / 5.0);

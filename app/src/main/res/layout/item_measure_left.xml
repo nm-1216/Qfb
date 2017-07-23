@@ -8,6 +8,8 @@
         style="@style/table_content"
         android:layout_span="1"
         android:maxWidth="20dp"
+        android:maxLines="1"
+        android:ellipsize="start"
         android:text="2327SCO" />
 
     <TextView

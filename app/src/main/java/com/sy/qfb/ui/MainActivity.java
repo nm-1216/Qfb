@@ -171,52 +171,53 @@ public class MainActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
 
-        if (isNetworkConnected()) {
-            try {
-                PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
-                String version = pInfo.versionName;
-                final DownloadController downloadController = new DownloadController();
-                showProgressDialog(true);
-                downloadController.hasNewVersion(new DownloadController.VersionCallback() {
-                    @Override
-                    public void versionCallback(boolean success, boolean hasNewVersion, final QfbVersion qfbVersion) {
-                        showProgressDialog(false);
-                        if (success) {
-                            if (hasNewVersion) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                builder.setMessage("有最新版本：" + qfbVersion.latest_version + "，是否要下载？");
-                                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        showProgressDialog(true);
-                                        downloadController.downloadNewVersion(qfbVersion, new DownloadController.DownloadNewVersionCallback() {
-                                            @Override
-                                            public void downloaded(boolean succes, String filePath) {
-                                                showProgressDialog(false);
-
-                                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                                intent.setDataAndType(Uri.parse("file://" + filePath),"application/vnd.android.package-archive");
-                                                startActivity(intent);
-                                            }
-                                        });
-                                        dialog.dismiss();
-                                    }
-                                });
-                                builder.setCancelable(false);
-                                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }, Double.parseDouble(version));
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (isNetworkConnected()) {
+//            try {
+//                PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+//                String version = pInfo.versionName;
+//                final DownloadController downloadController = new DownloadController();
+//                showProgressDialog(true);
+//                downloadController.hasNewVersion(new DownloadController.VersionCallback() {
+//                    @Override
+//                    public void versionCallback(boolean success, boolean hasNewVersion, final QfbVersion qfbVersion) {
+//                        showProgressDialog(false);
+//                        if (success) {
+//                            if (hasNewVersion) {
+//                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                                builder.setMessage("有最新版本：" + qfbVersion.latest_version + "，是否要下载？");
+//                                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        showProgressDialog(true);
+//                                        downloadController.downloadNewVersion(qfbVersion, new DownloadController.DownloadNewVersionCallback() {
+//                                            @Override
+//                                            public void downloaded(boolean succes, String filePath) {
+//                                                showProgressDialog(false);
+//
+//                                                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                                                intent.setDataAndType(Uri.parse("file://" + filePath),"application/vnd.android.package-archive");
+//                                                startActivity(intent);
+//                                            }
+//                                        });
+//                                        dialog.dismiss();
+//                                    }
+//                                });
+//                                builder.setCancelable(false);
+//                                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        dialog.dismiss();
+//                                    }
+//                                });
+//                                builder.show();
+//                            }
+//                        }
+//                    }
+//                }, Double.parseDouble(version));
+//            } catch (PackageManager.NameNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     private boolean isNetworkConnected() {

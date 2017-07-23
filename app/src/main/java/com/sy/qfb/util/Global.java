@@ -38,7 +38,7 @@ public class Global {
 
     public static String getUrl_Manual() {
         String serverAddr = getServerAddress();
-        return "http://" + serverAddr + "/res/manual.json";
+        return "http://" + serverAddr + "/res/manual.pdf";
     }
 
     public static String getUrl_Version() {

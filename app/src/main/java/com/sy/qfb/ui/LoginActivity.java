@@ -2,10 +2,18 @@ package com.sy.qfb.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -14,10 +22,13 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
+import com.sy.qfb.controller.DownloadController;
 import com.sy.qfb.controller.LoginController;
+import com.sy.qfb.model.QfbVersion;
 import com.sy.qfb.model.User;
 import com.sy.qfb.util.Global;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,5 +122,72 @@ public class LoginActivity extends BaseActivity {
         });
 
 
+    }
+
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (isNetworkConnected()) {
+            try {
+                PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+                String version = pInfo.versionName;
+                final DownloadController downloadController = new DownloadController();
+                showProgressDialog(true);
+                downloadController.hasNewVersion(new DownloadController.VersionCallback() {
+                    @Override
+                    public void versionCallback(boolean success, boolean hasNewVersion, final QfbVersion qfbVersion) {
+                        showProgressDialog(false);
+                        if (success) {
+                            if (hasNewVersion) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                builder.setMessage("有最新版本：" + qfbVersion.latest_version + "，是否要下载？");
+                                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        showProgressDialog(true, "正在下载安装文件，请稍等！");
+                                        downloadController.downloadNewVersion(qfbVersion, new DownloadController.DownloadNewVersionCallback() {
+                                            @Override
+                                            public void downloaded(boolean success, String filePath) {
+                                                showProgressDialog(false);
+                                                Logger.d("filePath = " + filePath);
+
+                                                if (success && !TextUtils.isEmpty(filePath)) {
+                                                    File apkFile = new File(filePath);
+                                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                                    intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+                                                    startActivity(intent);
+                                                } else {
+                                                    showAlertDialog("下载新版本失败。请以后再试。");
+                                                }
+                                            }
+                                        });
+                                        dialog.dismiss();
+                                    }
+                                });
+                                builder.setCancelable(false);
+                                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                builder.show();
+                            }
+                        }
+                    }
+                }, Double.parseDouble(version));
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
