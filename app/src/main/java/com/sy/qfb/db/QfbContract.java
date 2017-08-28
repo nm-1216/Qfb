@@ -47,6 +47,7 @@ public final class QfbContract {
 
     public static class MeasurePointEntry implements BaseColumns {
         public static final String TABLE_NAME = "measure_point";
+        public static final String COLUMN_NAME_INDEXER = "indexer";
         public static final String COLUMN_NAME_MPID = "mpid";
         public static final String COLUMN_NAME_PGID = "pgid";
         public static final String COLUMN_NAME_POINT = "point";

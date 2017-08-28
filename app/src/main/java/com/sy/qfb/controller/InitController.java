@@ -144,6 +144,7 @@ public class InitController {
                                                 }
                                                 cv_mp.put(QfbContract.MeasurePointEntry.COLUMN_NAME_POINT, previousMeasurePointName);
                                                 cv_mp.put(QfbContract.MeasurePointEntry.COLUMN_NAME_MPID, page.measure_points[j].pointId);
+                                                cv_mp.put(QfbContract.MeasurePointEntry.COLUMN_NAME_INDEXER, page.measure_points[j].index);
                                                 cv_mp.put(QfbContract.MeasurePointEntry.COLUMN_NAME_DIRECTION, page.measure_points[j].direction);
                                                 cv_mp.put(QfbContract.MeasurePointEntry.COLUMN_NAME_UPPER_TOLERANCE, page.measure_points[j].upperTolerance);
                                                 cv_mp.put(QfbContract.MeasurePointEntry.COLUMN_NAME_LOWER_TOLERANCE, page.measure_points[j].lowerTolerance);

@@ -91,6 +91,7 @@ public class LoginActivity extends BaseActivity {
                 public void networkCallback_Users(boolean success, List<User> users) {
                     if (success) {
 //                    appendStatus("user.json下载成功！");
+                        if (users != null) USERS = users;
                     } else {
 //                    appendStatus("user.json下载失败！");
                     }

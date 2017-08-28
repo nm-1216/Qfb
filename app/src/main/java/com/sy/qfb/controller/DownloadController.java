@@ -62,6 +62,7 @@ public class DownloadController {
 
     public void downloadUsers(final NetworkCallback_Users callback) {
         String url_user = Global.getUrl_User();
+        Logger.d("url_user = " + url_user);
         Request request = new StringRequest(Request.Method.GET, url_user, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

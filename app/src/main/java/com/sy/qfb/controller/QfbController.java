@@ -170,7 +170,7 @@ public class QfbController {
 
             Cursor c_m = db.query(QfbContract.MeasurePointEntry.TABLE_NAME, null,
                     QfbContract.MeasurePointEntry.COLUMN_NAME_PGID + "=?",
-                    new String[]{"" + pgId}, null, null, null);
+                    new String[]{"" + pgId}, null, null, QfbContract.MeasurePointEntry.COLUMN_NAME_INDEXER);
             if (c_m.getCount() <= 0) {
                 page.measure_points = new MeasurePoint[0];
             } else {
@@ -179,6 +179,7 @@ public class QfbController {
                 while(true) {
                     String point = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_POINT));
                     int pointId = c_m.getInt(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_MPID));
+                    int index = c_m.getInt(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_INDEXER));
                     String direction = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_DIRECTION));
                     String upperTolerance = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_UPPER_TOLERANCE));
                     String lowerTolerance = c_m.getString(c_m.getColumnIndex(QfbContract.MeasurePointEntry.COLUMN_NAME_LOWER_TOLERANCE));
@@ -186,6 +187,7 @@ public class QfbController {
                     MeasurePoint measurePoint = new MeasurePoint();
                     measurePoint.point = point;
                     measurePoint.pointId = pointId;
+                    measurePoint.index = index;
                     measurePoint.direction = direction;
                     measurePoint.upperTolerance = upperTolerance;
                     measurePoint.lowerTolerance = lowerTolerance;

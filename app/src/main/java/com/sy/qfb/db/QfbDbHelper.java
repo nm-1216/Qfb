@@ -1,7 +1,5 @@
 package com.sy.qfb.db;
 
-import android.content.Context;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -12,7 +10,7 @@ import com.sy.qfb.ble.MyApplication;
  */
 
 public class QfbDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_VERSION = 11;
     public static final String DATABASE_NAME = "Qfb.db";
 
     private static final String SQL_CREATE_USER =
@@ -69,6 +67,7 @@ public class QfbDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + QfbContract.MeasurePointEntry.TABLE_NAME + " (" +
                     QfbContract.MeasurePointEntry.COLUMN_NAME_MPID + " INTEGER PRIMARY KEY," +
                     QfbContract.MeasurePointEntry.COLUMN_NAME_PGID + " INTEGER," +
+                    QfbContract.MeasurePointEntry.COLUMN_NAME_INDEXER + " INTEGER," +
                     QfbContract.MeasurePointEntry.COLUMN_NAME_POINT + " TEXT," +
                     QfbContract.MeasurePointEntry.COLUMN_NAME_DIRECTION + " TEXT," +
                     QfbContract.MeasurePointEntry.COLUMN_NAME_UPPER_TOLERANCE + " TEXT," +
