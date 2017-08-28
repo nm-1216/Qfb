@@ -27,6 +27,7 @@ import com.sy.qfb.controller.LoginController;
 import com.sy.qfb.model.QfbVersion;
 import com.sy.qfb.model.User;
 import com.sy.qfb.util.Global;
+import com.sy.qfb.util.MD5;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -81,18 +82,41 @@ public class LoginActivity extends BaseActivity {
             etPassword.setText(sharedPreferences.getString("password", ""));
         }
 
+
+        if (Global.isNetworkOnline(this)) {
+            showProgressDialog(true);
+            DownloadController downloadController = new DownloadController();
+            downloadController.downloadUsers(new DownloadController.NetworkCallback_Users() {
+                @Override
+                public void networkCallback_Users(boolean success, List<User> users) {
+                    if (success) {
+//                    appendStatus("user.json下载成功！");
+                    } else {
+//                    appendStatus("user.json下载失败！");
+                    }
+                    showProgressDialog(false);
+                }
+            });
+        }
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean authed = false;
                 String u = etUserName.getText().toString();
                 String p = etPassword.getText().toString();
-                for (User user : USERS) {
-                    if (user.username.equals(u) && user.password.equals(p)) {
-                        CURRENT_USER = user;
-                        authed = true;
-                        break;
+                try {
+                    String pwd = MD5.md5(p);
+                    Logger.d("pwd = " + pwd);
+                    for (User user : USERS) {
+                        if (user.username.equalsIgnoreCase(u) && user.password.equalsIgnoreCase(pwd)) {
+                            CURRENT_USER = user;
+                            authed = true;
+                            break;
+                        }
                     }
+                } catch (Exception e) {
+                    authed = false;
                 }
 
                 if (authed) {

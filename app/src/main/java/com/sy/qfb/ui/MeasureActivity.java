@@ -728,6 +728,12 @@ public class MeasureActivity extends BaseActivity {
                 currentPaten_TextViewArray[i][8] = tvData9;
                 currentPaten_TextViewArray[i][9] = tvData10;
 
+                TableLayout.LayoutParams lp = new TableLayout.LayoutParams(
+                        TableLayout.LayoutParams.MATCH_PARENT,
+                        TableLayout.LayoutParams.WRAP_CONTENT);
+                lp.height = leftView.getMeasuredHeight();
+                dataView.setLayoutParams(lp);
+
                 tlTableData.addView(dataView);
 
                 currentLeftRows.add(leftView);

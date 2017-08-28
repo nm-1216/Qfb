@@ -327,43 +327,43 @@
                                 android:layout_height="wrap_content">
 
                                 <TextView
-                                    style="@style/table_data"
+                                    style="@style/table_header_100dp"
                                     android:text="1" />
 
                                 <TextView
-                                    style="@style/table_data"
+                                    style="@style/table_header_100dp"
                                     android:text="2" />
 
                                 <TextView
-                                    style="@style/table_data"
+                                    style="@style/table_header_100dp"
                                     android:text="3" />
 
                                 <TextView
-                                    style="@style/table_data"
+                                    style="@style/table_header_100dp"
                                     android:text="4" />
 
                                 <TextView
-                                    style="@style/table_data"
+                                    style="@style/table_header_100dp"
                                     android:text="5" />
 
                                 <TextView
-                                    style="@style/table_data"
+                                    style="@style/table_header_100dp"
                                     android:text="6" />
 
                                 <TextView
-                                    style="@style/table_data"
+                                    style="@style/table_header_100dp"
                                     android:text="7" />
 
                                 <TextView
-                                    style="@style/table_data"
+                                    style="@style/table_header_100dp"
                                     android:text="8" />
 
                                 <TextView
-                                    style="@style/table_data"
+                                    style="@style/table_header_100dp"
                                     android:text="9" />
 
                                 <TextView
-                                    style="@style/table_data"
+                                    style="@style/table_header_100dp"
                                     android:text="10" />
 
                             </TableRow>
