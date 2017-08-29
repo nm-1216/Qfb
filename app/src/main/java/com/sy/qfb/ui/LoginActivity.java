@@ -11,8 +11,10 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -188,7 +190,14 @@ public class LoginActivity extends BaseActivity {
                                                 if (success && !TextUtils.isEmpty(filePath)) {
                                                     File apkFile = new File(filePath);
                                                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                                                    intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+                                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                                        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                                        Uri contentUri = FileProvider.getUriForFile(LoginActivity.this, "com.sy.qfb.fileprovider", new File(filePath));
+                                                        intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+                                                    } else {
+                                                        intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    }
                                                     startActivity(intent);
                                                 } else {
                                                     showAlertDialog("下载新版本失败。请以后再试。");
