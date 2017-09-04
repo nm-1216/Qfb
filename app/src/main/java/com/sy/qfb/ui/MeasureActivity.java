@@ -693,6 +693,8 @@ public class MeasureActivity extends BaseActivity {
                 tvData9.setTag(mpoints[i]);
                 tvData10.setTag(mpoints[i]);
 
+                dataView.setTag(mpoints[i]);
+
                 if (target.value_type.equalsIgnoreCase("OK,NG")) {
                     tvData1.setOnClickListener(new ClickLisenter_Okng(i, 0));
                     tvData2.setOnClickListener(new ClickLisenter_Okng(i, 1));
@@ -776,10 +778,13 @@ public class MeasureActivity extends BaseActivity {
                     String upperTolerance = tvUpperTolerance.getText().toString();
                     String lowerTolerance = tvLowerTolerance.getText().toString();
 
+                    MeasurePoint measurePoint = (MeasurePoint) dataView.getTag();
+
                     Logger.d("mp = " + mp + ", direction = " + direction);
 
                     for (MeasureData md : previousData) {
-                        if (mp.equals(md.measure_point) && direction.equals(md.direction)) {
+//                        if (mp.equals(md.measure_point) && direction.equals(md.direction)) {
+                        if (md.pointId == measurePoint.pointId) {
                             Logger.d("has match");
                             tvData1.setText(md.value1);
                             tvData2.setText(md.value2);
