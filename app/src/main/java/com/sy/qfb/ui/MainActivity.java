@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.sy.qfb.R;
+import com.sy.qfb.controller.DeleteOldDataController;
 import com.sy.qfb.controller.DownloadController;
 import com.sy.qfb.controller.QfbController;
 import com.sy.qfb.model.Page;
@@ -218,6 +219,14 @@ public class MainActivity extends BaseActivity {
 //                e.printStackTrace();
 //            }
 //        }
+
+        showProgressDialog(true);
+        new DeleteOldDataController().deleteOldData(new DeleteOldDataController.DeletedOldDataCallback() {
+            @Override
+            public void deletedOldData(boolean success) {
+                showProgressDialog(false);
+            }
+        });
     }
 
     private boolean isNetworkConnected() {

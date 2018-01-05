@@ -364,7 +364,7 @@ public class MeasureActivity extends BaseActivity {
         btnPreviousPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData();
+                saveData(false);
                 gotoPreviousPage();
             }
         });
@@ -372,7 +372,7 @@ public class MeasureActivity extends BaseActivity {
         btnNextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData();
+                saveData(false);
                 gotoNextPage();
             }
         });
@@ -381,7 +381,7 @@ public class MeasureActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (isShowingHistory) return;
-                saveData();
+                saveData(false);
             }
         });
 
@@ -967,10 +967,10 @@ public class MeasureActivity extends BaseActivity {
         }
     }
 
-    private void saveData() {
+    private void saveData(final boolean isOnStop) {
         if (!changed) return;
 
-        List<MeasureData> lstMeasureData = new ArrayList<MeasureData>();
+        final List<MeasureData> lstMeasureData = new ArrayList<MeasureData>();
         for (int i = 0; i < currentLeftRows.size(); ++i) {
             MeasureData data = new MeasureData();
 
@@ -1030,17 +1030,29 @@ public class MeasureActivity extends BaseActivity {
             lstMeasureData.add(data);
         }
 
-        saveController.saveData(lstMeasureData);
-        page_datas.put(currentPage_Index, lstMeasureData);
+        if (!isOnStop) showProgressDialog(true);
+        saveController.saveData(lstMeasureData, new SaveController.SavedCallback() {
+            @Override
+            public void onSaved(boolean success) {
+//                MeasureActivity.this.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+                if (!isOnStop) showProgressDialog(false);
 
-        currentPageSaved = true;
-        ToastHelper.showShort("保存成功！");
+                        page_datas.put(currentPage_Index, lstMeasureData);
+
+                        currentPageSaved = true;
+                        ToastHelper.showShort("保存成功！");
+//                    }
+//                });
+            }
+        });
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        saveData();
+        saveData(true);
     }
 
     private static IntentFilter makeGattUpdateIntentFilter() {
