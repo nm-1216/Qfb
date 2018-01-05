@@ -26,18 +26,23 @@ public class SaveController {
         Logger.d("c1.getCount() = " + c1.getCount());
         c1.close();
 
-        db.beginTransaction();
+//        db.beginTransaction();
 
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
         long min = calendar.getTimeInMillis();
         long max = min + 1000 * 60 * 60 * 24;
+
+        long cacheOldestTime = min - 1000 * 60 * 60 * 24 * 50;
+        db.execSQL("DELETE FROM " + QfbContract.DataEntry.TABLE_NAME + " WHERE " +
+                    "QfbContract.DataEntry.COLUMN_NAME_TIMESTAMP < " + cacheOldestTime);
+
 
         Logger.d("min = " + min);
         Logger.d("max = " + max);
@@ -93,8 +98,8 @@ public class SaveController {
             Logger.d("rowId = " + rowId);
         }
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
 
         db.close();
 
