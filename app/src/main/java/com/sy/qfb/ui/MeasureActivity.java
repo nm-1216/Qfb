@@ -44,8 +44,12 @@ import com.sy.qfb.ble.activity.DeviceControlActivity;
 import com.sy.qfb.ble.activity.DeviceScanActivity;
 import com.sy.qfb.ble.service.BluetoothLeService;
 import com.sy.qfb.ble.utils.SampleGattAttributes;
+import com.sy.qfb.controller.BaseController;
+import com.sy.qfb.controller.PreviousDataController;
 import com.sy.qfb.controller.QfbController;
 import com.sy.qfb.controller.SaveController;
+import com.sy.qfb.controller.model.QueryDataOfSpecificDay;
+import com.sy.qfb.exception.IException;
 import com.sy.qfb.model.MeasureData;
 import com.sy.qfb.model.MeasurePoint;
 import com.sy.qfb.model.Page;
@@ -165,8 +169,6 @@ public class MeasureActivity extends BaseActivity {
     private ProgressDialog dialog = null;
 
     private boolean changed = false;
-
-    private QfbController qfbController = new QfbController();
 
     private ProjectHistoryItem projectHistoryItem;
     private boolean isShowingHistory = false;
@@ -742,77 +744,40 @@ public class MeasureActivity extends BaseActivity {
                 currentDataRows.add(dataView);
             }
 
-            List<MeasureData> previousData = qfbController.GetDataByDate(
-                    MainActivity.CURRENT_PROJECT.project_id,
-                    MainActivity.CURRENT_PROJECT.project_name,
-                    MainActivity.CURRENT_PRODUCT.product_id,
-                    MainActivity.CURRENT_PRODUCT.product_name,
-                    MainActivity.CURRENT_TARGET.target_id,
-                    MainActivity.CURRENT_TARGET.target_name,
-                    p.page_id, LoginActivity.CURRENT_USER.username,
-                    isShowingHistory ? new Date(projectHistoryItem.timeStamp) : new Date()
-            );
-            Logger.d("previousData.size() = " + previousData.size());
-            if (previousData.size() > 0) {
-                for (int i = 0; i < currentLeftRows.size(); ++i) {
-                    View leftView = currentLeftRows.get(i);
-                    TextView tvName = (TextView) leftView.findViewById(R.id.tv_mp_name);
-                    TextView tvDirection = (TextView) leftView.findViewById(R.id.tv_mp_direction);
-                    TextView tvUpperTolerance = (TextView) leftView.findViewById(R.id.tv_upper_tolerance);
-                    TextView tvLowerTolerance = (TextView) leftView.findViewById(R.id.tv_lower_tolerance);
+            QueryDataOfSpecificDay queryData = new QueryDataOfSpecificDay();
+            queryData.projectId = MainActivity.CURRENT_PROJECT.project_id;
+            queryData.projectName = MainActivity.CURRENT_PROJECT.project_name;
+            queryData.productId = MainActivity.CURRENT_PRODUCT.product_id;
+            queryData.productName = MainActivity.CURRENT_PRODUCT.product_name;
+            queryData.targetId = MainActivity.CURRENT_TARGET.target_id;
+            queryData.targetName = MainActivity.CURRENT_TARGET.target_name;
+            queryData.pageId = p.page_id;
+            queryData.userName = LoginActivity.CURRENT_USER.username;
+            queryData.date = isShowingHistory ? new Date(projectHistoryItem.timeStamp) : new Date();
 
-                    View dataView = currentDataRows.get(i);
-                    TextView tvData1 = (TextView) dataView.findViewById(R.id.tv_data1);
-                    TextView tvData2 = (TextView) dataView.findViewById(R.id.tv_data2);
-                    TextView tvData3 = (TextView) dataView.findViewById(R.id.tv_data3);
-                    TextView tvData4 = (TextView) dataView.findViewById(R.id.tv_data4);
-                    TextView tvData5 = (TextView) dataView.findViewById(R.id.tv_data5);
-                    TextView tvData6 = (TextView) dataView.findViewById(R.id.tv_data6);
-                    TextView tvData7 = (TextView) dataView.findViewById(R.id.tv_data7);
-                    TextView tvData8 = (TextView) dataView.findViewById(R.id.tv_data8);
-                    TextView tvData9 = (TextView) dataView.findViewById(R.id.tv_data9);
-                    TextView tvData10 = (TextView) dataView.findViewById(R.id.tv_data10);
+            new PreviousDataController().getDataByDate(
+                    new BaseController.UpdateViewAsyncCallback<List<MeasureData>>() {
+                        @Override
+                        public void onPreExecute() {
 
-                    String mp = tvName.getText().toString();
-                    String direction = tvDirection.getText().toString();
-                    String upperTolerance = tvUpperTolerance.getText().toString();
-                    String lowerTolerance = tvLowerTolerance.getText().toString();
-
-                    MeasurePoint measurePoint = (MeasurePoint) dataView.getTag();
-
-                    Logger.d("mp = " + mp + ", direction = " + direction);
-
-                    for (MeasureData md : previousData) {
-//                        if (mp.equals(md.measure_point) && direction.equals(md.direction)) {
-                        if (md.pointId == measurePoint.pointId) {
-                            Logger.d("has match");
-                            tvData1.setText(md.value1);
-                            tvData2.setText(md.value2);
-                            tvData3.setText(md.value3);
-                            tvData4.setText(md.value4);
-                            tvData5.setText(md.value5);
-                            tvData6.setText(md.value6);
-                            tvData7.setText(md.value7);
-                            tvData8.setText(md.value8);
-                            tvData9.setText(md.value9);
-                            tvData10.setText(md.value10);
-                            hilightTextView(tvData1, false);
-                            hilightTextView(tvData2, false);
-                            hilightTextView(tvData3, false);
-                            hilightTextView(tvData4, false);
-                            hilightTextView(tvData5, false);
-                            hilightTextView(tvData6, false);
-                            hilightTextView(tvData7, false);
-                            hilightTextView(tvData8, false);
-                            hilightTextView(tvData9, false);
-                            hilightTextView(tvData10, false);
-//                            changed = true;
-                            break;
                         }
-                    }
-                }
-            }
 
+                        @Override
+                        public void onPostExecute(List<MeasureData> measureDatas) {
+                            loadPreviousData(measureDatas);
+                        }
+
+                        @Override
+                        public void onCancelled() {
+
+                        }
+
+                        @Override
+                        public void onException(IException ie) {
+
+                        }
+                    }, queryData
+            );
 
             if (p.pictures != null) {
 //                for (String pictureName : p.pictures) {
@@ -841,6 +806,69 @@ public class MeasureActivity extends BaseActivity {
                 hilightTextView(currentPage_ActiveTextView, true);
             }
 
+        }
+    }
+
+    private void loadPreviousData(List<MeasureData> previousData) {
+        Logger.d("previousData.size() = " + previousData.size());
+        if (previousData.size() > 0) {
+            for (int i = 0; i < currentLeftRows.size(); ++i) {
+                View leftView = currentLeftRows.get(i);
+                TextView tvName = (TextView) leftView.findViewById(R.id.tv_mp_name);
+                TextView tvDirection = (TextView) leftView.findViewById(R.id.tv_mp_direction);
+                TextView tvUpperTolerance = (TextView) leftView.findViewById(R.id.tv_upper_tolerance);
+                TextView tvLowerTolerance = (TextView) leftView.findViewById(R.id.tv_lower_tolerance);
+
+                View dataView = currentDataRows.get(i);
+                TextView tvData1 = (TextView) dataView.findViewById(R.id.tv_data1);
+                TextView tvData2 = (TextView) dataView.findViewById(R.id.tv_data2);
+                TextView tvData3 = (TextView) dataView.findViewById(R.id.tv_data3);
+                TextView tvData4 = (TextView) dataView.findViewById(R.id.tv_data4);
+                TextView tvData5 = (TextView) dataView.findViewById(R.id.tv_data5);
+                TextView tvData6 = (TextView) dataView.findViewById(R.id.tv_data6);
+                TextView tvData7 = (TextView) dataView.findViewById(R.id.tv_data7);
+                TextView tvData8 = (TextView) dataView.findViewById(R.id.tv_data8);
+                TextView tvData9 = (TextView) dataView.findViewById(R.id.tv_data9);
+                TextView tvData10 = (TextView) dataView.findViewById(R.id.tv_data10);
+
+                String mp = tvName.getText().toString();
+                String direction = tvDirection.getText().toString();
+                String upperTolerance = tvUpperTolerance.getText().toString();
+                String lowerTolerance = tvLowerTolerance.getText().toString();
+
+                MeasurePoint measurePoint = (MeasurePoint) dataView.getTag();
+
+                Logger.d("mp = " + mp + ", direction = " + direction);
+
+                for (MeasureData md : previousData) {
+//                        if (mp.equals(md.measure_point) && direction.equals(md.direction)) {
+                    if (md.pointId == measurePoint.pointId) {
+                        Logger.d("has match");
+                        tvData1.setText(md.value1);
+                        tvData2.setText(md.value2);
+                        tvData3.setText(md.value3);
+                        tvData4.setText(md.value4);
+                        tvData5.setText(md.value5);
+                        tvData6.setText(md.value6);
+                        tvData7.setText(md.value7);
+                        tvData8.setText(md.value8);
+                        tvData9.setText(md.value9);
+                        tvData10.setText(md.value10);
+                        hilightTextView(tvData1, false);
+                        hilightTextView(tvData2, false);
+                        hilightTextView(tvData3, false);
+                        hilightTextView(tvData4, false);
+                        hilightTextView(tvData5, false);
+                        hilightTextView(tvData6, false);
+                        hilightTextView(tvData7, false);
+                        hilightTextView(tvData8, false);
+                        hilightTextView(tvData9, false);
+                        hilightTextView(tvData10, false);
+//                            changed = true;
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -1030,23 +1058,30 @@ public class MeasureActivity extends BaseActivity {
             lstMeasureData.add(data);
         }
 
-        if (!isOnStop) showProgressDialog(true);
-        saveController.saveData(lstMeasureData, new SaveController.SavedCallback() {
+        saveController.saveData(new BaseController.UpdateViewAsyncCallback<Boolean>() {
             @Override
-            public void onSaved(boolean success) {
-//                MeasureActivity.this.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-                if (!isOnStop) showProgressDialog(false);
-
-                        page_datas.put(currentPage_Index, lstMeasureData);
-
-                        currentPageSaved = true;
-                        ToastHelper.showShort("保存成功！");
-//                    }
-//                });
+            public void onPreExecute() {
+                if (!isOnStop) showProgressDialog(true);
             }
-        });
+
+            @Override
+            public void onPostExecute(Boolean aBoolean) {
+                if (!isOnStop) showProgressDialog(false);
+                page_datas.put(currentPage_Index, lstMeasureData);
+                currentPageSaved = true;
+                ToastHelper.showShort("保存成功！");
+            }
+
+            @Override
+            public void onCancelled() {
+                if (!isOnStop) showProgressDialog(false);
+            }
+
+            @Override
+            public void onException(IException ie) {
+                if (!isOnStop) showProgressDialog(false);
+            }
+        }, lstMeasureData);
     }
 
     @Override

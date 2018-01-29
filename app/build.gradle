@@ -20,6 +20,11 @@ android {
     useLibrary 'org.apache.http.legacy'
     productFlavors {
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs/umerror/jnilibs']
+        }
+    }
 }
 
 dependencies {
@@ -38,4 +43,7 @@ dependencies {
     compile 'com.github.satyan:sugar:1.5'
     compile 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
     compile files('libs/achartengine-1.1.0.jar')
+    compile files('libs/common/umeng-common-1.4.3.jar')
+    compile files('libs/analytics/umeng-analytics-7.4.1.jar')
+    compile files('libs/umerror/umerror_android_1.0.0.jar')
 }

@@ -16,6 +16,8 @@ import com.sy.qfb.controller.InitController;
 import com.sy.qfb.db.QfbContract;
 import com.sy.qfb.db.QfbDbHelper;
 import com.sy.qfb.net.VolleyHelper;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
 
 @SuppressLint("SdCardPath")
 public class MyApplication extends Application {
@@ -27,6 +29,13 @@ public class MyApplication extends Application {
     public void onCreate() {
         // TODO Auto-generated method stub
         super.onCreate();
+
+
+        UMConfigure.init(this, "5a6f3450f29d9824d60001b0", "field",
+                UMConfigure.DEVICE_TYPE_PHONE, "1fe6a20054bcef865eeb0991ee84525b");
+        UMConfigure.setLogEnabled(true);
+
+
 
         filePath = "/sdcard/data/qfb/";
 

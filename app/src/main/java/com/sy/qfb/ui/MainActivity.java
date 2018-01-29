@@ -22,9 +22,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.sy.qfb.R;
+import com.sy.qfb.controller.BaseController;
 import com.sy.qfb.controller.DeleteOldDataController;
 import com.sy.qfb.controller.DownloadController;
 import com.sy.qfb.controller.QfbController;
+import com.sy.qfb.exception.IException;
 import com.sy.qfb.model.Page;
 import com.sy.qfb.model.Product;
 import com.sy.qfb.model.Project;
@@ -220,10 +222,24 @@ public class MainActivity extends BaseActivity {
 //            }
 //        }
 
-        showProgressDialog(true);
-        new DeleteOldDataController().deleteOldData(new DeleteOldDataController.DeletedOldDataCallback() {
+        new DeleteOldDataController().deleteOldData(new BaseController.UpdateViewAsyncCallback<Boolean>() {
             @Override
-            public void deletedOldData(boolean success) {
+            public void onPreExecute() {
+                showProgressDialog(true);
+            }
+
+            @Override
+            public void onPostExecute(Boolean aBoolean) {
+                showProgressDialog(false);
+            }
+
+            @Override
+            public void onCancelled() {
+                showProgressDialog(false);
+            }
+
+            @Override
+            public void onException(IException ie) {
                 showProgressDialog(false);
             }
         });

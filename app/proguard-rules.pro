@@ -23,3 +23,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class com.umeng.commonsdk.** {*;}
+-keep class com.umeng.error.UMError{ public ; }
+-keep class com.umeng.error.UMErrorCatch{ public ; }
+-keep class com.umeng.error.UMErrorDataManger{ public ; }
+-keep class com.umeng.error.BatteryUtils{ public ; }
