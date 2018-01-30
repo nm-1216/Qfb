@@ -21,6 +21,7 @@ import com.sy.qfb.model.QfbVersion;
 import com.sy.qfb.net.FileRequest;
 import com.sy.qfb.net.MyStringRequest;
 import com.sy.qfb.net.VolleyHelper;
+import com.sy.qfb.service.UserService;
 import com.sy.qfb.util.Global;
 import com.sy.qfb.util.QfbFileHelper;
 
@@ -36,9 +37,6 @@ import java.util.Map;
 public class DownloadController {
     private static final String TAG = "DownloadController";
 
-    public interface NetworkCallback_Users {
-        void networkCallback_Users(boolean success, List<User> users);
-    }
 
     public interface NetworkCallback_Projects {
         void networkCallback_Projects(boolean success, List<Project> projects);
@@ -52,55 +50,8 @@ public class DownloadController {
         void networkCallback_Image(boolean success);
     }
 
-    public interface VersionCallback {
-        void versionCallback(boolean success, boolean hasNewVersion, QfbVersion qfbVersion);
-    }
-
-    public interface DownloadNewVersionCallback {
-        void downloaded(boolean succes, String filePath);
-    }
-
-    public void downloadUsers(final NetworkCallback_Users callback) {
-        String url_user = Global.getUrl_User();
-        Logger.d("url_user = " + url_user);
-        Request request = new StringRequest(Request.Method.GET, url_user, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "success" );
-
-                if (!TextUtils.isEmpty(response)) {
-                    new QfbFileHelper().saveFile_User(response);
-                }
-
-                Gson gson = new Gson();
-                User[] users = gson.fromJson(response, User[].class);
-                List<User> lstUser = new ArrayList<User>();
-                SQLiteDatabase db = QfbDbHelper.getInstance().getWritableDatabase();
-                db.execSQL("DELETE FROM " + QfbContract.UserEntry.TABLE_NAME);
-                for (int i = 0; i < users.length; ++i) {
-                    lstUser.add(users[i]);
-
-                    ContentValues cv = new ContentValues();
-                    cv.put(QfbContract.UserEntry.COLUMN_NAME_USERNAME, users[i].username);
-                    cv.put(QfbContract.UserEntry.COLUMN_NAME_PASSWORD, users[i].password);
-                    db.insert(QfbContract.UserEntry.TABLE_NAME, null, cv);
-                }
-                db.close();
-
-                if (callback != null) {
-                    callback.networkCallback_Users(true, lstUser);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "fail");
-                if (callback != null) {
-                    callback.networkCallback_Users(false, null);
-                }
-            }
-        });
-        VolleyHelper.getInstance().makeRequest(request);
+    public void downloadUsers(final UserService.NetworkCallback_Users callback) {
+        new UserService().downloadUsers(callback);
     }
 
     public void downloadProjects(final NetworkCallback_Projects callback, String userName) {
@@ -204,51 +155,5 @@ public class DownloadController {
         VolleyHelper.getInstance().makeRequest(request);
     }
 
-    public void hasNewVersion(final VersionCallback versionCallback, final double currentVersion) {
-        String url = Global.getUrl_Version();
-        Request request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                boolean hasNewVersion = false;
-
-                Gson gson = new Gson();
-                QfbVersion qfbVersion = gson.fromJson(response, QfbVersion.class);
-                hasNewVersion = qfbVersion.latest_version > currentVersion;
-
-                versionCallback.versionCallback(true, hasNewVersion, qfbVersion);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                versionCallback.versionCallback(false, false, null);
-            }
-        });
-
-        VolleyHelper.getInstance().makeRequest(request);
-    }
-
-    public void downloadNewVersion(final QfbVersion qfbVersion, final DownloadNewVersionCallback downloadCallback) {
-        String url = Global.getUrl_Base() + qfbVersion.file_name;
-        Request request = new FileRequest(Request.Method.GET, url, new Response.Listener<byte[]>() {
-            @Override
-            public void onResponse(byte[] response) {
-                Logger.d("download apk success");
-                String fileName = qfbVersion.file_name;
-                QfbFileHelper qfbFileHelper = new QfbFileHelper();
-                String filePath = qfbFileHelper.saveFile_Download(fileName, response);
-                Logger.d("filePath = " + filePath);
-
-                downloadCallback.downloaded(true, filePath);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Logger.d("download apk fail");
-                downloadCallback.downloaded(false, "");
-            }
-        });
-
-        VolleyHelper.getInstance().makeRequest(request);
-    }
 
 }

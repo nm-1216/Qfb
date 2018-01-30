@@ -60,7 +60,7 @@ public class Global {
             NetworkInfo netInfo = cm.getNetworkInfo(0);
             if (netInfo != null && netInfo.getState()==NetworkInfo.State.CONNECTED) {
                 status= true;
-            }else {
+            } else {
                 netInfo = cm.getNetworkInfo(1);
                 if(netInfo!=null && netInfo.getState()== NetworkInfo.State.CONNECTED)
                     status= true;
@@ -70,7 +70,6 @@ public class Global {
             return false;
         }
         return status;
-
     }
 
 

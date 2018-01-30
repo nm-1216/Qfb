@@ -1,15 +1,9 @@
 package com.sy.qfb.ui;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -24,13 +18,11 @@ import android.widget.TextView;
 import com.sy.qfb.R;
 import com.sy.qfb.controller.BaseController;
 import com.sy.qfb.controller.DeleteOldDataController;
-import com.sy.qfb.controller.DownloadController;
-import com.sy.qfb.controller.QfbController;
+import com.sy.qfb.controller.GetProductStructureController;
 import com.sy.qfb.exception.IException;
 import com.sy.qfb.model.Page;
 import com.sy.qfb.model.Product;
 import com.sy.qfb.model.Project;
-import com.sy.qfb.model.QfbVersion;
 import com.sy.qfb.model.Target;
 import com.sy.qfb.view.CommonHeader;
 
@@ -106,7 +98,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.common_header)
     CommonHeader header;
 
-    private QfbController qfbController;
+    private GetProductStructureController getProductStructureController = new GetProductStructureController();
     private ProjectAdapter projectAdapter;
 
     @Override
@@ -162,12 +154,30 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        qfbController = new QfbController();
-        PROJECTS = qfbController.getProjects();
+        getProductStructureController.getProductStructure(new BaseController.UpdateViewAsyncCallback<List<Project>>() {
+            @Override
+            public void onPreExecute() {
 
-//        projectAdapter.notifyDataSetChanged();
-        projectAdapter = new ProjectAdapter();
-        lvProject.setAdapter(projectAdapter);
+            }
+
+            @Override
+            public void onPostExecute(List<Project> lstProject) {
+                PROJECTS = lstProject;
+//              projectAdapter.notifyDataSetChanged();
+                projectAdapter = new ProjectAdapter();
+                lvProject.setAdapter(projectAdapter);
+            }
+
+            @Override
+            public void onCancelled() {
+
+            }
+
+            @Override
+            public void onException(IException ie) {
+
+            }
+        });
     }
 
     @Override

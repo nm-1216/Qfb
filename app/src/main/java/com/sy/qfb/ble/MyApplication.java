@@ -31,7 +31,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
 
-        UMConfigure.init(this, "5a6f3450f29d9824d60001b0", "field",
+        UMConfigure.init(this, "5a6f3450f29d9824d60001b0", "dev",
                 UMConfigure.DEVICE_TYPE_PHONE, "1fe6a20054bcef865eeb0991ee84525b");
         UMConfigure.setLogEnabled(true);
 

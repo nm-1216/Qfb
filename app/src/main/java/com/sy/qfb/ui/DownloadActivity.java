@@ -21,6 +21,7 @@ import com.sy.qfb.model.Target;
 import com.sy.qfb.model.User;
 import com.sy.qfb.net.FileRequest;
 import com.sy.qfb.net.VolleyHelper;
+import com.sy.qfb.service.UserService;
 import com.sy.qfb.util.QfbFileHelper;
 
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class DownloadActivity extends BaseActivity {
                 }, 10000);
 
                 appendStatus("正在下载  user.json....");
-                downloadController.downloadUsers(new DownloadController.NetworkCallback_Users() {
+                downloadController.downloadUsers(new UserService.NetworkCallback_Users() {
                     @Override
                     public void networkCallback_Users(boolean success, List<User> users) {
                         if (success) {

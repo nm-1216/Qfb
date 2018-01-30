@@ -25,10 +25,22 @@ import java.util.List;
  * Created by shenyin on 2017/6/9.
  */
 
-public class QfbController extends BaseController{
+public class GetProductStructureController extends BaseController{
+    public static final int GET_PRODUCT_STRUCTURE_KEY = 4001;
+
+    public void getProductStructure(UpdateViewAsyncCallback viewCallback) {
+        doAsyncTask(GET_PRODUCT_STRUCTURE_KEY, viewCallback,
+                new DoAsyncTaskCallback<Void, List<Project>>() {
+                    @Override
+                    public List<Project> doAsyncTask(Void... voids) throws IException {
+                        return getProjects();
+                    }
+                });
+    }
+
     private SQLiteDatabase db;
 
-    public List<Project> getProjects() {
+    private List<Project> getProjects() {
         List<Project> result = new ArrayList<Project>();
 
         QfbDbHelper dbHelper = QfbDbHelper.getInstance();

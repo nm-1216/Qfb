@@ -24,8 +24,11 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 import com.sy.qfb.R;
+import com.sy.qfb.controller.BaseController;
 import com.sy.qfb.controller.DownloadController;
 import com.sy.qfb.controller.LoginController;
+import com.sy.qfb.controller.UpgradeController;
+import com.sy.qfb.exception.IException;
 import com.sy.qfb.model.QfbVersion;
 import com.sy.qfb.model.User;
 import com.sy.qfb.util.Global;
@@ -44,7 +47,6 @@ import butterknife.ButterKnife;
  */
 
 public class LoginActivity extends BaseActivity {
-    public static List<User> USERS = new ArrayList<User>();
     public static User CURRENT_USER = null;
 
     @BindView(R.id.btn_login)
@@ -62,7 +64,8 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.tv_setting)
     TextView tvSetting;
 
-    private LoginController loginController;
+    private LoginController loginController = new LoginController();
+    private UpgradeController upgradeController = new UpgradeController();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,9 +75,6 @@ public class LoginActivity extends BaseActivity {
         Logger.d(new String[] {"LoginActivity onCreate()"});
 
         ButterKnife.bind(this);
-
-        loginController = new LoginController();
-        USERS = loginController.getUsers();
 
         SharedPreferences sharedPreferences = getSharedPreferences("qfb", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "user1");
@@ -86,17 +86,29 @@ public class LoginActivity extends BaseActivity {
 
 
         if (Global.isNetworkOnline(this)) {
-            showProgressDialog(true);
-            DownloadController downloadController = new DownloadController();
-            downloadController.downloadUsers(new DownloadController.NetworkCallback_Users() {
+            loginController.syncUsers(new BaseController.UpdateViewAsyncCallback<Boolean>() {
                 @Override
-                public void networkCallback_Users(boolean success, List<User> users) {
+                public void onPreExecute() {
+                    showProgressDialog(true);
+                }
+
+                @Override
+                public void onPostExecute(Boolean success) {
+                    showProgressDialog(false);
                     if (success) {
 //                    appendStatus("user.json下载成功！");
-                        if (users != null) USERS = users;
                     } else {
 //                    appendStatus("user.json下载失败！");
                     }
+                }
+
+                @Override
+                public void onCancelled() {
+                    showProgressDialog(false);
+                }
+
+                @Override
+                public void onException(IException ie) {
                     showProgressDialog(false);
                 }
             });
@@ -105,37 +117,38 @@ public class LoginActivity extends BaseActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean authed = false;
                 String u = etUserName.getText().toString();
                 String p = etPassword.getText().toString();
-                try {
-                    String pwd = MD5.md5(p);
-                    Logger.d("pwd = " + pwd);
-                    for (User user : USERS) {
-                        if (user.username.equalsIgnoreCase(u) && user.password.equalsIgnoreCase(pwd)) {
-                            CURRENT_USER = user;
-                            authed = true;
-                            break;
+
+                loginController.login(new BaseController.UpdateViewAsyncCallback<User>() {
+                    @Override
+                    public void onPreExecute() {
+                        showProgressDialog(true);
+                    }
+
+                    @Override
+                    public void onPostExecute(User user) {
+                        showProgressDialog(false);
+                        CURRENT_USER = user;
+                        if (user != null) {
+                            saveUserAndGotoMainPage();
+                        } else {
+                            showAlertDialog("用户名或密码不对");
                         }
                     }
-                } catch (Exception e) {
-                    authed = false;
-                }
 
-                if (authed) {
-                    SharedPreferences sharedPreferences = getSharedPreferences("qfb", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("remember_password", chkRememberPass.isChecked());
-                    editor.putString("username", etUserName.getText().toString());
-                    editor.putString("password", etPassword.getText().toString());
-                    editor.commit();
+                    @Override
+                    public void onCancelled() {
+                        showProgressDialog(false);
 
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    LoginActivity.this.finish();
-                } else {
-                    showAlertDialog("用户名或密码不对");
-                }
+                    }
+
+                    @Override
+                    public void onException(IException ie) {
+                        showProgressDialog(false);
+
+                    }
+                }, u, p);
             }
         });
 
@@ -147,8 +160,19 @@ public class LoginActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+    }
 
+    private void saveUserAndGotoMainPage() {
+        SharedPreferences sharedPreferences = getSharedPreferences("qfb", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("remember_password", chkRememberPass.isChecked());
+        editor.putString("username", etUserName.getText().toString());
+        editor.putString("password", etPassword.getText().toString());
+        editor.commit();
 
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        LoginActivity.this.finish();
     }
 
 
@@ -167,9 +191,8 @@ public class LoginActivity extends BaseActivity {
             try {
                 PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
                 String version = pInfo.versionName;
-                final DownloadController downloadController = new DownloadController();
                 showProgressDialog(true);
-                downloadController.hasNewVersion(new DownloadController.VersionCallback() {
+                upgradeController.hasNewVersion(new UpgradeController.VersionCallback() {
                     @Override
                     public void versionCallback(boolean success, boolean hasNewVersion, final QfbVersion qfbVersion) {
                         showProgressDialog(false);
@@ -181,7 +204,7 @@ public class LoginActivity extends BaseActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         showProgressDialog(true, "正在下载安装文件，请稍等！");
-                                        downloadController.downloadNewVersion(qfbVersion, new DownloadController.DownloadNewVersionCallback() {
+                                        upgradeController.downloadNewVersion(qfbVersion, new UpgradeController.DownloadNewVersionCallback() {
                                             @Override
                                             public void downloaded(boolean success, String filePath) {
                                                 showProgressDialog(false);
